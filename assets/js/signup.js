@@ -220,6 +220,11 @@ function signup() {
     }); 
 }
 
+function GoogleSignup(){
+  location.href ='http://localhost:8080/oauth2/authorization/google';
+
+}
+
 function usernamecheck(clicked_id){
   if($('#username').val() != null & (/^[a-zA-Z0-9_-]{4,12}$/).test($('#username').val())){
     var field = clicked_id.substr(2)
