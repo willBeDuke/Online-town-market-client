@@ -1,3 +1,14 @@
+$(document).ready(function () {
+
+  'use strict';
+
+  var accesst = null,
+      refresht = null;
+
+});
+
+
+
 function login(){
     var settings = {
         "url": "http://localhost:8080/users/login",
@@ -13,7 +24,8 @@ function login(){
       };
       
       $.ajax(settings).done(function (response,status,xhr) {
-        localStorage.setItem('accessToken',xhr.getResponseHeader('Authorization'))
+        localStorage.setItem('accessToken',xhr.getResponseHeader('Authorization'));
+        localStorage.setItem('refreshToken',xhr.getResponseHeader('Refresh'))
         location.href = "index.html";
       }).fail(function(response){
         console.log(response.responseJSON)

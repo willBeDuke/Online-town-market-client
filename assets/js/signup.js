@@ -215,7 +215,6 @@ function signup() {
       alert("회원가입 완료");
       location.href = "login.html";
     }).fail(function(response){
-      console.log(response.responseJSON)
       if(response.responseJSON.statusCode === 400|| response.responseJSON.statusCode === 401)
       alert("입력하신 정보를 다시 확인해 주세요")
     }); 

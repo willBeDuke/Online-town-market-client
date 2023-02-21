@@ -2,7 +2,12 @@
 
 
 jQuery(document).ready(function ($) {
-    getProfile();
+    if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
+        getProfile();
+    }
+    getproducts();
+    
+    
 
     /*---------------------------------------------*
      * Mobile menu
@@ -150,21 +155,86 @@ function getProfile(){
         },
       };
       $.ajax(settings).done(function (response) {
-        // var loginForm = document.getElementById("loginForm"); 
-        // loginForm.style.display = "none";
         $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
         const element = document.getElementById("loginForm");
-        element.innerHTML = '<div style = "color:#82ca9c; margin-top:15px"><a>로그아웃</a></div>';
-        
- 
-     
-        // const newDiv = document.createElement('div');
-        // const newText = document.createTextNode(response.nickname + "님")+<div><a>로그아웃</a></div>;
-        // newDiv.appendChild(newText);
-        // element.appendChild(newDiv);
-
-
+        element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
        
-        
+      }).fail(function(){
+        reissueToken();
+});
+}
+function logout(){
+    var settings = {
+        "url": "http://localhost:8080/users/logout",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+          "Refresh":localStorage.getItem('refreshToken')
+        },
+      }; 
+      
+      $.ajax(settings).done(function (response) {
+        localStorage.setItem('accessToken','');
+        window.location.reload();
+      });
+    
+}
+function reissueToken(){
+    var settings = {
+        "url": "http://localhost:8080/refresh/regeneration",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Refresh":localStorage.getItem('refreshToken')
+        },
+      };
+      
+      $.ajax(settings).done(function (response,status,xhr) {
+        localStorage.setItem('accessToken',xhr.getResponseHeader('Authorization'))
+      }).fail(function(){
+        alert("다시 로그인 해 주세요")
+        localStorage.setItem('accessToken','');
+        localStorage.setItem('refreshToken','');
+});
+}
+
+function getproducts(){
+    var settings = {
+        "url": "http://localhost:8080/products",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://127.0.0.1:5500"
+        },
+        "data": {
+          "page": 1,
+          "size": 10,
+          "isAsc":false
+        },
+      };
+      
+      $.ajax(settings).done(function (response) {
+        console.log(response);
       });
 }
+// function getproducts(){
+//     var settings = {
+//         "url": "http://localhost:8080/products/get",
+//         "method": "POST",
+//         "timeout": 0,
+//         "headers": {
+//           "Content-Type": "application/json"
+//         },
+//         "data": JSON.stringify({
+//           "page": 1,
+//           "size": 10,
+
+//         }),
+//       };
+      
+//       $.ajax(settings).done(function (response) {
+//         console.log(response);
+//       });
+// }
