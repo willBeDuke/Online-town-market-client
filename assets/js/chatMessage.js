@@ -19,11 +19,12 @@ stompClient.subscribe()
 
 
 
+
 // WebSocket 연결
 var socket = new SockJS('ws://localhost:8080/chat');
 
 // STOMP 클라이언트 생성
-var stompClient = Stomp.over(socket);
+// var stompClient = Stomp.over(socket);
 
 // STOMP 연결
 stompClient.connect({}, function(frame) {
