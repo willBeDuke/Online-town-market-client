@@ -215,10 +215,14 @@ function signup() {
       alert("회원가입 완료");
       location.href = "login.html";
     }).fail(function(response){
-      console.log(response.responseJSON)
       if(response.responseJSON.statusCode === 400|| response.responseJSON.statusCode === 401)
       alert("입력하신 정보를 다시 확인해 주세요")
     }); 
+}
+
+function GoogleSignup(){
+  location.href ='http://localhost:8080/oauth2/authorization/google';
+
 }
 
 function usernamecheck(clicked_id){
