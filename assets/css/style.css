@@ -1701,3 +1701,44 @@ xkeyframes
 }
 
 
+*{
+    font-family: 'Lato';
+  }
+  
+  #profile-grid { overflow: auto; white-space: normal; }
+  #profile-grid .profile { padding-bottom: 40px; }
+  #profile-grid .panel { padding: 0 }
+  #profile-grid .panel-body { padding: 15px }
+  #profile-grid .profile-name { font-weight: bold; }
+  #profile-grid .thumbnail {margin-bottom:6px;}
+  #profile-grid .panel-thumbnail { overflow: hidden; }
+  #profile-grid .img-rounded { border-radius: 4px 4px 0 0;}
+
+  #pagination {
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #pagination li {
+    display: inline;
+  }
+  
+  #pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+  }
+  
+  #pagination li.active a {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+  }
+  
+  #pagination li a:hover:not(.active) {
+    background-color: #ddd;
+  }
