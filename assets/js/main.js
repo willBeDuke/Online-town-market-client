@@ -274,7 +274,7 @@ function reissueToken(){
                   let temp_html = `<div class="col-sm-4 col-xs-12 profile">
 				        <div class="panel panel-default">
 				          <div class="panel-thumbnail">
-				          	<a href="#" title="image 1" class="thumb">
+				          	<a href="http://127.0.0.1:5500/getProduct.html" title="image 1" class="thumb">
                               <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
 				          	</a>
 				          </div>
