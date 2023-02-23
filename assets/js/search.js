@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
         getProfile();
     }
     // getproducts();
-    getProducts(0);
+    search(0);
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
     
@@ -355,11 +355,78 @@ function reissueToken(){
         //         console.log(response);
         //       });
         // }
-        function search(){
-            var keyword = $('#search').val();
-            console.log(keyword)
-            if(keyword.length != 0){
-            localStorage.setItem('keyword',keyword)
-            window.location.href = "search.html"
+        function search(page) {
+            if(localStorage.getItem('keyword') == ''){
+                window.location.href = "index.html"
             }
-        }
+            $.ajax({
+              url: "http://localhost:8080/products/search",
+              type: 'GET',
+              data: {
+                    "page": page,
+                    "size": 9,
+                    "sortBy":"createdAt",
+                    "isAsc":false,
+                    "keyword": localStorage.getItem('keyword')
+              },
+              success: function(response) {
+                localStorage.setItem('keyword','')
+                console.log(response)
+                if(response.totalElements == 0){
+                    alert("찾으시는 물건이 없습니다")
+                    window.location.href = "index.html"
+                }
+                // 페이징된 객체에서 제품 정보를 추출하여 테이블에 추가합니다.
+              
+                var products = response.content;
+                // var tbody = $('#profile-grid tbody');
+                // tbody.empty();
+                $('#profile-grid').empty();
+                for (var i = 0; i < products.length; i++) {
+                  let productName =  products[i].productName;
+                  let productPrice = products[i].productPrice;
+                  
+                  let temp_html = `<div class="col-sm-4 col-xs-12 profile">
+				        <div class="panel panel-default">
+				          <div class="panel-thumbnail">
+				          	<a href="http://127.0.0.1:5500/getProduct.html?id=${i}" title="image 1" class="thumb">
+                              <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
+				          	</a>
+				          </div>
+				          <div class="panel-body">
+				            <p class="profile-name">${productName}</p>
+				            <p>${productPrice}</p>
+				          </div>
+				        </div>
+				    </div>`
+            
+                  $('#profile-grid').append(temp_html);
+                }
+                // 페이징 정보를 추출하여 페이지네이션을 생성합니다.
+                var totalPages = response.totalPages;
+                var pageNumber = response.number;
+                var ul = $('#pagination');
+                ul.empty();
+                for (var i = 0; i < totalPages; i++) {
+                  var li = $('<li>');
+                  if (i == pageNumber) {
+                    li.addClass('active');
+                  }
+                  var a = $('<a>').attr('href', '#').text(i + 1);
+                  li.append(a);
+                  ul.append(li);
+                  $('#page_nation').append(ul);
+                }
+                // 페이지네이션 링크를 클릭했을 때, 해당 페이지의 제품 정보를 요청합니다.
+                $('#pagination a').click(function(event) {
+                  event.preventDefault();
+                  var page = $(this).text() - 1;
+                  getProducts(page);
+                })
+              },fail:function () {
+                localStorage.setItem('keyword','')
+                alert("찾으시는 물건이 없습니다")
+            }
+            });
+          }
+        
