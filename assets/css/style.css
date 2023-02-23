@@ -753,6 +753,11 @@ margin-top: 15px;
     display: flex;
     flex-direction: row;
 }
+.loginbuttons{
+    display: flex;
+    flex-direction: row;
+}
+
 
 .cd-pricing-container {
     width: 90%;
@@ -1742,3 +1747,33 @@ xkeyframes
   #pagination li a:hover:not(.active) {
     background-color: #ddd;
   }
+
+
+.col-sm-6{
+    padding-right: -1px;
+    padding-left: 1px;
+    width: 150px;
+    display: flex;
+    flex-direction: row;		
+    align-items: center;
+    justify-content: flex-start;
+}
+.dropdown-menu{
+    min-width: 95px;
+    width: 95px;
+}
+.dropdown-header{
+    display: flex;
+    padding: 0px;
+}
+
+.home-content .home-contact input[type="button"]{
+    display: inline-block;
+    width: 35%;
+    background: #82ca9c;
+    color: #fff;
+    border: 0px;
+}
+.home-content .home-contact input[type="text"] {
+    color: black;
+}
