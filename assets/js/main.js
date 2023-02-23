@@ -255,8 +255,9 @@ function reissueToken(){
               url: "http://localhost:8080/products",
               type: 'GET',
               data: {
-                    "page": page + 1,
+                    "page": page,
                     "size": 9,
+                    "sortBy":"createdAt",
                     "isAsc":false
               },
               success: function(response) {
@@ -267,7 +268,6 @@ function reissueToken(){
                 // tbody.empty();
                 $('#profile-grid').empty();
                 for (var i = 0; i < products.length; i++) {
-                    console.log(response.content[i].productName);
                   let productName =  products[i].productName;
                   let productPrice = products[i].productPrice;
                   
