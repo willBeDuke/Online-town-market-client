@@ -5,8 +5,7 @@ jQuery(document).ready(function ($) {
     if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
         getProfile();
     }
-    // getproducts();
-    getProducts(0);
+    getUserInfo();
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
     
@@ -166,7 +165,7 @@ function getProfile(){
             <li class="col-sm-6">
                 <ul>
                     <li class="dropdown-header">${nickname}님</li>
-                    <li><a href="myinfo.html">내정보</a></li>
+                    <li><a href="#">내정보</a></li>
                     <li><a href="#">판매상품</a></li>
                     <li><a href="#">구매상품</a></li>
                     <li><a href="#">채팅</a></li>
@@ -270,103 +269,30 @@ function reissueToken(){
                 //     alert("아이디나 비밀번호를 다시 확인해주세요")
             });
         }
-
-        function getProducts(page) {
-            $.ajax({
-              url: "http://localhost:8080/products",
-              type: 'GET',
-              data: {
-                    "page": page,
-                    "size": 9,
-                    "sortBy":"createdAt",
-                    "isAsc":false
-              },
-              success: function(response) {
-                // 페이징된 객체에서 제품 정보를 추출하여 테이블에 추가합니다.
-                console.log(response)
-                var products = response.content;
-                console.log(products.productId);
-                // var tbody = $('#profile-grid tbody');
-                // tbody.empty();
-                $('#profile-grid').empty();
-                for (var i = 0; i < products.length; i++) {
-                  let productName =  products[i].productName;
-                  let productPrice = products[i].productPrice;
-                  let productId = products[i].productId;
-                  console.log(productId);
-                  
-                  let temp_html = `<div class="col-sm-4 col-xs-12 profile">
-				        <div class="panel panel-default">
-				          <div onclick = "getProduct(${productId})" class="panel-thumbnail">
-				          	<a  title="image 1" class="thumb">
-                              <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
-				          	</a>
-				          </div>
-				          <div class="panel-body">
-				            <p class="profile-name">${productName}</p>
-				            <p>${productPrice}</p>
-				          </div>
-				        </div>
-				    </div>`
-            
-                  $('#profile-grid').append(temp_html);
-                }
-                // 페이징 정보를 추출하여 페이지네이션을 생성합니다.
-                var totalPages = response.totalPages;
-                var pageNumber = response.number;
-                var ul = $('#pagination');
-                ul.empty();
-                for (var i = 0; i < totalPages; i++) {
-                  var li = $('<li>');
-                  if (i == pageNumber) {
-                    li.addClass('active');
-                  }
-                  var a = $('<a>').attr('href', '#').text(i + 1);
-                  li.append(a);
-                  ul.append(li);
-                  $('#page_nation').append(ul);
-                }
-                // 페이지네이션 링크를 클릭했을 때, 해당 페이지의 제품 정보를 요청합니다.
-                $('#pagination a').click(function(event) {
-                  event.preventDefault();
-                  var page = $(this).text() - 1;
-                  getProducts(page);
-                });
-              }
-            });
-          }
-          // 페이지 로드시, 첫 번째 페이지의 제품 정보를 요청합니다.
+function getUserInfo(){
+    var settings = {
+        "url": "http://localhost:8080/users/info",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+          "Authorization": localStorage.getItem('accessToken')
+        },
+      };
+      
+      $.ajax(settings).done(function (response) {
         
-
-        //   function getproducts(){
-        //     var settings = {
-        //         "url": "http://localhost:8080/products",
-        //         "method": "GET",
-        //         "timeout": 0,
-        //         "headers": {
-        //           "Content-Type": "application/json",
-        //           "Access-Control-Allow-Origin": "http://127.0.0.1:5500"
-        //         },
-        //         "data": {
-        //           "page": 1,
-        //           "size": 10,
-        //           "isAsc":false
-        //         },
-        //       };
-              
-        //       $.ajax(settings).done(function (response) {
-        //         console.log(response);
-        //       });
-        // }
-        function search(){
-            var keyword = $('#search').val();
-            console.log(keyword)
-            if(keyword.length != 0){
-            localStorage.setItem('keyword',keyword)
-            window.location.href = "search.html"
-            }
-        }
-        function getProduct(productId){
-            localStorage.setItem('productId',productId)
-            window.location.href = "product.html"
-        }
+        console.log(response);
+        let email = response.email;
+        let username = response.username;
+        let nickname = response.nickname;
+        let region = response.region;
+        
+       let temp_html =  `<div class="info1" style="justify-content: flex-start; display: flex; flex-direction: column; margin-left: -200px; padding: 10px 0px 10px 0px;">
+        <p>ID : ${username}</p>
+        <p>nickname : ${nickname}</p>
+        <p>email : ${email}</p>
+        <p>region : ${region} </p>
+    </div>`
+    $('#info_box').append(temp_html);
+      });
+}

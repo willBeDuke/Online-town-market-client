@@ -1777,3 +1777,7 @@ xkeyframes
 .home-content .home-contact input[type="text"] {
     color: black;
 }
+.taps{
+    display: flex;
+    justify-content: center;
+}
