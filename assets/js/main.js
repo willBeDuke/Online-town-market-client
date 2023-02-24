@@ -169,8 +169,8 @@ function getProfile(){
                     <li><a href="myinfo.html">내정보</a></li>
                     <li><a href="#">판매상품</a></li>
                     <li><a href="#">구매상품</a></li>
-                    <li><a href="#">채팅</a></li>
-                    <li><a href="#">관심목록</a></li>
+                    <li><a href="chat.html">채팅</a></li>
+                    <li><a href="myinterest.html">관심목록</a></li>
                 </ul>
             </li>               
         </ul>      
@@ -213,7 +213,7 @@ function reissueToken(){
       $.ajax(settings).done(function (response,status,xhr) {
         localStorage.setItem('accessToken',xhr.getResponseHeader('Authorization'))
       }).fail(function(){
-        alert("다시 로그인 해 주세요")
+        alert("로그인 해 주세요")
         localStorage.setItem('accessToken','');
         localStorage.setItem('refreshToken','');
 });
@@ -283,9 +283,7 @@ function reissueToken(){
               },
               success: function(response) {
                 // 페이징된 객체에서 제품 정보를 추출하여 테이블에 추가합니다.
-                console.log(response)
                 var products = response.content;
-                console.log(products.productId);
                 // var tbody = $('#profile-grid tbody');
                 // tbody.empty();
                 $('#profile-grid').empty();
@@ -293,7 +291,7 @@ function reissueToken(){
                   let productName =  products[i].productName;
                   let productPrice = products[i].productPrice;
                   let productId = products[i].productId;
-                  console.log(productId);
+       
                   
                   let temp_html = `<div class="col-sm-4 col-xs-12 profile">
 				        <div class="panel panel-default">
@@ -360,7 +358,6 @@ function reissueToken(){
         // }
         function search(){
             var keyword = $('#search').val();
-            console.log(keyword)
             if(keyword.length != 0){
             localStorage.setItem('keyword',keyword)
             window.location.href = "search.html"

@@ -5,8 +5,7 @@ jQuery(document).ready(function ($) {
     if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
         getProfile();
     }
-    // getproducts();
-    search(0);
+    getinterest(0);
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
     
@@ -170,7 +169,7 @@ function getProfile(){
                     <li><a href="#">판매상품</a></li>
                     <li><a href="#">구매상품</a></li>
                     <li><a href="chat.html">채팅</a></li>
-                    <li><a href="myinterest.html">관심목록</a></li>
+                    <li><a href="myInterest.html">관심목록</a></li>
                 </ul>
             </li>               
         </ul>      
@@ -270,10 +269,10 @@ function reissueToken(){
                 //     alert("아이디나 비밀번호를 다시 확인해주세요")
             });
         }
-
-        function getProducts(page) {
+        
+        function getinterest(page) {
             $.ajax({
-              url: "http://localhost:8080/products",
+              url: "http://localhost:8080/interest/list",
               type: 'GET',
               data: {
                     "page": page,
@@ -281,32 +280,36 @@ function reissueToken(){
                     "sortBy":"createdAt",
                     "isAsc":false
               },
+              headers: {
+                "Authorization": localStorage.getItem('accessToken')
+              },
               success: function(response) {
                 // 페이징된 객체에서 제품 정보를 추출하여 테이블에 추가합니다.
                 console.log(response)
                 var products = response.content;
                 // var tbody = $('#profile-grid tbody');
                 // tbody.empty();
-                $('#profile-grid').empty();
+                $('#info_box').empty();
                 for (var i = 0; i < products.length; i++) {
                   let productName =  products[i].productName;
                   let productPrice = products[i].productPrice;
+                  let productId = products[i].productId;
                   
                   let temp_html = `<div class="col-sm-4 col-xs-12 profile">
-				        <div class="panel panel-default">
-				          <div class="panel-thumbnail">
-				          	<a href="http://127.0.0.1:5500/getProduct.html?id=${i}" title="image 1" class="thumb">
-                              <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
-				          	</a>
-				          </div>
-				          <div class="panel-body">
-				            <p class="profile-name">${productName}</p>
-				            <p>${productPrice}</p>
-				          </div>
-				        </div>
-				    </div>`
-            
-                  $('#profile-grid').append(temp_html);
+                  <div class="panel panel-default">
+                    <div onclick = "getProduct(${productId})" class="panel-thumbnail">
+                        <a  title="image 1" class="thumb">
+                        <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
+                        </a>
+                    </div>
+                    <div class="panel-body">
+                      <p class="profile-name">${productName}</p>
+                      <p>${productPrice}</p>
+                    </div>
+                  </div>
+              </div>`
+      
+            $('#profile-grid').append(temp_html);
                 }
                 // 페이징 정보를 추출하여 페이지네이션을 생성합니다.
                 var totalPages = response.totalPages;
@@ -329,104 +332,12 @@ function reissueToken(){
                   var page = $(this).text() - 1;
                   getProducts(page);
                 });
-              }
+              }, fail : function(){
+                reissueToken();
+              } 
             });
           }
-          // 페이지 로드시, 첫 번째 페이지의 제품 정보를 요청합니다.
-        
-
-        //   function getproducts(){
-        //     var settings = {
-        //         "url": "http://localhost:8080/products",
-        //         "method": "GET",
-        //         "timeout": 0,
-        //         "headers": {
-        //           "Content-Type": "application/json",
-        //           "Access-Control-Allow-Origin": "http://127.0.0.1:5500"
-        //         },
-        //         "data": {
-        //           "page": 1,
-        //           "size": 10,
-        //           "isAsc":false
-        //         },
-        //       };
-              
-        //       $.ajax(settings).done(function (response) {
-        //         console.log(response);
-        //       });
-        // }
-        function search(page) {
-            if(localStorage.getItem('keyword') == ''){
-                window.location.href = "index.html"
-            }
-            $.ajax({
-              url: "http://localhost:8080/products/search",
-              type: 'GET',
-              data: {
-                    "page": page,
-                    "size": 9,
-                    "sortBy":"createdAt",
-                    "isAsc":false,
-                    "keyword": localStorage.getItem('keyword')
-              },
-              success: function(response) {
-                localStorage.setItem('keyword','')
-                console.log(response)
-                if(response.totalElements == 0){
-                    alert("찾으시는 물건이 없습니다")
-                    window.location.href = "index.html"
-                }
-                // 페이징된 객체에서 제품 정보를 추출하여 테이블에 추가합니다.
-              
-                var products = response.content;
-                // var tbody = $('#profile-grid tbody');
-                // tbody.empty();
-                $('#profile-grid').empty();
-                for (var i = 0; i < products.length; i++) {
-                  let productName =  products[i].productName;
-                  let productPrice = products[i].productPrice;
-                  
-                  let temp_html = `<div class="col-sm-4 col-xs-12 profile">
-				        <div class="panel panel-default">
-				          <div class="panel-thumbnail">
-				          	<a href="http://127.0.0.1:5500/getProduct.html?id=${i}" title="image 1" class="thumb">
-                              <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
-				          	</a>
-				          </div>
-				          <div class="panel-body">
-				            <p class="profile-name">${productName}</p>
-				            <p>${productPrice}</p>
-				          </div>
-				        </div>
-				    </div>`
-            
-                  $('#profile-grid').append(temp_html);
-                }
-                // 페이징 정보를 추출하여 페이지네이션을 생성합니다.
-                var totalPages = response.totalPages;
-                var pageNumber = response.number;
-                var ul = $('#pagination');
-                ul.empty();
-                for (var i = 0; i < totalPages; i++) {
-                  var li = $('<li>');
-                  if (i == pageNumber) {
-                    li.addClass('active');
-                  }
-                  var a = $('<a>').attr('href', '#').text(i + 1);
-                  li.append(a);
-                  ul.append(li);
-                  $('#page_nation').append(ul);
-                }
-                // 페이지네이션 링크를 클릭했을 때, 해당 페이지의 제품 정보를 요청합니다.
-                $('#pagination a').click(function(event) {
-                  event.preventDefault();
-                  var page = $(this).text() - 1;
-                  getProducts(page);
-                })
-              },fail:function () {
-                localStorage.setItem('keyword','')
-                alert("찾으시는 물건이 없습니다")
-            }
-            });
-          }
-        
+          function getProduct(productId){
+            localStorage.setItem('productId',productId)
+            window.location.href = "product.html"
+        }
