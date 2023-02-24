@@ -165,11 +165,11 @@ function getProfile(){
             <li class="col-sm-6">
                 <ul>
                     <li class="dropdown-header">${nickname}님</li>
-                    <li><a href="#">내정보</a></li>
+                    <li><a href="myinfo.html">내정보</a></li>
                     <li><a href="#">판매상품</a></li>
                     <li><a href="#">구매상품</a></li>
-                    <li><a href="#">채팅</a></li>
-                    <li><a href="#">관심목록</a></li>
+                    <li><a href="chat.html">채팅</a></li>
+                    <li><a href="myinterest.html">관심목록</a></li>
                 </ul>
             </li>               
         </ul>      
@@ -212,7 +212,7 @@ function reissueToken(){
       $.ajax(settings).done(function (response,status,xhr) {
         localStorage.setItem('accessToken',xhr.getResponseHeader('Authorization'))
       }).fail(function(){
-        alert("다시 로그인 해 주세요")
+        alert("로그인 해 주세요")
         localStorage.setItem('accessToken','');
         localStorage.setItem('refreshToken','');
 });
