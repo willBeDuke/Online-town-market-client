@@ -20,11 +20,8 @@ $(document).ready(function () {
       usernameCkError = false,
       usernameck = false,
       emailck = false,
-      nicknameck = false,
-      
-      emailVerify = false,
-
-      checkcode = null;
+      nicknameck = false;
+     
 
 
   // Detect browser for css purpose
@@ -192,32 +189,40 @@ $(document).ready(function () {
   });
 
 });
-function signup() {
 
+var  waitingEmail = true,
+     emailVerify = false;
+
+function signup() {
+if(emailVerify == true){
   var settings = {
-      "url": "http://localhost:8080/users/signup",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        "username": $('#username').val(),
-        "password": $('#password').val(),
-        "email": $('#email').val(),
-        "nickname": $('#nickname').val(),
-        "region": $('#region').val()
-      }),
-    };
-    
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-      alert("회원가입 완료");
-      location.href = "login.html";
-    }).fail(function(response){
-      if(response.responseJSON.statusCode === 400|| response.responseJSON.statusCode === 401)
-      alert("입력하신 정보를 다시 확인해 주세요")
-    }); 
+    "url": "http://localhost:8080/users/signup",
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "data": JSON.stringify({
+      "username": $('#username').val(),
+      "password": $('#password').val(),
+      "email": $('#email').val(),
+      "nickname": $('#nickname').val(),
+      "region": $('#region').val()
+    }),
+  };
+  
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    alert("회원가입 완료");
+    location.href = "login.html";
+  }).fail(function(response){
+    if(response.responseJSON.statusCode === 400|| response.responseJSON.statusCode === 401)
+    alert("입력하신 정보를 다시 확인해 주세요")
+  }); 
+}
+ else{
+  alert("입력하신 정보를 다시 확인해 주세요")
+ }
 }
 
 function GoogleSignup(){
@@ -326,11 +331,20 @@ function emailcheck(clicked_id){
           emailck = false;
         }else{
           $('#email').siblings('span.CkError').text('').fadeOut().parent('.col-xs-8').removeClass('hasCkError');
-          $('#email').siblings('span.Ck').text('인증번호가 발송되었습니다. 인증번호를 입력해 주세요').fadeIn().parent('.col-xs-8').addClass('hasCk'); 
+          $('#email').siblings('span.Ck').text('인증번호가 발송되었습니다. 인증번호를 입력해 주세요. 인증 유효기간은 5분입니다.').fadeIn().parent('.col-xs-8').addClass('hasCk'); 
           emailck = true;
           var verify = document.getElementById("verify"); 
           verify.style.display = "block";
-          verifyEmail();
+         
+          if(waitingEmail == true){
+            
+            setTime();
+            verifyEmail();
+          }else{
+            alert("인증메일 재발송 대기시간이 지나지 않았습니다.")
+          }
+          
+         
       } 
   }).fail(function(){
     alert("중복체크에 실패하였습니다.")
@@ -342,19 +356,40 @@ else{
 }
 }
 
+function setTime(){
+  var time= 300;
+    var min="";
+    var sec="";
+    var x = setInterval(function(){
+      min = parseInt(time/60);
+      sec = time%60;
+      document.getElementById('Timer').innerHTML = "인증메일 재발송 대기시간 : " + min + "분" + sec + "초"
+      time--;
+      if(time < 0){
+      clearInterval(x);
+      document.getElementById('Timer').innerHTML = "재발송 가능"
+    }},1000);
+
+}
+    
 function verifyEmail(){
- var email = $('#email').val();
-  $.ajax({
-    type: "POST",
-    url: "http://localhost:8080/mail",
-    data: {email: email},
-    success: function(response){
-      checkcode = response;
-    },
-    fail:function(){
-      alert("이메일 발송 실패")
-    }
-    });
+     waitingEmail = false;
+    setTimeout(setWatingEmail, 180000); 
+    var email = $('#email').val();
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8080/mail",
+      data: {email: email},
+      success: function(response){
+        checkcode = response;
+      },
+      fail:function(){
+        alert("이메일 발송 실패")
+      }
+      });
+}
+function setWatingEmail(){
+  waitingEmail = true;
 }
 
 // function checkverify(){
@@ -382,17 +417,25 @@ function verifyEmail(){
 // }
 function checkverify(){
   var code = $('#emailVerify').val();
-  if(code == checkcode){
-    var verify = document.getElementById("verify"); 
-    verify.style.display = "none";
-    $('#emailVerify').siblings('span.verifyError').text('').fadeOut().parent('.col-xs-8').removeClass('hasVerifyError'); 
-    // $('#email').siblings('span.Ck').text('').fadeOut().parent('.col-xs-8').removeClass('hasCk'); 
-    $('#email').siblings('span.Ck').text('✔️인증에 성공하였습니다.').fadeIn().parent('.col-xs-8').addClass('hasCk');
-    emailVerify = true; 
-    checkcode = null;
-  }
-  else{
-    $('#emailVerify').siblings('span.verifyError').text('❌인증번호가 일치하지 않습니다.').fadeIn().parent('.emailVerify').addClass('hasVerifyError');
-    emailVerify = false;
-  }
+  var email = $('#email').val();
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8080/verify",
+    data: {code:code, email:email},
+    success: function (response) {
+     var result = response;
+     if(result == true){
+       var verify = document.getElementById("verify"); 
+       verify.style.display = "none";
+       $('#emailVerify').siblings('span.verifyError').text('').fadeOut().parent('.col-xs-8').removeClass('hasVerifyError'); 
+       // $('#email').siblings('span.Ck').text('').fadeOut().parent('.col-xs-8').removeClass('hasCk'); 
+       $('#email').siblings('span.Ck').text('✔️인증에 성공하였습니다.').fadeIn().parent('.col-xs-8').addClass('hasCk');
+       emailVerify = true; 
+     }
+     if(result == false){
+       $('#emailVerify').siblings('span.verifyError').text('❌인증번호가 일치하지 않습니다.').fadeIn().parent('.emailVerify').addClass('hasVerifyError');
+       emailVerify = false;
+      }  
+    },
+    });
 }
