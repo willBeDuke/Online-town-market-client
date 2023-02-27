@@ -131,9 +131,10 @@ let currentNickname = null;
 
 function chatView(roomId, nickname, productId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
-  connect(roomId, nickname, productId)
 
+  connect(roomId, nickname, productId)
   if (currentRoomId !== roomId || currentNickname !== nickname) {
+
     $('#creatChat').empty();
     $('#message').empty();
     $('#chatMessage').show();
@@ -213,10 +214,9 @@ function connect(roomId, nickname, productId) {
 
       let messageList = JSON.parse(chat.body);
       let sender = messageList.sender;
-      let receiver = messageList.receiver;
-      let message = messageList.message;
-      let time = messageList.sendDate;
-      let sendTime = new Date(time);
+      let receiver = nickname;
+      let message = $("#message").val();
+      let sendTime = new Date();
       let hour = sendTime.getHours();
       let min = sendTime.getMinutes();
 
@@ -224,7 +224,7 @@ function connect(roomId, nickname, productId) {
 
       let temp_html = `<li class= ${sender == nickname ? "left" : "right"}>
                             <div class= ${sender == nickname ? "receiver" : "sender"}>
-                              <span>${sender == nickname ? receiver : sender}</span>
+                              <span>${sender == nickname ? receiver : sender}</span><br>
                               <small class="time">${sendDay}</small>
                             </div>
                             <div class="message">
@@ -246,12 +246,11 @@ function connect(roomId, nickname, productId) {
 };
 
 
-function sendChat(roomId, productId, nickname) {
-  console.log(roomId, productId, nickname, sender)
+function sendChat(roomId, productId, nickname, sender) {
   stompClient.send("/pub/send", { Authorization: userToken }, JSON.stringify({
     "message": $("#message").val(),
     "receiver": nickname,
-    "sender": userToken,
+    "sender": sender,
     "roomId": parseInt(roomId),
     "productId": parseInt(productId)
   }));
