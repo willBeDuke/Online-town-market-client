@@ -239,37 +239,37 @@ function reissueToken(){
 //         console.log(response);
 //       });
 // }
-        const searchParams = new URLSearchParams(window.location.search);
-        const username = searchParams.get('username');
-        const role = searchParams.get('role');
+        // const searchParams = new URLSearchParams(window.location.search);
+        // const username = searchParams.get('username');
+        // const role = searchParams.get('role');
 
-        $(document).ready(function () {
-            username !== " " && imp()
-        })
+        // $(document).ready(function () {
+        //     username !== " " && imp()
+        // })
 
-        function imp() {
-            console.log(username, role);
+        // function imp() {
+        //     console.log(username, role);
 
-            const settings = {
-                "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "data": JSON.stringify({}),
-            };
+        //     const settings = {
+        //         "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
+        //         "method": "POST",
+        //         "timeout": 0,
+        //         "headers": {
+        //             "Content-Type": "application/json"
+        //         },
+        //         "data": JSON.stringify({}),
+        //     };
 
-            $.ajax(settings).done(function (response, status, xhr) {
-                localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
-                localStorage.setItem('refreshToken', xhr.getResponseHeader('Refresh'))
-                location.href = "index.html";
-            }).fail(function (response) {
-                console.log(response.responseJSON)
-                // if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
-                //     alert("아이디나 비밀번호를 다시 확인해주세요")
-            });
-        }
+        //     $.ajax(settings).done(function (response, status, xhr) {
+        //         localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
+        //         localStorage.setItem('refreshToken', xhr.getResponseHeader('Refresh'))
+        //         location.href = "index.html";
+        //     }).fail(function (response) {
+        //         console.log(response.responseJSON)
+        //         // if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
+        //         //     alert("아이디나 비밀번호를 다시 확인해주세요")
+        //     });
+        // }
 
         // function getProducts(page) {
         //     $.ajax({
