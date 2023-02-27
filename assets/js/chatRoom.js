@@ -128,7 +128,6 @@ let currentRoomId = null;
 let currentNickname = null;
 
 
-
 function chatView(roomId, nickname, productId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
 
@@ -143,6 +142,7 @@ function chatView(roomId, nickname, productId) {
       url: "http://localhost:8080/chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
+      
         let productId = response['productId'];
         let roomName = response['roomName'];
         let productPrice = response['productPrice'];
@@ -181,6 +181,8 @@ function chatView(roomId, nickname, productId) {
                             </li>`;
           $('#messageList').append(temp_html);
         }
+        connect(roomId, nickname, productId);
+        sendChat(messageList)
       }
 
     });
