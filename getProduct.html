@@ -8,15 +8,18 @@
         crossorigin="anonymous">
   <title>낙낙상회 중고거래 | 상세조회</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="assets/js/product.js"></script>
 </head>
 <body>
 <div id="product-detail">
 </div>
 <div><button onclick="deleteProduct()" type="button" class="btn btn-dark">상품 삭제하기</button></div>
+<div><button onclick="createChatRoom()" type="button" class="btn btn-dark">판매자와 채팅하기</button></div>
 </body>
 <script type="text/javascript" src="assets/js/product.js">
   $(document).ready(function() {
     getProduct(productId);
+    createChatRoom(productId);
   });
 </script>
 </script>

@@ -19,8 +19,13 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+  
   <script src="assets/js/chatRoom.js"></script>
-  <script src="assets/js/chatMessage.js"></script>
+
 
   <style>
     body {
@@ -119,6 +124,10 @@
       display: inline;
       float: right;
       margin-right: 10px;
+    }
+
+    .deleteBtn :hover {
+      background-color: #d74835;
     }
 
 
@@ -236,7 +245,7 @@
     }
 
     .productImg img {
-      margin-left: 10px;
+      margin-left: 30px;
       border-radius: 10px;
       width: 60px;
       height: auto;
@@ -245,7 +254,7 @@
     .productDetailDesc {
       display: flex;
       flex-direction: column;
-      margin-left: 15px;
+      margin-left: 25px;
       font-size: 13px;
     }
 
@@ -281,9 +290,13 @@
       margin: 15px 0 15px 5px;
       border: #F18C7E solid 1px;
     }
-  </style>
 
+    #sendMessageBtn :hover {
+      background-color: #d74835;
+    }
+  </style>
 </head>
+
 
 <body>
   <div class="chat-form">
@@ -293,8 +306,8 @@
       </div>
       <div class="list" style="overflow: scroll; width: 100%; height: 728px;">
         <ul id="roomList" class="chatroom">
-          <li id="roomId" class="chatDesc" onclick="chatView()">
-            <table cellpadding="0" cellspacing="0">
+          <li id="roomId" class="chatDesc">
+            <table cellpadding="0" cellspacing="0" id="connect">
               <tr>
                 <a style="color: black; text-decoration: none;" onclick="chatView()">
                   <td class="profile_td">
@@ -328,9 +341,11 @@
       <div class="creatChat">
         <div class="header">
           <span id="apponent_nickname">상대방 닉네임</span>
+          <button id="disconnect" type="button" class="btn-close" aria-label="Close"
+            style="text-align: right;">x</button>
         </div>
         <div class="productDesc">
-          <div class="productImg">
+          <div id="productImg" class="productImg">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBX5RzsDg3wb4_-0BewsyQ8T3Qvi43AGv9Dg&usqp=CAU">
           </div>
@@ -345,13 +360,13 @@
       </div>
 
 
-      <div class="chat" style="overflow: scroll; width: 100%; height: 570px; padding: 10px;">
+      <div id="chat" class="chat" style="overflow: scroll; width: 100%; height: 570px; padding: 10px;">
         <ul id="messageList">
         </ul>
       </div>
-      <div class="input-div" style="display: grid; grid-template-columns: 2fr 100px;">
-        <textarea style="resize: none;" placeholder="메시지를 입력해주세요."></textarea>
-        <button id="sendMessageBtn" onclick="sendMessage()">보내기</button>
+      <div id="connect" class="input-div" style="display: grid; grid-template-columns: 2fr 100px;">
+        <textarea id="message" style="resize: none;" placeholder="메시지를 입력해주세요."></textarea>
+        <button class="send" id="send" type="button">보내기</button>
       </div>
     </div>
   </div>
