@@ -24,7 +24,7 @@ function createChatRoom(productId) {
     headers: { Authorization: userToken },
     success: function (response) {
       for (let i = 0; i < response.length; i++) {
-        let productId = response[i]['producId']
+        let productId = productId
         let profileImg = response[i]['profileImg'];
         let nickname = response[i]['nickname'];
         let region = response[i]['region'];
@@ -75,7 +75,7 @@ function chatList() {
     dataType: 'json',
     success: function (response) {
       // 가져온 데이터로 채팅 리스트를 렌더링합니다.
-      let roomList = response;
+      let roomList = response.roomList;
 
       // 가져온 채팅방 리스트를 동적으로 추가합니다.
       for (let i = 0; i < roomList.length; i++) {
@@ -87,7 +87,7 @@ function chatList() {
         let productId = roomList[i]['productId']
 
         let temp_html = `<li id="roomId" class="chatDesc" data-roomid="${roomId}" data-nickname="${nickname}">
-                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId});">
+                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId}); connect(${roomId}, '${nickname}', ${productId});">
                               <table cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td class="profile_td">
@@ -129,9 +129,10 @@ let currentNickname = null;
 
 
 
-function chatView(roomId, nickname, producId) {
+function chatView(roomId, nickname, productId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
-  connect(roomId, nickname, producId)
+
+  connect(roomId, nickname, productId);
   if (currentRoomId !== roomId || currentNickname !== nickname) {
     $('#creatChat').empty();
     $('#message').empty();
@@ -141,7 +142,7 @@ function chatView(roomId, nickname, producId) {
       url: "http://localhost:8080/chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
-        let productId = producId;
+        let productId = response['productId'];
         let roomName = response['roomName'];
         let productPrice = response['productPrice'];
         let productEnum = response['productEnum'];
@@ -179,7 +180,6 @@ function chatView(roomId, nickname, producId) {
                             </li>`;
           $('#messageList').append(temp_html);
         }
-        connect(roomId, nickname, productId);
         sendChat(messageList)
       }
 
