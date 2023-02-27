@@ -198,7 +198,7 @@ function deleteChat(roomId) {
       // 삭제 성공 시 처리할 코드
       alert("삭제되었습니다.");
       // 채팅 리스트 다시 불러오기
-      window.location.reload
+      window.location.reload();
     },
   });
 }
