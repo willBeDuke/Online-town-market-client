@@ -87,7 +87,7 @@ function chatList() {
         let productId = roomList[i]['productId']
 
         let temp_html = `<li id="roomId" class="chatDesc" data-roomid="${roomId}" data-nickname="${nickname}">
-                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId}); connect(${roomId}, '${nickname}', ${productId});">
+                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId});">
                               <table cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td class="profile_td">
@@ -131,8 +131,8 @@ let currentNickname = null;
 
 function chatView(roomId, nickname, productId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
+  connect(roomId, nickname, productId)
 
-  connect(roomId, nickname, productId);
   if (currentRoomId !== roomId || currentNickname !== nickname) {
     $('#creatChat').empty();
     $('#message').empty();
@@ -180,7 +180,6 @@ function chatView(roomId, nickname, productId) {
                             </li>`;
           $('#messageList').append(temp_html);
         }
-        sendChat(messageList)
       }
 
     });
@@ -247,12 +246,12 @@ function connect(roomId, nickname, productId) {
 };
 
 
-function sendChat(roomId, productId, nickname, sender) {
+function sendChat(roomId, productId, nickname) {
   console.log(roomId, productId, nickname, sender)
   stompClient.send("/pub/send", { Authorization: userToken }, JSON.stringify({
     "message": $("#message").val(),
     "receiver": nickname,
-    "sender": sender,
+    "sender": userToken,
     "roomId": parseInt(roomId),
     "productId": parseInt(productId)
   }));
