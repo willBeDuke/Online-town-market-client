@@ -24,7 +24,7 @@ function createChatRoom(productId) {
     headers: { Authorization: userToken },
     success: function (response) {
       for (let i = 0; i < response.length; i++) {
-        let productId = response[i]['producId']
+        let productId = productId
         let profileImg = response[i]['profileImg'];
         let nickname = response[i]['nickname'];
         let region = response[i]['region'];
@@ -65,7 +65,6 @@ function createChatRoom(productId) {
   });
 }
 
-
 // 채팅 리스트
 function chatList() {
   $("#roomList").empty()
@@ -76,7 +75,7 @@ function chatList() {
     dataType: 'json',
     success: function (response) {
       // 가져온 데이터로 채팅 리스트를 렌더링합니다.
-      let roomList = response.roomList;
+      var roomList = response;
 
       // 가져온 채팅방 리스트를 동적으로 추가합니다.
       for (let i = 0; i < roomList.length; i++) {
@@ -87,10 +86,8 @@ function chatList() {
         let roomId = roomList[i]['roomId'];
         let productId = roomList[i]['productId']
 
-        console.log(productId)
-
         let temp_html = `<li id="roomId" class="chatDesc" data-roomid="${roomId}" data-nickname="${nickname}">
-                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}'); connect(${roomId}, '${nickname}', ${productId})">
+                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId});">
                               <table cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td class="profile_td">
@@ -130,8 +127,11 @@ function chatList() {
 let currentRoomId = null;
 let currentNickname = null;
 
-function chatView(roomId, nickname) {
+
+
+function chatView(roomId, nickname, producId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
+  connect(roomId, nickname, producId)
   if (currentRoomId !== roomId || currentNickname !== nickname) {
     $('#creatChat').empty();
     $('#message').empty();
@@ -141,12 +141,11 @@ function chatView(roomId, nickname) {
       url: "http://localhost:8080/chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
-        let productId = response['productId']
+        let productId = producId;
         let roomName = response['roomName'];
         let productPrice = response['productPrice'];
         let productEnum = response['productEnum'];
         let productImg = response['productImg'];
-
         $("#apponent_nickname").text(nickname);
         $(".roomName").text(roomName);
         $(".productPrice").text(`${productPrice}원`);
@@ -180,30 +179,13 @@ function chatView(roomId, nickname) {
                             </li>`;
           $('#messageList').append(temp_html);
         }
+        connect(roomId, nickname, productId);
+        sendChat(messageList)
       }
+
     });
   }
 }
-
-
-// 채팅 삭제
-function deleteChat(roomId) {
-  $('#chatMessage').hide();
-  $.ajax({
-    type: "DELETE",
-    url: "http://localhost:8080/chatroom/" + roomId,
-    headers: { Authorization: userToken },
-    dataType: "json",
-    success: function (response) {
-      // 삭제 성공 시 처리할 코드
-      alert("삭제되었습니다.");
-      // 채팅 리스트 다시 불러오기
-      window.location.reload
-    },
-  });
-}
-
-
 
 
 
@@ -215,18 +197,20 @@ function setConnected(connected) {
   $("#disconnect").prop(!connected);
 }
 
+
 function connect(roomId, nickname, productId) {
+  $('#creatChat').empty();
+  $('#message').empty();
+  $('#chatMessage').show();
   console.log(roomId, nickname, productId)
   let socket = new SockJS("http://localhost:8080/ws");
   stompClient = Stomp.over(socket);
   stompClient.connect({ Authorization: userToken }, function (frame) {
     setConnected(true);
     console.log("connected : " + frame);
-    console.log("nick : " +nickname, "room : " + roomId,"product : " + productId )
-    console.log()
+    console.log("nick : " + nickname, "room : " + roomId, "product : " + productId)
     stompClient.subscribe("/sub/" + nickname + "/product" + productId, function (chat) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
-
 
       let messageList = JSON.parse(chat.body);
       let sender = messageList.sender;
@@ -251,10 +235,29 @@ function connect(roomId, nickname, productId) {
       $('#messageList').append(temp_html);
     });
 
-      $("#send").attr("onclick", `sendChat(${roomId}, ${productId})`)// , ${productId} 넣기
+    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}')`)// , ${productId} 넣기
   });
 
+  $("#message").keyup(function (event) {
+    if (event.which === 13) {
+      // console.log("enter key pressed!");
+      $("#send").click();
+    }
+  });
+};
+
+
+function sendChat(roomId, productId, nickname, sender) {
+  console.log(roomId, productId, nickname, sender)
+  stompClient.send("/pub/send", { Authorization: userToken }, JSON.stringify({
+    "message": $("#message").val(),
+    "receiver": nickname,
+    "sender": sender,
+    "roomId": parseInt(roomId),
+    "productId": parseInt(productId)
+  }));
 }
+
 
 function disconnect() {
   if (stompClient !== null) {
@@ -265,17 +268,6 @@ function disconnect() {
   console.log("disconnected");
 }
 
-function sendChat(roomId, productId, receiver, sender) {
-  console.log(roomId, productId, receiver, sender)
-  stompClient.send("/pub/send", { Authorization: userToken }, JSON.stringify({
-    "message": $("#message").val(),
-    "receiver" : receiver,
-    "sender" :sender,
-    "roomId": parseInt(roomId),
-    "productId" : parseInt(productId)
-  }));
-}
-
 
 $(function () {
   $("#chat").on('submit', function (e) {
@@ -283,3 +275,23 @@ $(function () {
   });
   $("#disconnect").click(function () { disconnect(); });
 });
+
+
+
+
+// 채팅 삭제
+function deleteChat(roomId) {
+  $('#chatMessage').hide();
+  $.ajax({
+    type: "DELETE",
+    url: "http://localhost:8080/chatroom/" + roomId,
+    headers: { Authorization: userToken },
+    dataType: "json",
+    success: function (response) {
+      // 삭제 성공 시 처리할 코드
+      alert("삭제되었습니다.");
+      // 채팅 리스트 다시 불러오기
+      window.location.reload();
+    },
+  });
+}
