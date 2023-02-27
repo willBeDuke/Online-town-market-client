@@ -129,11 +129,12 @@ let currentRoomId = null;
 let currentNickname = null;
 var sender = "";
 
-
-function chatView(roomId, nickname, producId) {
+function chatView(roomId, nickname, productId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
-  connect(roomId, nickname, producId)
+
+  connect(roomId, nickname, productId)
   if (currentRoomId !== roomId || currentNickname !== nickname) {
+
     $('#creatChat').empty();
     $('#message').empty();
     $('#chatMessage').show();
@@ -142,7 +143,8 @@ function chatView(roomId, nickname, producId) {
       url: "http://localhost:8080/chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
-        let productId = producId;
+      
+        let productId = response['productId'];
         let roomName = response['roomName'];
         let productPrice = response['productPrice'];
         let productEnum = response['productEnum'];
@@ -189,26 +191,6 @@ function chatView(roomId, nickname, producId) {
 }
 
 
-// 채팅 삭제
-function deleteChat(roomId) {
-  $('#chatMessage').hide();
-  $.ajax({
-    type: "DELETE",
-    url: "http://localhost:8080/chatroom/" + roomId,
-    headers: { Authorization: userToken },
-    dataType: "json",
-    success: function (response) {
-      // 삭제 성공 시 처리할 코드
-      alert("삭제되었습니다.");
-      // 채팅 리스트 다시 불러오기
-      window.location.reload();
-    },
-  });
-}
-
-
-
-
 
 let stompClient = null;
 
@@ -235,10 +217,9 @@ function connect(roomId, nickname, productId) {
 
       let messageList = JSON.parse(chat.body);
       let sender = messageList.sender;
-      let receiver = messageList.receiver;
-      let message = messageList.message;
-      let time = messageList.sendDate;
-      let sendTime = new Date(time);
+      let receiver = nickname;
+      let message = $("#message").val();
+      let sendTime = new Date();
       let hour = sendTime.getHours();
       let min = sendTime.getMinutes();
 
@@ -246,7 +227,7 @@ function connect(roomId, nickname, productId) {
 
       let temp_html = `<li class= ${sender == nickname ? "left" : "right"}>
                             <div class= ${sender == nickname ? "receiver" : "sender"}>
-                              <span>${sender == nickname ? receiver : sender}</span>
+                              <span>${sender == nickname ? receiver : sender}</span><br>
                               <small class="time">${sendDay}</small>
                             </div>
                             <div class="message">
@@ -268,8 +249,9 @@ function connect(roomId, nickname, productId) {
 };
 
 
+
 function sendChat(roomId, productId, nickname) {
-  console.log(roomId, productId, nickname)
+
   stompClient.send("/pub/send", { Authorization: userToken }, JSON.stringify({
     "message": $("#message").val(),
     "receiver": nickname,
