@@ -124,11 +124,7 @@ function chatList() {
 }
 
 
-// 전역 변수로 현재 방의 정보 저장 -> 두번 클릭 시 계속해서 같은 내용 붙어서 불러오는 이슈 해결
-let currentRoomId = null;
-let currentNickname = null;
-let sender = "";
-let stompClient = null;
+
 
 function getProfile() {
   var settings = {
@@ -171,26 +167,38 @@ function getProfile() {
 function setConnected(connected) {
   $("#connect").prop(connected);
   $("#disconnect").prop(!connected);
+  // if (connected) {
+  //   $("#chat").show();
+  // }
+  // else {
+  //   $("#chat").hide();
+  // }
+  // $("#messageList").html("")
 }
 
 
+// 전역 변수로 현재 방의 정보 저장 -> 두번 클릭 시 계속해서 같은 내용 붙어서 불러오는 이슈 해결
+let currentRoomId = null;
+let currentNickname = null;
+let sender = "";
+let stompClient = null;
+let socket = null;
+
 function connect(roomId, nickname, productId) {
-  $('#creatChat').empty();
-  $('#message').empty();
-  $('#chatMessage').show();
-  let socket = new SockJS("http://localhost:8080/ws");
+
+  socket = new SockJS("http://localhost:8080/ws");
   stompClient = Stomp.over(socket);
-  stompClient.connect({ Authorization: userToken }, function (frame) {
+  stompClient.connect({}, function (frame) {
     setConnected(true);
     console.log("connected : " + frame);
 
-    stompClient.subscribe("/sub/" + nickname + "/product" + productId, function (chat) {
+    stompClient.subscribe("/sub/" + roomId, function (chat) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
 
-      let messageList = JSON.parse(chat.body);
-      let sender = messageList.sender;
-      let receiver = messageList.receiver;
-      let message = messageList.message;
+      let msg = JSON.parse(chat.body);
+      let sender = msg.sender;
+      let receiver = msg.receiver;
+      let message = msg.message;
       let sendTime = new Date();
       let hour = sendTime.getHours();
       let min = sendTime.getMinutes();
@@ -225,15 +233,15 @@ function connect(roomId, nickname, productId) {
 };
 
 
-function sendChat(roomId, productId, nickname, sender) {
+function sendChat(roomId, productId, nickname, sender, message) {
   var message = $("#message").val();
 
   if (message == "" || message == null) {
     return;
   }
 
-  stompClient.send("/pub/send", { Authorization: userToken }, JSON.stringify({
-    "message": $("#message").val(),
+  stompClient.send("/pub/" + roomId, {}, JSON.stringify({
+    "message": message,
     "sender": sender,
     "receiver": nickname,
     "roomId": roomId,
@@ -265,6 +273,7 @@ function chatView(roomId, nickname, productId) {
         $(".productPrice").text(`${productPrice}원`);
         $(".deal").text(`${productEnum}`);
         $(".productImg").text(`${productImg}`);
+        
         // 현재 방의 정보를 전역 변수에 저장
         currentRoomId = roomId;
         currentNickname = nickname;
@@ -275,8 +284,7 @@ function chatView(roomId, nickname, productId) {
           let receiver = messageList[i]['receiver'];
           let message = messageList[i]['message'];
           let sender = messageList[i]['sender'];
-          let time = messageList[i]['sendDate'];
-          let sendTime = new Date(time);
+          let sendTime = new Date();
           let hour = sendTime.getHours();
           let min = sendTime.getMinutes();
 
@@ -297,6 +305,17 @@ function chatView(roomId, nickname, productId) {
     });
   }
 }
+
+// function loadChat(chatList){
+//   if(chatList != null) {
+//       for(chat in chatList) {
+//           $("#messageList").append(
+//               "<li><li>" + "[" + chatList[chat].sender + "]" + chatList[chat].message + "</td></tr>"
+//           );
+//       }
+//   }
+// }
+
 
 
 function disconnect() {
@@ -335,4 +354,3 @@ function deleteChat(roomId) {
     },
   });
 }
-
