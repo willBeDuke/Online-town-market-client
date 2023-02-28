@@ -1,7 +1,7 @@
 // 토큰 불러오기
 $(document).ready(function () {
   const ok = localStorage.getItem('accessToken')
-  getProfile(); 
+  getProfile();
   if (ok.length == 0) {
     console.error("userId 요소를 찾을 수 없습니다.");
     return;
@@ -76,7 +76,7 @@ function chatList() {
     dataType: 'json',
     success: function (response) {
       // 가져온 데이터로 채팅 리스트를 렌더링합니다.
-      let roomList = response;
+      let roomList = response.roomList;
 
       // 가져온 채팅방 리스트를 동적으로 추가합니다.
       for (let i = 0; i < roomList.length; i++) {
@@ -127,11 +127,122 @@ function chatList() {
 // 전역 변수로 현재 방의 정보 저장 -> 두번 클릭 시 계속해서 같은 내용 붙어서 불러오는 이슈 해결
 let currentRoomId = null;
 let currentNickname = null;
-var sender = "";
+let sender = "";
+let stompClient = null;
+
+function getProfile() {
+  var settings = {
+    "url": "http://localhost:8080/users/profile",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "Authorization": localStorage.getItem('accessToken')
+    },
+  };
+  $.ajax(settings).done(function (response) {
+    const nickname = response.nickname;
+    sender = nickname;
+    // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
+    document.getElementById('loginbuttons').style.display = 'none';
+    let temp_html = `<li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
+      
+      <ul class="dropdown-menu dropdown-menu-end" >
+          <li class="col-sm-6">
+              <ul>
+                  <li class="dropdown-header">${nickname}님</li>
+                  <li><a href="myinfo.html">내정보</a></li>
+                  <li><a href="#">판매상품</a></li>
+                  <li><a href="#">구매상품</a></li>
+                  <li><a href="chatroom.html">채팅</a></li>
+                  <li><a href="myinterest.html">관심목록</a></li>
+              </ul>
+          </li>               
+      </ul>      
+  </li>
+  <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+    $('#loginForm').append(temp_html)
+    element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
+  }).fail(function () {
+    reissueToken();
+  });
+}
+
+function setConnected(connected) {
+  $("#connect").prop(connected);
+  $("#disconnect").prop(!connected);
+}
+
+
+function connect(roomId, nickname, productId) {
+  $('#creatChat').empty();
+  $('#message').empty();
+  $('#chatMessage').show();
+  let socket = new SockJS("http://localhost:8080/ws");
+  stompClient = Stomp.over(socket);
+  stompClient.connect({ Authorization: userToken }, function (frame) {
+    setConnected(true);
+    console.log("connected : " + frame);
+
+    stompClient.subscribe("/sub/" + nickname + "/product" + productId, function (chat) {
+      // 메시지가 도착하면, 이곳에서 처리합니다.
+
+      let messageList = JSON.parse(chat.body);
+      let sender = messageList.sender;
+      let receiver = messageList.receiver;
+      let message = messageList.message;
+      let sendTime = new Date();
+      let hour = sendTime.getHours();
+      let min = sendTime.getMinutes();
+
+      let sendDay = sendTime.toLocaleDateString().replace(/\./g, '').replace(/\s/g, '/') + " " + hour + ":" + min;
+
+      let temp_html = `<li class= ${sender === nickname ? "left" : "right"}>
+                            <div class= ${sender == nickname ? "receiver" : "sender"}>
+                            <span id="userNickname">${sender == receiver ? receiver : sender}</span><br>
+                            <small id="sendDate" class="time">${sendDay}</small>
+                          </div>
+                          <div id="messageNow" class="message">
+                            ${message}
+                          </div>
+                      </li>`;
+      $('#messageList').append(temp_html);
+      temp_html = ``
+
+    });
+
+    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+
+    $('#messageList').scrollTop($('#chat')[0].scrollHeight);
+  });
+
+  $("#message").keyup(function (event) {
+    if (event.which === 13) {
+      // console.log("enter key pressed!");
+      $("#send").click();
+    }
+  });
+};
+
+
+function sendChat(roomId, productId, nickname, sender) {
+  var message = $("#message").val();
+
+  if (message == "" || message == null) {
+    return;
+  }
+
+  stompClient.send("/pub/send", { Authorization: userToken }, JSON.stringify({
+    "message": $("#message").val(),
+    "sender": sender,
+    "receiver": nickname,
+    "roomId": roomId,
+    "productId": productId
+  }));
+}
 
 function chatView(roomId, nickname, productId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
-
   connect(roomId, nickname, productId)
   if (currentRoomId !== roomId || currentNickname !== nickname) {
 
@@ -143,7 +254,7 @@ function chatView(roomId, nickname, productId) {
       url: "http://localhost:8080/chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
-      
+
         let productId = response['productId'];
         let roomName = response['roomName'];
         let productPrice = response['productPrice'];
@@ -173,7 +284,7 @@ function chatView(roomId, nickname, productId) {
 
           let temp_html = `<li class= ${sender == nickname ? "left" : "right"}>
                               <div class= ${sender == nickname ? "receiver" : "sender"}>
-                                <span id="nickname">${sender == nickname ? receiver : sender}</span><br>
+                                <span id="userNickname">${sender == receiver ? receiver : sender}</span><br>
                                 <small id="sendDate" class="time">${sendDay}</small>
                               </div>
                               <div id="messageNow" class="message">
@@ -182,83 +293,9 @@ function chatView(roomId, nickname, productId) {
                             </li>`;
           $('#messageList').append(temp_html);
         }
-        connect(roomId, nickname, productId);
-        sendChat(messageList)
       }
-
     });
   }
-}
-
-
-
-let stompClient = null;
-
-
-function setConnected(connected) {
-  $("#connect").prop(connected);
-  $("#disconnect").prop(!connected);
-}
-
-
-function connect(roomId, nickname, productId) {
-  $('#creatChat').empty();
-  $('#message').empty();
-  $('#chatMessage').show();
-  console.log(roomId, nickname, productId)
-  let socket = new SockJS("http://localhost:8080/ws");
-  stompClient = Stomp.over(socket);
-  stompClient.connect({ Authorization: userToken }, function (frame) {
-    setConnected(true);
-    console.log("connected : " + frame);
-    console.log("nick : " + nickname, "room : " + roomId, "product : " + productId)
-    stompClient.subscribe("/sub/" + nickname + "/product" + productId, function (chat) {
-      // 메시지가 도착하면, 이곳에서 처리합니다.
-
-      let messageList = JSON.parse(chat.body);
-      let sender = messageList.sender;
-      let receiver = nickname;
-      let message = $("#message").val();
-      let sendTime = new Date();
-      let hour = sendTime.getHours();
-      let min = sendTime.getMinutes();
-
-      let sendDay = sendTime.toLocaleDateString().replace(/\./g, '').replace(/\s/g, '/') + " " + hour + ":" + min;
-
-      let temp_html = `<li class= ${sender == nickname ? "left" : "right"}>
-                            <div class= ${sender == nickname ? "receiver" : "sender"}>
-                              <span>${sender == nickname ? receiver : sender}</span><br>
-                              <small class="time">${sendDay}</small>
-                            </div>
-                            <div class="message">
-                              ${message}
-                            </div>
-                      </li>`;
-      $('#messageList').append(temp_html);
-    });
-
-    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}')`)// , ${productId} 넣기
-  });
-
-  $("#message").keyup(function (event) {
-    if (event.which === 13) {
-      // console.log("enter key pressed!");
-      $("#send").click();
-    }
-  });
-};
-
-
-
-function sendChat(roomId, productId, nickname) {
-
-  stompClient.send("/pub/send", { Authorization: userToken }, JSON.stringify({
-    "message": $("#message").val(),
-    "receiver": nickname,
-    "sender": sender,
-    "roomId": parseInt(roomId),
-    "productId": parseInt(productId)
-  }));
 }
 
 
@@ -299,40 +336,3 @@ function deleteChat(roomId) {
   });
 }
 
-function getProfile(){
-  var settings = {
-      "url": "http://localhost:8080/users/profile",
-      "method": "GET",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken')
-      },
-    };
-    $.ajax(settings).done(function (response) {
-      const nickname = response.nickname;
-      sender = nickname;
-      // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
-      document.getElementById('loginbuttons').style.display = 'none';
-      let temp_html = `<li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
-      
-      <ul class="dropdown-menu dropdown-menu-end" >
-          <li class="col-sm-6">
-              <ul>
-                  <li class="dropdown-header">${nickname}님</li>
-                  <li><a href="myinfo.html">내정보</a></li>
-                  <li><a href="#">판매상품</a></li>
-                  <li><a href="#">구매상품</a></li>
-                  <li><a href="chatroom.html">채팅</a></li>
-                  <li><a href="myinterest.html">관심목록</a></li>
-              </ul>
-          </li>               
-      </ul>      
-  </li>
-  <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
-  $('#loginForm').append(temp_html)
-      element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
-    }).fail(function(){
-      reissueToken();
-});
-}
