@@ -192,10 +192,10 @@ function connect(roomId, nickname, productId) {
   stompClient.connect({}, function (frame) {
     setConnected(true);
     console.log("connected : " + frame);
-
+    $("#apponent_nickname").text(nickname);
     stompClient.subscribe("/sub/" + roomId, function (chat) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
-
+      
       let msg = JSON.parse(chat.body);
       let sender = msg.sender;
       let receiver = msg.receiver;

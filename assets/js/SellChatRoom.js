@@ -77,7 +77,7 @@ function chatList() {
     success: function (response) {
       // 가져온 데이터로 채팅 리스트를 렌더링합니다.
       let roomList = response;
-
+      
       // 가져온 채팅방 리스트를 동적으로 추가합니다.
       for (let i = 0; i < roomList.length; i++) {
         let profileImg = roomList[i]['profileImg'];
@@ -192,7 +192,7 @@ function connect(roomId, nickname, productId) {
   stompClient.connect({}, function (frame) {
     setConnected(true);
     console.log("connected : " + frame);
-
+    $("#apponent_nickname").text(nickname);
     stompClient.subscribe("/sub/" + roomId, function (chat) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
 
