@@ -71,7 +71,7 @@ function chatList() {
   $("#roomList").empty()
   $.ajax({
     type: 'GET',
-    url: 'http://localhost:8080/chatroom/buy',
+    url: 'http://localhost:8080/chatroom/sell',
     headers: { Authorization: userToken },
     dataType: 'json',
     success: function (response) {
