@@ -7,14 +7,14 @@ $(document).ready(function () {
   }
 });
 
-var productRequestDto = {
-  "productId": $("#productId").val(),
-  "productName": $("#productName").val(),
-  "productPrice": $("#productPrice").val(),
-  "productEnum": $("#productEnum option:selected").val(),
-  "productStatus": $("#productStatus").val(),
-  "productCategory": $("#productCategory").val()
-};
+// var productRequestDto = {
+//   "productId": $("#productId").val(),
+//   "productName": $("#productName").val(),
+//   "productPrice": $("#productPrice").val(),
+//   "productEnum": $("#productEnum option:selected").val(),
+//   "productStatus": $("#productStatus").val(),
+//   "productCategory": $("#productCategory").val()
+// };
 
 var productId = getProductIdFromUrl();
 
@@ -47,6 +47,13 @@ $('#uploadPhoto').click(function() {
 
 // 상품 등록하기
 function addProduct() {
+  var productRequestDto = {
+    "productName": $("#productName").val(),
+    "productPrice": $("#productPrice").val(),
+    "productEnum": $("#productEnum option:selected").val(),
+    "productStatus": $("#productStatus option:selected").val(),
+    "productCategory": $("#productCategory option:selected").val()
+  };
 
   $.ajax({
     type: "POST",
