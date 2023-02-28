@@ -215,20 +215,11 @@ function connect(roomId, nickname, productId) {
                           </div>
                       </li>`;
       $('#messageList').append(temp_html);
-      temp_html = ``
-
     });
 
     $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
 
     $('#messageList').scrollTop($('#chat')[0].scrollHeight);
-  });
-
-  $("#message").keyup(function (event) {
-    if (event.which === 13) {
-      // console.log("enter key pressed!");
-      $("#send").click();
-    }
   });
 };
 
@@ -251,11 +242,11 @@ function sendChat(roomId, productId, nickname, sender, message) {
 
 function chatView(roomId, nickname, productId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
-  connect(roomId, nickname, productId)
   if (currentRoomId !== roomId || currentNickname !== nickname) {
 
     $('#creatChat').empty();
     $('#message').empty();
+    $('#messageList').empty();
     $('#chatMessage').show();
     $.ajax({
       type: 'GET',
@@ -304,17 +295,8 @@ function chatView(roomId, nickname, productId) {
       }
     });
   }
+  connect(roomId, nickname, productId)
 }
-
-// function loadChat(chatList){
-//   if(chatList != null) {
-//       for(chat in chatList) {
-//           $("#messageList").append(
-//               "<li><li>" + "[" + chatList[chat].sender + "]" + chatList[chat].message + "</td></tr>"
-//           );
-//       }
-//   }
-// }
 
 
 
