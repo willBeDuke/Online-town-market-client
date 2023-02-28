@@ -288,16 +288,54 @@ function getProductInfo(){
         let createdAt= response.createdAt;
         let modifiedAt= response.modifiedAt;
         
-       let temp_html =  `<div class="info1" style="justify-content: flex-start; display: flex; flex-direction: column; margin-left: -100px; padding: 10px 0px 10px 0px;">
-        <p>productName: ${productName}</p>
-        <p>productPrice : ${productPrice}</p>
-        <p>productStatus : ${productStatus}</p>
-        <p>productCategory: ${productCategory} </p>
-        <p>productEnum: ${productEnum} </p>
-        <p>createdAt: ${createdAt} </p>
-        <p>modifiedAt: ${modifiedAt} </p>
-        <input type="button" class="form-control" onclick="interest(${productId})" value="관심">
-    </div>`
+       let temp_html =
+       `<div class="info1" 
+        style=
+        "justify-content: center; 
+        width: 95%;
+        margin:auto;">
+            <section id="article-images">
+                <h3 class="hide">이미지</h3>
+                <div class="image-slider">
+                    <div class="slider-wrap">
+                        <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201">
+                    </div>
+                <div>
+            </section>
+            <section id="article-profile">
+                <a id="article-profile-link" href="">
+                    <div class"space-between">
+                        <div class="article-prodile-image" style="width:20%; max-width:50px;">
+                            <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201">
+                        </div>
+                        <div id="article-profile-left">
+                            <div id="nickname">닉네임</div>
+                            <div id="region-name">지역</div>
+                        </div>
+                    </div>
+                </a>
+            </section>
+            <section id="article-description">
+                <h1 id="productName" style="margin-top:0px;">${productName}</h1>
+                <div class="card-body">
+                    <div class="card-body">
+                        <p>productCategory: ${productCategory}</p>
+                        <p>productPrice : ${productPrice}</p>
+                        <p>productStatus : ${productStatus}</p>
+                        <p>productEnum: ${productEnum}</p>
+                        <p>createdAt: ${createdAt}</p>
+                        <p>modifiedAt: ${modifiedAt}</p>
+                        <p>조회수</p>
+                    </div>
+                </div>
+                <div class="card-body" style="display: flex; justify-content: right; align-items: right;" onclick="interest(${productId})">
+                    <button type="button" class="btn btn-light small-button" onclick="interest(${productId})">관심</button>
+                </div>
+            </section>
+                <div class="card-body" style="display: flex; justify-content: center; align-items: center;">
+                    <button type="button" class="btn btn-light small-button2" onclick="">판매자와 채팅하기</button>
+                </div>
+        </div>`
     $('#info_box').append(temp_html);
       });
 }
