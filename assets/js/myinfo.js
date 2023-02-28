@@ -282,16 +282,18 @@ function getUserInfo(){
       $.ajax(settings).done(function (response) {
         
         console.log(response);
+        let img = response.img
         let email = response.email;
         let username = response.username;
         let nickname = response.nickname;
         let region = response.region;
         
        let temp_html =  `<div class="info1" style="justify-content: flex-start; display: flex; flex-direction: column; margin-left: -200px; padding: 10px 0px 10px 0px;">
-        <p>ID : ${username}</p>
-        <p>nickname : ${nickname}</p>
-        <p>email : ${email}</p>
-        <p>region : ${region} </p>
+       <p>ID : ${username}</p>
+       <p>nickname : ${nickname}</p>
+       <p>email : ${email}</p>
+       <p>region : ${region} </p>
+       <p>Image : ${img}</p>
     </div>`
     $('#info_box').append(temp_html);
       });
