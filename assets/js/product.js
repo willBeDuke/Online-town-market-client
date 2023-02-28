@@ -7,21 +7,53 @@ $(document).ready(function () {
   }
 });
 
-var productRequestDto = {
-  "productId": $("#productId").val(),
-  "productName": $("#productName").val(),
-  "productPrice": $("#productPrice").val(),
-  "productEnum": $("#productEnum option:selected").val(),
-  "productStatus": $("#productStatus").val(),
-  "productCategory": $("#productCategory").val()
-};
+// var productRequestDto = {
+//   "productId": $("#productId").val(),
+//   "productName": $("#productName").val(),
+//   "productPrice": $("#productPrice").val(),
+//   "productEnum": $("#productEnum option:selected").val(),
+//   "productStatus": $("#productStatus").val(),
+//   "productCategory": $("#productCategory").val()
+// };
 
 var productId = getProductIdFromUrl();
 
 const userToken = localStorage.getItem('accessToken');
 
+// 사진 등록하기
+$('#uploadPhoto').click(function() {
+  var fileInput = document.getElementById("fileInput");
+  var file = fileInput.files[0];
+  var formData = new FormData();
+  formData.append("product", file);
+  
+  $.ajax({
+    url: "http://localhost:8080/api/images/upload/products",
+    type: 'POST',
+    data: formData,
+    headers: {
+      Authorization: userToken
+    },
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      console.log(response)
+    },
+    error: function() {
+      alert("An error occurred while uploading the file.");
+    }
+  });
+});
+
 // 상품 등록하기
 function addProduct() {
+  var productRequestDto = {
+    "productName": $("#productName").val(),
+    "productPrice": $("#productPrice").val(),
+    "productEnum": $("#productEnum option:selected").val(),
+    "productStatus": $("#productStatus option:selected").val(),
+    "productCategory": $("#productCategory option:selected").val()
+  };
 
   $.ajax({
     type: "POST",
@@ -43,7 +75,6 @@ function addProduct() {
 
 }
 
-<<<<<<< HEAD
 // function getProduct(productId) {
 //   $.ajax({
 //     type: "GET", // Post? CORS에 맞춰 고치기
@@ -72,7 +103,6 @@ function addProduct() {
 //     }
 //   })
 // }
-=======
 function getProduct(productId) {
   $.ajax({
     type: "GET", // Post? CORS에 맞춰 고치기
@@ -105,7 +135,6 @@ function getProduct(productId) {
     }
   })
 }
->>>>>>> ef0c2ac95027b33d8bac879c4b46d4ff98d64e98
 
 
 // 상품 수정하기
