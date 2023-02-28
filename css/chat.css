@@ -1,0 +1,258 @@
+/* body {
+  font-size: 11px;
+}
+
+.chat-form {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  position: relative;
+  margin: 100px;
+}
+
+.chat_list_wrap {
+  margin-right: 10px;
+  box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.15);
+  width: 415px;
+}
+
+.chat_list_wrap .header {
+  font-size: 14px;
+  padding: 15px 0;
+  background: #F18C7E;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.chat_list_wrap .list ul {
+  position: relative;
+  margin-top: 3px;
+  padding: 0px;
+  height: calc(100% - 56px);
+  list-style: none;
+  overflow: hidden auto;
+}
+
+.chat_list_wrap .list ul li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.chat_list_wrap .list ul li table {
+  width: 100%;
+}
+
+.chat_list_wrap .list ul li table td.profile_td {
+  width: 70px;
+  padding-left: 10px;
+}
+
+.chat_list_wrap .list ul li table td.profile_td img {
+  border-radius: 5px;
+  width: 50px;
+  height: auto;
+}
+
+.chat_list_wrap .list ul li table td.nickname_td {
+  width: 150px;
+}
+
+.chat_list_wrap .list ul li table td.nickname_td .nickname {
+  font-size: 12px;
+  font-weight: bold;
+  width: 110px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat_list_wrap .list ul li table td.nickname_td small {
+  text-align: left;
+  color: #565656;
+}
+
+.chat_list_wrap .list ul li table td.product_td .productName {
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatDesc:hover {
+  background-color: rgb(244, 244, 244);
+}
+
+.deleteBtn {
+  color: #eee;
+  font-size: 12px;
+  width: 50px;
+  height: 40px;
+  background-color: #F18C7E;
+  border-radius: 5px;
+  border: #F18C7E solid 1px;
+  display: inline;
+  float: right;
+  margin-right: 10px;
+}
+
+
+
+
+.chat_wrap {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 4px auto 0 rgba(0, 0, 0, 0.15);
+}
+
+.chat_wrap .header {
+  font-size: 14px;
+  padding: 15px 0;
+  background: #F18C7E;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.15);
+}
+
+.chat_wrap .chat {
+  overflow: hidden auto;
+  padding-bottom: 80px;
+}
+
+.chat_wrap .chat ul {
+  position: relative;
+  margin-top: 3px;
+  padding: 0px;
+  height: calc(100% - 56px);
+  list-style: none;
+  overflow: hidden auto;
+}
+
+.chat_wrap .chat ul li {
+  width: 100%;
+  margin: 2px 10px 2px 10px;
+}
+
+.chat_wrap .chat ul li.left {
+  text-align: left;
+}
+
+.chat_wrap .chat ul li.right {
+  text-align: right;
+}
+
+.chat_wrap .chat ul li>div {
+  font-size: 13px;
+}
+
+.chat_wrap .chat ul li>div.sender {
+  margin: 10px 20px 0 20px;
+  font-weight: bold;
+}
+
+.chat_wrap .chat ul li>div.message {
+  display: inline-block;
+  word-break: break-all;
+  margin: 5px 20px;
+  max-width: 75%;
+  border: 1px solid #888;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #FCFCFC;
+  color: #555;
+  text-align: left;
+}
+
+.chat_wrap .chat ul li>div.receiver {
+  margin: 10px 20px 0 20px;
+  font-weight: bold;
+}
+
+.chat_wrap .chat ul li>div.receiverMessage {
+  display: inline-block;
+  word-break: break-all;
+  margin: 5px 20px;
+  max-width: 75%;
+  border: 1px solid #888;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #FCFCFC;
+  color: #555;
+  text-align: left;
+}
+
+.chat_wrap .input-div {
+  bottom: 0;
+  width: 100%;
+  background-color: #FFF;
+  text-align: center;
+  border-top: 1px solid #F18C7E;
+
+}
+
+.chat_wrap .input-div>textarea {
+  width: 100%;
+  height: 80px;
+  border: none;
+  padding: 10px;
+  outline: none;
+}
+
+.productDesc {
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid ghostwhite;
+  margin-bottom: 15px;
+}
+
+.productImg {
+  flex-direction: column;
+}
+
+.productImg img {
+  margin-left: 10px;
+  border-radius: 10px;
+  width: 60px;
+  height: auto;
+}
+
+.productDetailDesc {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  font-size: 13px;
+}
+
+.productDetailDesc .roomName {
+  width: 220px;
+  font-weight: bold;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deal {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0 15px 0 100px;
+}
+
+.productDesc:hover {
+  background-color: rgb(244, 244, 244);
+}
+
+.receiver img {
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+#sendMessageBtn {
+  color: #eee;
+  font-size: 12px;
+  background-color: #F18C7E;
+  border-radius: 5px;
+  margin: 15px 0 15px 5px;
+  border: #F18C7E solid 1px;
+} */
