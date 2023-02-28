@@ -7,61 +7,61 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<form id="addProduct" action="/">
-  <table id="container">
-    <tr>
-      <td id="result" colspan="2"></td>
-    </tr>
-    <tr>
-      <th><label for="productName">상품명</label></th>
-      <td><input type="text" name="productName" id="productName" placeholder="상품명을 입력해주세요"></td>
-    </tr>
-    <tr>
-      <th><label for="productPrice">가격</label></th>
-      <td><input type="text" name="productPrice" id="productPrice" placeholder="가격을 적어주세요"></td>
-    </tr>
-    <tr>
-      <th><label>거래 상태</label></th>
-      <td><select id="productEnum">
-          <option selected>거래 상태를 선택해주세요</option>
-          <option value="나눔">나눔</option>
-          <option value="나눔_완료">나눔_완료</option>
-          <option value="판매_중">판매_중</option>
-          <option value="예약">예약</option>
-          <option value="판매완료">판매완료</option>
+  <form id="addProduct" action="/">
+    <table id="container">
+      <tr>
+        <td id="result" colspan="2"></td>
+      </tr>
+      <tr>
+        <th><label for="productName">상품명</label></th>
+        <td><input type="text" name="productName" id="productName" placeholder="상품명을 입력해주세요"></td>
+      </tr>
+      <tr>
+        <th><label for="productPrice">가격</label></th>
+        <td><input type="text" name="productPrice" id="productPrice" placeholder="가격을 적어주세요"></td>
+      </tr>
+      <tr>
+        <th><label>거래 상태</label></th>
+        <td><select id="productEnum">
+            <option selected>거래 상태를 선택해주세요</option>
+            <option value="나눔">나눔</option>
+            <option value="나눔_완료">나눔_완료</option>
+            <option value="판매_중">판매_중</option>
+            <option value="예약">예약</option>
+            <option value="판매완료">판매완료</option>
+          </select></td>
+      </tr>
+      <tr>
+        <th><label>상품 종류</label></th>
+        <td><select id="productCategory">
+            <option selected>상품의 종류를 선택해주세요</option>
+            <option value="IT">IT</option>
+            <option value="의류">의류</option>
+            <option value="음식">음식</option>
+            <option value="차량">차량</option>
+            <option value="게임">게임</option>
+            <option value="티켓">티켓</option>
+          </select></td>
+      </tr>
+      <tr>
+        <th><label>상품 품질</label></th>
+        <td><select id="productStatus">
+          <option selected>품질을 선택해주세요</option>
+          <option value="S">S</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
         </select></td>
-    </tr>
-    <tr>
-      <th><label>상품 종류</label></th>
-      <td><select id="productCategory">
-          <option selected>상품의 종류를 선택해주세요</option>
-          <option value="IT">IT</option>
-          <option value="의류">의류</option>
-          <option value="음식">음식</option>
-          <option value="차량">차량</option>
-          <option value="게임">게임</option>
-          <option value="티켓">티켓</option>
-        </select></td>
-    </tr>
-    <tr>
-      <th><label>상품 품질</label></th>
-      <td><select id="productStatus">
-        <option selected>품질을 선택해주세요</option>
-        <option value="S">S</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-        <option value="D">D</option>
-      </select></td>
-    </tr>
-    <tr>
-      <th colspan="2">
-        <button onclick="addProduct()" type="button" class="btn btn-dark">상품 등록하기</button>
-        <button onclick="" type="button" class="btn btn-dark">목록으로</button>
-      </th>
-    </tr>
-  </table>
-</form>
+      </tr>
+      <tr>
+        <th colspan="2">
+          <button onclick="addProduct()" type="button" class="btn btn-light">상품 등록하기</button>
+          <a class="btn btn-light" href="http://127.0.0.1:5500/index.html">처음화면으로</a>
+        </th>
+      </tr>
+    </table>
+  </form>
 <script type="text/javascript" src="assets/js/product.js"></script>
 </body>
 </html>

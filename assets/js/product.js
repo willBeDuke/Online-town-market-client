@@ -43,6 +43,36 @@ function addProduct() {
 
 }
 
+<<<<<<< HEAD
+// function getProduct(productId) {
+//   $.ajax({
+//     type: "GET", // Post? CORS에 맞춰 고치기
+//     url: "http://localhost:8080/products/" + productId,
+//     datatype: "json",
+//     data: {'id_give': productId},
+//     // headers: {
+//     //   Authorization: userToken
+//     // },
+//     success: function (response) {
+//       // 상세페이지 꾸미기 ~ 서비스에 맞춰 꾸미기
+//       $('#product-detail').empty();
+//       var productInfo = response.content;
+//       let temp_html = 
+//       `<div class="container-md">
+//         <div class="card-body">
+//           <p>${productInfo.productName}</p>
+//           <p>${productInfo.productPrice}</p>
+//           <p>${productInfo.productEnum}</p>
+//           <p>${productInfo.productStatus}</p>
+//           <p>${productInfo.productCategory}</p>
+//         </div>
+//       </div>`
+//       $('#product-detail').append(temp_html)
+//       console.log(response);
+//     }
+//   })
+// }
+=======
 function getProduct(productId) {
   $.ajax({
     type: "GET", // Post? CORS에 맞춰 고치기
@@ -75,6 +105,7 @@ function getProduct(productId) {
     }
   })
 }
+>>>>>>> ef0c2ac95027b33d8bac879c4b46d4ff98d64e98
 
 
 // 상품 수정하기
