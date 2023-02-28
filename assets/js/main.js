@@ -167,9 +167,10 @@ function getProfile(){
                 <ul>
                     <li class="dropdown-header">${nickname}님</li>
                     <li><a href="myinfo.html">내정보</a></li>
-                    <li><a href="#">판매상품</a></li>
                     <li><a href="#">구매상품</a></li>
-                    <li><a href="chatroom.html">채팅</a></li>
+                    <li><a href="#">판매상품</a></li>
+                    <li><a href="chatroom.html">구매채팅</a></li>
+                    <li><a href="SellChatRoom.html">판매채팅</a></li>
                     <li><a href="myinterest.html">관심목록</a></li>
                 </ul>
             </li>               
