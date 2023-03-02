@@ -289,7 +289,7 @@ function imp() {
         localStorage.setItem('refreshToken', xhr.getResponseHeader('Refresh'))
         location.href = "index.html";
     }).fail(function (response) {
-        console.log(response.responseJSON)
+        // console.log(response.responseJSON)
         // if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
         //     alert("아이디나 비밀번호를 다시 확인해주세요")
     });
@@ -327,6 +327,7 @@ function getProductInfo(productId) {
         if (productContents == null) {
             productContents = "내용없음"
         }
+    
 
         let temp_html =
             `<div>
@@ -376,8 +377,9 @@ function getProductInfo(productId) {
            </div>
            <div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
            <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심</button>
-              <button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(${productId}, ${sellerId}, '${productName}')">판매자와 채팅하기</button>
-          </div>`
+
+           ${productEnum !== "판매완료" ? '<button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(' + productId + ', ' + sellerId + ', \'' + productName + '\', \'' + productEnum + '\')">판매자와 채팅하기</button>' : ''}
+       </div>`
         $('#info_box').append(temp_html);
     });
     // 클릭 이벤트 설정
@@ -390,23 +392,23 @@ function getProductInfo(productId) {
 // 채팅방 만들기
 // 채팅 보여주는 부분 쪽 채팅 버튼에 "onclick=함수명(${'productId'})" 해줘야함
 function createChatRoom(productId, sellerId, productName) {
+    console.log(productEnum, productId, productName, sellerId)
     $.ajax({
-      type: 'POST',
-      url: "http://localhost:8080/chatroom/" + productId,
-      headers: { Authorization: userToken },
-      dataType: "json",
-      contentType: 'application/json',
-      data: JSON.stringify({
-        "roomName": productName,
-        "productId": productId,
-        "sellerId": sellerId
-      }),
-      success: function (response) {
-        console.log(response)
-        location.href = 'chatroom.html';
-      }
+        type: 'POST',
+        url: "http://localhost:8080/chatroom/" + productId,
+        headers: { Authorization: userToken },
+        dataType: "json",
+        contentType: 'application/json',
+        data: JSON.stringify({
+            "roomName": productName,
+            "productId": productId,
+            "sellerId": sellerId
+        }),
+        success: function (response) {
+            location.href = 'chatroom.html';
+        }
     })
-  };
+};
 
 
 
