@@ -141,8 +141,7 @@ function getProfile() {
     // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
     document.getElementById('loginbuttons').style.display = 'none';
     let temp_html = `<li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
-      
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 </a>
       <ul class="dropdown-menu dropdown-menu-end" >
           <li class="col-sm-6">
               <ul>
@@ -150,8 +149,7 @@ function getProfile() {
               <li><a href="myinfo.html">내정보</a></li>
               <li><a href="#">구매상품</a></li>
               <li><a href="#">판매상품</a></li>
-              <li><a href="chatroom.html">구매채팅</a></li>
-              <li><a href="SellChatRoom.html">판매채팅</a></li>
+              <li><a href="chatroom.html">채팅</a></li>
               <li><a href="myinterest.html">관심목록</a></li>
               </ul>
           </li>               
