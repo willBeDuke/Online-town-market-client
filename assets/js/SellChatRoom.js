@@ -331,11 +331,15 @@ function salesCompleted(buyerId, productId) {
       console.log(response)
       // 삭제 성공 시 처리할 코드
       alert("판매 완료 처리되었습니다.");
-      // 채팅 리스트 다시 불러오기
-      $('#creatChat').empty();
-      chatView();
+      // 채팅 창 다시 불러오기
+      $('#salesCompleted').hide();
+      productEnumRefresh();
     }
   });
+}
+
+function productEnumRefresh(){  
+  $("#deal").load(window.location.href + "#deal");
 }
 
 
