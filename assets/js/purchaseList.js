@@ -78,7 +78,6 @@ function getPurchaseList() {
         headers: { Authorization: userToken },
         dataType: 'json',
         success: function (response) {
-            console.log(response)
             for (let i = 0; i < response.length; i++) {
                 let productImg = response[i]['productImg'];
                 let productName = response[i]['productName'];

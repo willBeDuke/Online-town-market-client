@@ -13,57 +13,6 @@ $(document).ready(function () {
 const userToken = localStorage.getItem('accessToken')
 // let 변경 가능, const 변경불가능; -> 개발자
 
-
-// 채팅방 만들기
-// 채팅 보여주는 부분 쪽 채팅 버튼에 "onclick=함수명(${'productId'})" 해줘야함
-function createChatRoom(productId) {
-  $.ajax({
-    type: 'POST',
-    url: "http://localhost:8080/chatroom/" + productId,
-    headers: { Authorization: userToken },
-    success: function (response) {
-      for (let i = 0; i < response.length; i++) {
-        let productId = productId
-        let profileImg = response[i]['profileImg'];
-        let nickname = response[i]['nickname'];
-        let region = response[i]['region'];
-        let productName = response[i]['productName'];
-        let roomId = response[i]['roomId'];
-        let temp_html = `<li id="roomId" class="chatDesc" data-roomid="${roomId}" data-nickname="${nickname}">
-                            <a style="color: black; text-decoration: none;" onclick="">
-                              <table cellpadding="0" cellspacing="0">
-                                <tr>
-                                  <td class="profile_td">
-                                    <img src="${profileImg}" alt="프로필"/>
-                                  </td>
-                                  <td class="nickname_td">
-                                    <div class="nickname">
-                                      ${nickname}
-                                    </div>
-                                    <small class="region">${region}</small>
-                                  </td>
-                                  <td class="product_td">
-                                    <div class="productName">
-                                      ${productName}
-                                    </div>
-                                  </td>
-                                  <td id="deleteBtn">
-                                    <button class="deleteBtn" type="submit" onclick="deleteChat(${roomId})">삭제</button>
-                                  </td>
-                                </tr>
-                              </table>
-                            </a>
-                          </li>`;
-        $('#roomList').append(temp_html);
-        chatList();
-      }
-    },
-    error: function (xhr, status, error) {
-      console.error(xhr);
-    }
-  });
-}
-
 // 채팅 리스트
 function chatList() {
   $("#roomList").empty()
@@ -250,10 +199,6 @@ function chatView(roomId, nickname, productId) {
       headers: { Authorization: userToken },
       success: function (response) {
         getProduct(productId);
-        $(".completed").data("productId", productId).data("buyerId", buyerId)
-        console.log("슝슝~~ "
-          + productId, buyerId)
-
         // 현재 방의 정보를 전역 변수에 저장
         currentRoomId = roomId;
         currentNickname = nickname;
