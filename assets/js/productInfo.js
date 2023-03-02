@@ -5,7 +5,10 @@ jQuery(document).ready(function ($) {
     if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
         getProfile();
     }
-    getProductInfo();
+    const productId = localStorage.getItem('productId')
+        // window.localStorage.removeItem('productId');
+    getProductInfo(productId);
+    checkInterest();
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
     
@@ -144,6 +147,30 @@ jQuery(document).ready(function ($) {
 
     //End
 });
+const productId = localStorage.getItem('productId')
+
+function checkInterest(){
+    var settings = {
+   "url": "http://localhost:8080/interest/check/" + productId,
+   "method": "GET",
+   "timeout": 0,
+   "headers": {
+    "Authorization": localStorage.getItem('accessToken')
+   },
+ };
+ $.ajax(settings).done(function (response) {
+    
+   if(response == true){ 
+    const div = document.getElementById('interested');
+   div.remove();
+    let temp_html = `<div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
+    <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심취소</button>
+    <button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(${productId})">판매자와 채팅하기</button>
+   </div>`
+   $('#info_box').append(temp_html);
+}
+ });
+ }
 function getProfile(){
     var settings = {
         "url": "http://localhost:8080/users/profile",
@@ -175,7 +202,6 @@ function getProfile(){
     </li>
     <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
     $('#loginForm').append(temp_html)
-        element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
       }).fail(function(){
         reissueToken();
 });
@@ -268,8 +294,8 @@ function reissueToken(){
                 //     alert("아이디나 비밀번호를 다시 확인해주세요")
             });
         }
-function getProductInfo(){
-    var productId = localStorage.getItem('productId')
+        
+function getProductInfo(productId){
     var settings = {
         "url": "http://localhost:8080/products/"+ productId,
         "method": "GET",
@@ -277,7 +303,7 @@ function getProductInfo(){
       };
       
       $.ajax(settings).done(function (response) {
-        window.localStorage.removeItem('productId');
+        
         console.log(response);
         let productId = response.productId;
         let productName = response.productName ;
@@ -285,79 +311,172 @@ function getProductInfo(){
         let productStatus = response.productStatus;
         let productCategory= response.productCategory;
         let productEnum= response.productEnum;
-        let createdAt= response.createdAt;
-        let modifiedAt= response.modifiedAt;
-        
-       let temp_html =
-       `<div class="info1" 
-        style=
-        "justify-content: center; 
-        width: 95%;
-        margin:auto;">
-            <section id="article-images">
-                <h3 class="hide">이미지</h3>
-                <div class="image-slider">
-                    <div class="slider-wrap">
-                        <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201">
-                    </div>
-                <div>
-            </section>
-            <section id="article-profile">
-                <a id="article-profile-link" href="">
-                    <div class"space-between">
-                        <div class="article-prodile-image" style="width:20%; max-width:50px;">
-                            <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201">
-                        </div>
-                        <div id="article-profile-left">
-                            <div id="nickname">닉네임</div>
-                            <div id="region-name">지역</div>
-                        </div>
-                    </div>
-                </a>
-            </section>
-            <section id="article-description">
-                <h1 id="productName" style="margin-top:0px;">${productName}</h1>
-                <div class="card-body">
-                    <div class="card-body">
-                        <p>productCategory: ${productCategory}</p>
-                        <p>productPrice : ${productPrice}</p>
-                        <p>productStatus : ${productStatus}</p>
-                        <p>productEnum: ${productEnum}</p>
-                        <p>createdAt: ${createdAt}</p>
-                        <p>modifiedAt: ${modifiedAt}</p>
-                        <p>조회수</p>
-                    </div>
-                </div>
-                <div class="card-body" style="display: flex; justify-content: right; align-items: right;" onclick="interest(${productId})">
-                    <button type="button" class="btn btn-light small-button" onclick="interest(${productId})">관심</button>
-                </div>
-            </section>
-                <div class="card-body" style="display: flex; justify-content: center; align-items: center;">
-                    <button type="button" class="btn btn-light small-button2" onclick="">판매자와 채팅하기</button>
-                </div>
-        </div>`
+        let createdAt= response.createdAt.substr(0,10);
+        let modifiedAt= response.modifiedAt.substr(0,10);
+        let viewCount = response.viewCount;
+        let nickname = response.nickName;
+        let region = response.region;
+        let profileImg = response.img;
+        let userGrade = response.userGrade;
+        let interest = response.interest;
+        let productContents = response.productContents;
+        if(region == null){
+            region = "지역없음"
+        }
+        if(productContents == null){
+            productContents = "내용없음"
+        }
+       
+        let temp_html =
+       `<div>
+       <section id="article-images">
+             <h3 class="hide">이미지</h3>
+             <div class="image-slider">
+                 <div class="slider-wrap">
+                     <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201">
+                 </div>
+             <div>
+         </section>
+     </div>
+       <section id="article-profile">
+       <a id="article-profile-link">
+           <div style = "display: flex;
+           flex-direction: row; margin-top: 3px; border-bottom: 1px solid black; padding: 10px 10px 10px 10px;">
+               <div class="article-prodile-image" style="display: flex;  width:50px; ">
+                   <img src="${profileImg}">
+               </div>
+               <div id="article-profile-left">
+                   <div id="nickname">${nickname}</div>
+                   <div id="region-name">${region}</div>
+                   <div> 평점: ${userGrade}</div>
+               </div>
+               <div style = "display: flex;flex-direction: column;align-items: flex-start;justify-content: flex-end;margin-left: 380px;">
+               <div>관심 : ${interest}</div>
+               <div>작성일 : ${createdAt}</div>
+               <div>조회수:${viewCount}</div>
+               </div>
+           </div>
+       </a>
+   </section>
+
+       <div class="card-body" "display: flex;flex-direction: row;>
+                 <div style = "font-size: 20px ; margin-top: 5px; ">  ${productName}</div>
+                 <div>${productCategory}</div>
+               <p style = " display: flex;
+               flex-direction: column;
+               align-items: flex-start;
+               justify-content: flex-end;
+               margin-left: 540px;
+               margin-top: -40px;
+               margin-bottom: 20px; font-size: 15px " >가격 : ${productPrice} 원<br>상태 : ${productStatus} 급<br>종류 : ${productEnum}</p>
+            
+              <div>
+               <p>${productContents}</p>
+           </div>
+           <div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
+           <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심</button>
+              <button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(${productId})">판매자와 채팅하기</button>
+          </div>`
     $('#info_box').append(temp_html);
       });
 }
 
+
+
 function interest(productId){
-    var settings = {
-        "url": "http://localhost:8080/interest/" + productId,
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
-        },
-      };
-      
-      $.ajax(settings).done(function (response) {
-        if(response == false){
-            alert("관심내역에 등록되었습니다!")
-        }else{
-            alert("관심내역에서 삭제되었습니다!")
-        }
-        console.log(response);
-      }).fail(function(){
-       reissueToken();
-      })
+        var settings = {
+            "url": "http://localhost:8080/interest/" + productId,
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+              "Authorization": localStorage.getItem('accessToken')
+            },
+          };
+          
+          $.ajax(settings).done(function (response) {
+            if(response == false){
+                alert("관심내역에 등록되었습니다!")
+            }else{
+                alert("관심내역에서 삭제되었습니다!")
+            }
+        window.location.reload();
+          }).fail(function(){
+           reissueToken();
+          })  
     };
+    const userToken = localStorage.getItem('accessToken')
+
+
+    function createChatRoom(productId) {
+                $.ajax({
+                    type: 'POST',
+                    url: "http://localhost:8080/chatroom/" + productId,
+                    headers: { Authorization: userToken },
+                    success: function () {
+                      window.location = '/chatRoom.html';
+                    },
+                    error: function (xhr, status, error) {
+                      console.error(xhr);
+                    }
+                  });
+      }
+
+    function checkMyProductInterest(productId){
+        var settings = {
+            "url": "http://localhost:8080/products/check/" + productId,
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+              "Authorization": localStorage.getItem("accessToken")
+            },
+          };
+          $.ajax(settings).done(function (response) {
+            if(response == true){
+               alert("내 상품은 관심목록에 등록 할 수 없습니다.")
+            }
+            if(response == false){
+                interest(productId);
+            }
+          });
+    }
+
+    function checkMyProductChat(productId){
+        var settings = {
+            "url": "http://localhost:8080/products/check/" + productId,
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+              "Authorization": localStorage.getItem("accessToken")
+            },
+          };
+          $.ajax(settings).done(function (response) {
+            if(response == true){
+               alert("내 상품에는 채팅을 할 수 없습니다..")
+            }
+            if(response == false){
+                chatCheck(productId);
+                
+            }
+          });
+    }
+
+    function chatCheck(productId){
+        var settings = {
+            "url": "http://localhost:8080/chatroom/check/" + productId,
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+              "Authorization": localStorage.getItem("accessToken")
+            },
+          };
+          
+          $.ajax(settings).done(function (response) {
+            if(response == true){
+               window.location.href =  window.location = '/chatRoom.html';
+            }
+            if(response == false){
+                createChatRoom(productId);
+            }
+          });
+    }
+     
