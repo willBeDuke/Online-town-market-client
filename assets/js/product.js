@@ -137,7 +137,6 @@ function getProduct(productId) {
   })
 }
 
-
 // 상품 수정하기
 function updateproduct() {
   // checkProductInfo();

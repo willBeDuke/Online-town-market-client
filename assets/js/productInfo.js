@@ -2,16 +2,16 @@
 
 
 jQuery(document).ready(function ($) {
-    if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
+    if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
     }
     const productId = localStorage.getItem('productId')
-        // window.localStorage.removeItem('productId');
+    // window.localStorage.removeItem('productId');
     getProductInfo(productId);
     checkInterest();
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
-    
+
 
     /*---------------------------------------------*
      * Mobile menu
@@ -52,8 +52,8 @@ jQuery(document).ready(function ($) {
     function checkScrolling(tables) {
         tables.each(function () {
             var table = $(this),
-                    totalTableWidth = parseInt(table.children('.cd-pricing-features').width()),
-                    tableViewport = parseInt(table.width());
+                totalTableWidth = parseInt(table.children('.cd-pricing-features').width()),
+                tableViewport = parseInt(table.width());
             if (table.scrollLeft() >= totalTableWidth - tableViewport - 1) {
                 table.parent('li').addClass('is-ended');
             } else {
@@ -69,8 +69,8 @@ jQuery(document).ready(function ($) {
         container.each(function () {
             var pricing_table = $(this);
             var filter_list_container = pricing_table.children('.cd-pricing-switcher'),
-                    filter_radios = filter_list_container.find('input[type="radio"]'),
-                    pricing_table_wrapper = pricing_table.find('.cd-pricing-wrapper');
+                filter_radios = filter_list_container.find('input[type="radio"]'),
+                pricing_table_wrapper = pricing_table.find('.cd-pricing-wrapper');
 
             //store pricing table items
             var table_elements = {};
@@ -130,7 +130,7 @@ jQuery(document).ready(function ($) {
 
 
 
-// scroll Up
+    // scroll Up
 
     $(window).scroll(function () {
         if ($(this).scrollTop() > 600) {
@@ -140,7 +140,7 @@ jQuery(document).ready(function ($) {
         }
     });
     $('.scrollup').click(function () {
-        $("html, body").animate({scrollTop: 0}, 1000);
+        $("html, body").animate({ scrollTop: 0 }, 1000);
         return false;
     });
 
@@ -149,38 +149,38 @@ jQuery(document).ready(function ($) {
 });
 const productId = localStorage.getItem('productId')
 
-function checkInterest(){
+function checkInterest() {
     var settings = {
-   "url": "http://localhost:8080/interest/check/" + productId,
-   "method": "GET",
-   "timeout": 0,
-   "headers": {
-    "Authorization": localStorage.getItem('accessToken')
-   },
- };
- $.ajax(settings).done(function (response) {
-    
-   if(response == true){ 
-    const div = document.getElementById('interested');
-   div.remove();
-    let temp_html = `<div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
+        "url": "http://localhost:8080/interest/check/" + productId,
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Authorization": localStorage.getItem('accessToken')
+        },
+    };
+    $.ajax(settings).done(function (response) {
+
+        if (response == true) {
+            const div = document.getElementById('interested');
+            div.remove();
+            let temp_html = `<div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
     <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심취소</button>
     <button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(${productId})">판매자와 채팅하기</button>
    </div>`
-   $('#info_box').append(temp_html);
+            $('#info_box').append(temp_html);
+        }
+    });
 }
- });
- }
-function getProfile(){
+function getProfile() {
     var settings = {
         "url": "http://localhost:8080/users/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+            "Authorization": localStorage.getItem('accessToken')
         },
-      };
-      $.ajax(settings).done(function (response) {
+    };
+    $.ajax(settings).done(function (response) {
         const nickname = response.nickname;
         // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
         document.getElementById('loginbuttons').style.display = 'none';
@@ -192,7 +192,7 @@ function getProfile(){
             <ul>
               <li class="dropdown-header">${nickname}님</li>
               <li><a href="myinfo.html">내정보</a></li>
-              <li><a href="#">구매상품</a></li>
+              <li><a href="purchaseList.html">구매상품</a></li>
               <li><a href="#">판매상품</a></li>
               <li><a href="chatroom.html">채팅</a></li>
               <li><a href="myinterest.html">관심목록</a></li>
@@ -201,46 +201,46 @@ function getProfile(){
         </ul>      
     </li>
     <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
-    $('#loginForm').append(temp_html)
-      }).fail(function(){
+        $('#loginForm').append(temp_html)
+    }).fail(function () {
         reissueToken();
-});
+    });
 }
 
-function logout(){
+function logout() {
     var settings = {
         "url": "http://localhost:8080/users/logout",
         "method": "POST",
         "timeout": 0,
         "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-          "Refresh":localStorage.getItem('refreshToken')
+            "Authorization": localStorage.getItem('accessToken'),
+            "Refresh": localStorage.getItem('refreshToken')
         },
-      }; 
-      
-      $.ajax(settings).done(function (response) {
-        localStorage.setItem('accessToken','');
+    };
+
+    $.ajax(settings).done(function (response) {
+        localStorage.setItem('accessToken', '');
         window.location.reload();
-      });
-    
+    });
+
 }
-function reissueToken(){
+function reissueToken() {
     var settings = {
         "url": "http://localhost:8080/refresh/regeneration",
         "method": "POST",
         "timeout": 0,
         "headers": {
-            "Refresh":localStorage.getItem('refreshToken')
+            "Refresh": localStorage.getItem('refreshToken')
         },
-      };
-      
-      $.ajax(settings).done(function (response,status,xhr) {
-        localStorage.setItem('accessToken',xhr.getResponseHeader('Authorization'))
-      }).fail(function(){
+    };
+
+    $.ajax(settings).done(function (response, status, xhr) {
+        localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
+    }).fail(function () {
         alert("로그인 해 주세요")
-        localStorage.setItem('accessToken','');
-        localStorage.setItem('refreshToken','');
-});
+        localStorage.setItem('accessToken', '');
+        localStorage.setItem('refreshToken', '');
+    });
 }
 
 
@@ -258,61 +258,61 @@ function reissueToken(){
 
 //         }),
 //       };
-      
+
 //       $.ajax(settings).done(function (response) {
 //         console.log(response);
 //       });
 // }
-        const searchParams = new URLSearchParams(window.location.search);
-        const username = searchParams.get('username');
-        const role = searchParams.get('role');
+const searchParams = new URLSearchParams(window.location.search);
+const username = searchParams.get('username');
+const role = searchParams.get('role');
 
-        $(document).ready(function () {
-            username !== " " && imp()
-        })
+$(document).ready(function () {
+    username !== " " && imp()
+})
 
-        function imp() {
-            console.log(username, role);
+function imp() {
+    console.log(username, role);
 
-            const settings = {
-                "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "data": JSON.stringify({}),
-            };
+    const settings = {
+        "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({}),
+    };
 
-            $.ajax(settings).done(function (response, status, xhr) {
-                localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
-                localStorage.setItem('refreshToken', xhr.getResponseHeader('Refresh'))
-                location.href = "index.html";
-            }).fail(function (response) {
-                console.log(response.responseJSON)
-                // if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
-                //     alert("아이디나 비밀번호를 다시 확인해주세요")
-            });
-        }
-        
-function getProductInfo(productId){
+    $.ajax(settings).done(function (response, status, xhr) {
+        localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
+        localStorage.setItem('refreshToken', xhr.getResponseHeader('Refresh'))
+        location.href = "index.html";
+    }).fail(function (response) {
+        console.log(response.responseJSON)
+        // if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
+        //     alert("아이디나 비밀번호를 다시 확인해주세요")
+    });
+}
+
+function getProductInfo(productId) {
     var settings = {
-        "url": "http://localhost:8080/products/"+ productId,
+        "url": "http://localhost:8080/products/" + productId,
         "method": "GET",
         "timeout": 0,
-      };
-      
-      $.ajax(settings).done(function (response) {
-        
+    };
+
+    $.ajax(settings).done(function (response) {
+
         console.log(response);
         let productId = response.productId;
-        let productName = response.productName ;
+        let productName = response.productName;
         let productPrice = response.productPrice;
         let productStatus = response.productStatus;
-        let productCategory= response.productCategory;
-        let productEnum= response.productEnum;
-        let createdAt= response.createdAt.substr(0,10);
-        let modifiedAt= response.modifiedAt.substr(0,10);
+        let productCategory = response.productCategory;
+        let productEnum = response.productEnum;
+        let createdAt = response.createdAt.substr(0, 10);
+        let modifiedAt = response.modifiedAt.substr(0, 10);
         let viewCount = response.viewCount;
         let nickname = response.nickName;
         let region = response.region;
@@ -320,15 +320,16 @@ function getProductInfo(productId){
         let userGrade = response.userGrade;
         let interest = response.interest;
         let productContents = response.productContents;
-        if(region == null){
+        let sellerId = response.sellerId;
+        if (region == null) {
             region = "지역없음"
         }
-        if(productContents == null){
+        if (productContents == null) {
             productContents = "내용없음"
         }
-       
+
         let temp_html =
-       `<div>
+            `<div>
        <section id="article-images">
              <h3 class="hide">이미지</h3>
              <div class="image-slider">
@@ -375,51 +376,77 @@ function getProductInfo(productId){
            </div>
            <div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
            <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심</button>
-              <button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(${productId})">판매자와 채팅하기</button>
+              <button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(${productId}, ${sellerId}, '${productName}')">판매자와 채팅하기</button>
           </div>`
-    $('#info_box').append(temp_html);
-      });
+        $('#info_box').append(temp_html);
+    });
+    // 클릭 이벤트 설정
+    $(".small-button2").click(function () {
+        createChatRoom(productId, sellerId, productName);
+    });
 }
 
 
-
-function interest(productId){
-        var settings = {
-            "url": "http://localhost:8080/interest/" + productId,
-            "method": "POST",
-            "timeout": 0,
-            "headers": {
-              "Authorization": localStorage.getItem('accessToken')
-            },
-          };
-          
-          $.ajax(settings).done(function (response) {
-            if(response == false){
-                alert("관심내역에 등록되었습니다!")
-            }else{
-                alert("관심내역에서 삭제되었습니다!")
-            }
-        window.location.reload();
-          }).fail(function(){
-           reissueToken();
-          })  
-    };
-    const userToken = localStorage.getItem('accessToken')
-
-
-    function createChatRoom(productId) {
-                $.ajax({
-                    type: 'POST',
-                    url: "http://localhost:8080/chatroom/" + productId,
-                    headers: { Authorization: userToken },
-                    success: function () {
-                      window.location = '/chatRoom.html';
-                    },
-                    error: function (xhr, status, error) {
-                      console.error(xhr);
-                    }
-                  });
+// 채팅방 만들기
+// 채팅 보여주는 부분 쪽 채팅 버튼에 "onclick=함수명(${'productId'})" 해줘야함
+function createChatRoom(productId, sellerId, productName) {
+    $.ajax({
+      type: 'POST',
+      url: "http://localhost:8080/chatroom/" + productId,
+      headers: { Authorization: userToken },
+      dataType: "json",
+      contentType: 'application/json',
+      data: JSON.stringify({
+        "roomName": productName,
+        "productId": productId,
+        "sellerId": sellerId
+      }),
+      success: function (response) {
+        console.log(response)
+        location.href = 'chatroom.html';
       }
+    })
+  };
+
+
+
+function interest(productId) {
+    var settings = {
+        "url": "http://localhost:8080/interest/" + productId,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Authorization": localStorage.getItem('accessToken')
+        },
+    };
+
+    $.ajax(settings).done(function (response) {
+        if (response == false) {
+            alert("관심내역에 등록되었습니다!")
+        } else {
+            alert("관심내역에서 삭제되었습니다!")
+        }
+        window.location.reload();
+    }).fail(function () {
+        reissueToken();
+    })
+};
+const userToken = localStorage.getItem('accessToken')
+
+
+function createChatRoom(productId) {
+    $.ajax({
+        type: 'POST',
+        url: "http://localhost:8080/chatroom/" + productId,
+        headers: { Authorization: userToken },
+        success: function () {
+            window.location = '/chatRoom.html';
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr);
+        }
+    });
+}
 
     function checkMyProductInterest(productId){
         var settings = {
@@ -464,23 +491,22 @@ function interest(productId){
           });
     }
 
-    function chatCheck(productId){
-        var settings = {
-            "url": "http://localhost:8080/chatroom/check/" + productId,
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-              "Authorization": localStorage.getItem("accessToken")
-            },
-          };
-          
-          $.ajax(settings).done(function (response) {
-            if(response == true){
-               window.location.href =  window.location = '/chatRoom.html';
-            }
-            if(response == false){
-                createChatRoom(productId);
-            }
-          });
-    }
-     
+function chatCheck(productId) {
+    var settings = {
+        "url": "http://localhost:8080/chatroom/check/" + productId,
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Authorization": localStorage.getItem("accessToken")
+        },
+    };
+
+    $.ajax(settings).done(function (response) {
+        if (response == true) {
+            window.location.href = window.location = '/chatRoom.html';
+        }
+        if (response == false) {
+            createChatRoom(productId);
+        }
+    });
+}

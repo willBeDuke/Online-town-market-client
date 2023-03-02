@@ -6,7 +6,7 @@ $(document).ready(function () {
         console.error("userId 요소를 찾을 수 없습니다.");
         return;
     }
-    chatList();
+    getPurchaseList()
 });
 
 
@@ -53,7 +53,7 @@ function getProfile() {
                 <ul>
                 <li class="dropdown-header">${nickname}님</li>
                 <li><a href="myinfo.html">내정보</a></li>
-                <li><a href="#">구매상품</a></li>
+                <li><a href="purchaseList.html">구매상품</a></li>
                 <li><a href="#">판매상품</a></li>
                 <li><a href="chatroom.html">구매채팅</a></li>
                 <li><a href="SellChatRoom.html">판매채팅</a></li>
@@ -71,6 +71,7 @@ function getProfile() {
 }
 
 function getPurchaseList() {
+    $("#purchase").empty();
     $.ajax({
         type: 'GET',
         url: 'http://localhost:8080/trade/purchase',
@@ -86,9 +87,9 @@ function getPurchaseList() {
                                     <div class="row" id="profile-grid" style="margin-top: 30px;">
                                         <div class="col-sm-4 col-xs-12 profile">
                                             <div class="panel panel-default">
-                                                <div onclick="getProduct(${productImg})" class="panel-thumbnail">
+                                                <div style="color: black; text-decoration: none;" onclick="getProduct()" class="panel-thumbnail">
                                                     <a title="image 1" class="thumb">
-                                                        <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201"
+                                                        <img src="${productImg}"
                                                             class="img-responsive img-rounded" data-toggle="modal"
                                                             data-target=".modal-profile-lg">
                                                     </a>
@@ -110,57 +111,57 @@ function getPurchaseList() {
                 $('#purchaseList').append(temp_html);
             }
 
-            var totalPages = response.totalPages;
-            var pageNumber = response.number;
+            // var totalPages = response.totalPages;
+            // var pageNumber = response.number;
                             
-            var ul = $('#pagination');
-            ul.empty();
+            // var ul = $('#pagination');
+            // ul.empty();
                             
-            // Add 'First' button
-            var firstLi = $('<li>');
-            var firstA = $('<a>').attr('href', '#').text('처음');
-            firstLi.append(firstA);
-            ul.append(firstLi);
+            // // Add 'First' button
+            // var firstLi = $('<li>');
+            // var firstA = $('<a>').attr('href', '#').text('처음');
+            // firstLi.append(firstA);
+            // ul.append(firstLi);
             
-            // Add numbered buttons
-            var startIndex = Math.max(0, pageNumber - 2);
-            var endIndex = Math.min(startIndex + 4, totalPages - 1);
-            startIndex = Math.max(0, endIndex - 4);
-            for (var i = startIndex; i <= endIndex; i++) {
-              var li = $('<li>');
-              if (i == pageNumber) {
-                li.addClass('active');
-              }
-              var a = $('<a>').attr('href', '#').text(i + 1);
-              li.append(a);
-              ul.append(li);
-            }
+            // // Add numbered buttons
+            // var startIndex = Math.max(0, pageNumber - 2);
+            // var endIndex = Math.min(startIndex + 4, totalPages - 1);
+            // startIndex = Math.max(0, endIndex - 4);
+            // for (var i = startIndex; i <= endIndex; i++) {
+            //   var li = $('<li>');
+            //   if (i == pageNumber) {
+            //     li.addClass('active');
+            //   }
+            //   var a = $('<a>').attr('href', '#').text(i + 1);
+            //   li.append(a);
+            //   ul.append(li);
+            // }
             
-            // Add 'Last' button
-            var lastLi = $('<li>');
-            var lastA = $('<a>').attr('href', '#').text('마지막');
-            lastLi.append(lastA);
-            ul.append(lastLi);
+            // // Add 'Last' button
+            // var lastLi = $('<li>');
+            // var lastA = $('<a>').attr('href', '#').text('마지막');
+            // lastLi.append(lastA);
+            // ul.append(lastLi);
                  
-            // Add click event for 'First' button
-            $('#pagination li:first-child a').click(function(event) {
-                event.preventDefault();
-                getProducts(0);
-            });
+            // // Add click event for 'First' button
+            // $('#pagination li:first-child a').click(function(event) {
+            //     event.preventDefault();
+            //     getProducts(0);
+            // });
             
-            // Add click event for 'Last' button
-            $('#pagination li:last-child a').click(function(event) {
-                event.preventDefault();
-                getProducts(totalPages - 1);
-            });
+            // // Add click event for 'Last' button
+            // $('#pagination li:last-child a').click(function(event) {
+            //     event.preventDefault();
+            //     getProducts(totalPages - 1);
+            // });
             
-            $('#page_nation').append(ul);
+            // $('#page_nation').append(ul);
             
-            $('#pagination a').click(function(event) {
-                event.preventDefault();
-                var page = $(this).text() - 1;
-                getProducts(page);
-            });
+            // $('#pagination a').click(function(event) {
+            //     event.preventDefault();
+            //     var page = $(this).text() - 1;
+            //     getProducts(page);
+            // });
         },
         error: function (xhr, status, error) {
             console.error(xhr);
