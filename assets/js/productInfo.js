@@ -437,6 +437,8 @@ function interest(productId){
             if(response == false){
                 interest(productId);
             }
+          }).fail(function(){
+            alert("로그인 해 주세요");
           });
     }
 
@@ -457,6 +459,8 @@ function interest(productId){
                 chatCheck(productId);
                 
             }
+          }).fail(function(){
+            alert("로그인 해 주세요");
           });
     }
 
