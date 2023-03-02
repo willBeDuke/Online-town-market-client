@@ -14,8 +14,6 @@ const userToken = localStorage.getItem('accessToken')
 // let 변경 가능, const 변경불가능; -> 개발자
 
 
-
-
 // 채팅방 만들기
 // 채팅 보여주는 부분 쪽 채팅 버튼에 "onclick=함수명(${'productId'})" 해줘야함
 function createChatRoom(productId) {
@@ -57,7 +55,7 @@ function createChatRoom(productId) {
                             </a>
                           </li>`;
         $('#roomList').append(temp_html);
-        window.location = '/chatRoom.html';
+        chatList();
       }
     },
     error: function (xhr, status, error) {
@@ -75,6 +73,7 @@ function chatList() {
     headers: { Authorization: userToken },
     dataType: 'json',
     success: function (response) {
+      console.log(response)
       // 가져온 데이터로 채팅 리스트를 렌더링합니다.
       let roomList = response;
 
@@ -124,8 +123,6 @@ function chatList() {
 }
 
 
-
-
 function getProfile() {
   var settings = {
     "url": "http://localhost:8080/users/profile",
@@ -147,7 +144,7 @@ function getProfile() {
               <ul>
               <li class="dropdown-header">${nickname}님</li>
               <li><a href="myinfo.html">내정보</a></li>
-              <li><a href="#">구매상품</a></li>
+              <li><a href="purchaseList.html">구매상품</a></li>
               <li><a href="#">판매상품</a></li>
               <li><a href="chatroom.html">채팅</a></li>
               <li><a href="myinterest.html">관심목록</a></li>
@@ -193,7 +190,7 @@ function connect(roomId, nickname, productId) {
     $("#apponent_nickname").text(nickname);
     stompClient.subscribe("/sub/" + roomId, function (chat) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
-      
+
       let msg = JSON.parse(chat.body);
       let sender = msg.sender;
       let receiver = msg.receiver;
@@ -252,8 +249,11 @@ function chatView(roomId, nickname, productId) {
       url: "http://localhost:8080/chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
-       getProduct(productId);
-        
+        getProduct(productId);
+        $(".completed").data("productId", productId).data("buyerId", buyerId)
+        console.log("슝슝~~ "
+          + productId, buyerId)
+
         // 현재 방의 정보를 전역 변수에 저장
         currentRoomId = roomId;
         currentNickname = nickname;
@@ -288,7 +288,6 @@ function chatView(roomId, nickname, productId) {
 }
 
 
-
 function disconnect() {
   if (stompClient !== null) {
     stompClient.disconnect();
@@ -307,8 +306,6 @@ $(function () {
 });
 
 
-
-
 // 채팅 삭제
 function deleteChat(roomId) {
   $('#chatMessage').hide();
@@ -322,38 +319,38 @@ function deleteChat(roomId) {
       alert("삭제되었습니다.");
       // 채팅 리스트 다시 불러오기
       window.location.reload();
-    },
+    }
   });
 }
 
-function logout(){
+function logout() {
   var settings = {
-      "url": "http://localhost:8080/users/logout",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
+    "url": "http://localhost:8080/users/logout",
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
       "Authorization": localStorage.getItem('accessToken'),
-        "Refresh":localStorage.getItem('refreshToken')
-      },
-    }; 
-    
-    $.ajax(settings).done(function (response) {
-      localStorage.setItem('accessToken','');
-      window.location.reload();
-    });
-  
+      "Refresh": localStorage.getItem('refreshToken')
+    },
+  };
+
+  $.ajax(settings).done(function (response) {
+    localStorage.setItem('accessToken', '');
+    window.location.reload();
+  });
+
 }
 
-function getProduct(productId){
+function getProduct(productId) {
   var settings = {
-    "url": "http://localhost:8080/products/"  + productId,
+    "url": "http://localhost:8080/products/" + productId,
     "method": "GET",
     "timeout": 0,
     "headers": {
       "Authorization": localStorage.getItem('accessToken')
     },
   };
-  
+
   $.ajax(settings).done(function (response) {
     console.log(response);
     let productId = response['productId'];
@@ -361,7 +358,7 @@ function getProduct(productId){
     let productPrice = response['productPrice'];
     let productEnum = response['productEnum'];
     let productImg = response['productImg'];
-    
+
     $(".roomName").text(roomName);
     $(".productPrice").text(`${productPrice}원`);
     $(".deal").text(`${productEnum}`);

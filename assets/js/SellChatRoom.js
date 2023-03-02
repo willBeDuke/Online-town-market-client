@@ -77,7 +77,7 @@ function chatList() {
     success: function (response) {
       // 가져온 데이터로 채팅 리스트를 렌더링합니다.
       let roomList = response;
-      
+
       // 가져온 채팅방 리스트를 동적으로 추가합니다.
       for (let i = 0; i < roomList.length; i++) {
         let profileImg = roomList[i]['profileImg'];
@@ -86,9 +86,10 @@ function chatList() {
         let productName = roomList[i]['productName'];
         let roomId = roomList[i]['roomId'];
         let productId = roomList[i]['productId']
+        let buyerId = roomList[i]['buyerId']
 
         let temp_html = `<li id="roomId" class="chatDesc" data-roomid="${roomId}" data-nickname="${nickname}">
-                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId});">
+                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId}, ${buyerId});">
                               <table cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td class="profile_td">
@@ -148,7 +149,7 @@ function getProfile() {
           <ul>
           <li class="dropdown-header">${nickname}님</li>
           <li><a href="myinfo.html">내정보</a></li>
-          <li><a href="#">구매상품</a></li>
+          <li><a href="purchaseList.html">구매상품</a></li>
           <li><a href="#">판매상품</a></li>
           <li><a href="chatroom.html">채팅</a></li>
           <li><a href="myinterest.html">관심목록</a></li>
@@ -240,7 +241,7 @@ function sendChat(roomId, productId, nickname, sender, message) {
   }));
 }
 
-function chatView(roomId, nickname, productId) {
+function chatView(roomId, nickname, productId,buyerId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
   if (currentRoomId !== roomId || currentNickname !== nickname) {
 
@@ -253,8 +254,8 @@ function chatView(roomId, nickname, productId) {
       url: "http://localhost:8080/chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
-       getProduct(productId);
-        
+        getProduct(productId);
+
         // 현재 방의 정보를 전역 변수에 저장
         currentRoomId = roomId;
         currentNickname = nickname;
@@ -281,7 +282,12 @@ function chatView(roomId, nickname, productId) {
                               </div>
                             </li>`;
           $('#messageList').append(temp_html);
+          $("#completed").attr("onclick", `salesCompleted(${buyerId}, ${productId})`);
         }
+        // 클릭 이벤트 설정
+        $(".completed").click(function () {
+          salesCompleted(buyerId, productId);
+        });
       }
     });
   }
@@ -307,6 +313,31 @@ $(function () {
   $("#disconnect").click(function () { disconnect(); });
 });
 
+function salesCompleted(buyerId, productId) {
+  console.log(buyerId, productId)
+  console.log(typeof buyerId)
+  console.log(typeof productId)
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8080/trade/create",
+    headers: { Authorization: userToken },
+    dataType: "json",
+    contentType: 'application/json',
+    data: JSON.stringify({
+      "buyerId": buyerId,
+      "productId": productId
+    }),
+    success: function (response) {
+      console.log(response)
+      // 삭제 성공 시 처리할 코드
+      alert("판매 완료 처리되었습니다.");
+      // 채팅 리스트 다시 불러오기
+      $('#creatChat').empty();
+      chatView();
+    }
+  });
+}
+
 
 
 
@@ -327,34 +358,34 @@ function deleteChat(roomId) {
   });
 }
 
-function logout(){
+function logout() {
   var settings = {
-      "url": "http://localhost:8080/users/logout",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
+    "url": "http://localhost:8080/users/logout",
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
       "Authorization": localStorage.getItem('accessToken'),
-        "Refresh":localStorage.getItem('refreshToken')
-      },
-    }; 
-    
-    $.ajax(settings).done(function (response) {
-      localStorage.setItem('accessToken','');
-      window.location.reload();
-    });
-  
+      "Refresh": localStorage.getItem('refreshToken')
+    },
+  };
+
+  $.ajax(settings).done(function (response) {
+    localStorage.setItem('accessToken', '');
+    window.location.reload();
+  });
+
 }
 
-function getProduct(productId){
+function getProduct(productId) {
   var settings = {
-    "url": "http://localhost:8080/products/"  + productId,
+    "url": "http://localhost:8080/products/" + productId,
     "method": "GET",
     "timeout": 0,
     "headers": {
       "Authorization": localStorage.getItem('accessToken')
     },
   };
-  
+
   $.ajax(settings).done(function (response) {
     console.log(response);
     let productId = response['productId'];
@@ -362,7 +393,7 @@ function getProduct(productId){
     let productPrice = response['productPrice'];
     let productEnum = response['productEnum'];
     let productImg = response['productImg'];
-    
+
     $(".roomName").text(roomName);
     $(".productPrice").text(`${productPrice}원`);
     $(".deal").text(`${productEnum}`);
