@@ -341,4 +341,3 @@ function reissueToken(){
             localStorage.setItem('productId',productId)
             window.location.href = "product.html"
         }
-        
