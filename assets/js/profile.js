@@ -33,7 +33,7 @@ var profileRequestDto = {
 
 $.ajax({
     url: "http://localhost:8080/users/profile/update",
-    type: 'PATCH',
+    type: 'Patch',
     data: JSON.stringify(profileRequestDto),
     headers: {
         Authorization: userToken
@@ -41,6 +41,7 @@ $.ajax({
     contentType: 'application/json',
     success: function (response) {
         console.log(response);
+        location.href = "index.html";
     },
     error: function () {
         // alert("An error occurred while uploading the file.");s
