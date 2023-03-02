@@ -28,9 +28,11 @@ function reportUser() {
 }
 
 
-function reportUser() {
+function reportProducts() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const productId = urlSearchParams.get('productId');
     var settings = {
-        "url": "http://localhost:8080/report/user",
+        "url": "http://localhost:8080/report/product",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -39,16 +41,16 @@ function reportUser() {
 
         },
         "data": JSON.stringify({
-            "reportedUserName": $('#reportedUserName').val(),
             "reportEnum": $('#reportEnum').val(),
-            "reason": $('#reason').val()
+            "reason": $('#reason').val(),
+            "productId": productId
         }),
     };
 
     $.ajax(settings).done(function (response) {
         console.log(response);
         alert("신고 완료");
-        location.href = "index.html";
+        window.close();
     }).fail(function (response) {
         if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
             alert("입력하신 정보를 다시 확인해 주세요")

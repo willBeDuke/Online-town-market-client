@@ -5,12 +5,22 @@ jQuery(document).ready(function ($) {
     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
     }
-    const productId = localStorage.getItem('productId')
+    // const productId = localStorage.getItem('productId')
     // window.localStorage.removeItem('productId');
+
+
+    // const geProductId = "";
+    // getProductId()
+    // window.history.pushState("데이터", "제목", `/product.html?productId=${productId}`);
+
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const productId = urlSearchParams.get('productId');
     getProductInfo(productId);
     checkInterest();
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
+    
 
 
     /*---------------------------------------------*
@@ -147,11 +157,10 @@ jQuery(document).ready(function ($) {
 
     //End
 });
-const productId = localStorage.getItem('productId')
 
 function checkInterest() {
     var settings = {
-        "url": "http://localhost:8080/interest/check/" + productId,
+        "url": "http://localhost:8080/interest/check/" + geProductId,
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -202,6 +211,7 @@ function getProfile() {
     </li>
     <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
         $('#loginForm').append(temp_html)
+
     }).fail(function () {
         reissueToken();
     });
@@ -369,8 +379,8 @@ function getProductInfo(productId) {
                justify-content: flex-end;
                margin-left: 540px;
                margin-top: -40px;
-               margin-bottom: 20px; font-size: 15px " >가격 : ${productPrice} 원<br>상태 : ${productStatus} 급<br>종류 : ${productEnum}</p>
-            
+               margin-bottom: 20px; font-size: 15px "> <button onclick = "productReport()">상품신고</button> <br>가격 : ${productPrice} 원<br>상태 : ${productStatus} 급<br>종류 : ${productEnum} </p>
+              
               <div>
                <p>${productContents}</p>
            </div>
@@ -379,6 +389,7 @@ function getProductInfo(productId) {
               <button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(${productId}, ${sellerId}, '${productName}')">판매자와 채팅하기</button>
           </div>`
         $('#info_box').append(temp_html);
+        
     });
     // 클릭 이벤트 설정
     $(".small-button2").click(function () {
@@ -510,3 +521,28 @@ function chatCheck(productId) {
         }
     });
 }
+
+function productReport(){
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const productId = urlSearchParams.get('productId');
+    var url = `/productreport.html?productId=${productId}`;
+            var name = "상품신고";
+            var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+    window.open(url,name,option)
+}
+
+// function getProductId(){
+//  const currentUrl = window.location.href;
+
+// const regex = /(\d+)\.html$/;
+
+// // URL에서 숫자 값을 추출
+// const match = currentUrl.match(regex);
+
+// if (match) {
+//   const numberValue = match[1]; 
+  
+// } else {
+//   console.log("숫자 값을 찾을 수 없습니다.");
+// }
+// }
