@@ -18,7 +18,9 @@ Author URI: http://themeforest.net/user/XpeedStudio/portfolio
        font-family: 'Roboto', sans-serif;
        font-weight: 300;
    }
-   
+   .navbar-nav .dropdown-menu {
+    position: absolute;
+}
    img {
        -moz-user-select: none;
        -webkit-user-select: none;

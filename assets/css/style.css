@@ -222,7 +222,9 @@ section .subtitle-half h5 {
     font-size: 12px;
 }
 
-
+.navbar-nav .dropdown-menu {
+    position: absolute;
+}
 .heading {
     margin-bottom: 4rem;
 }
