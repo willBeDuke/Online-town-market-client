@@ -322,7 +322,7 @@ function getProductInfo(productId) {
         let productStatus = response.productStatus;
         let productCategory = response.productCategory;
         let productEnum = response.productEnum;
-        let productImg = response.productImg;
+        let productImg = response.productImg ? response.productImg : "//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201";
         let createdAt = response.createdAt.substr(0, 10);
         let modifiedAt = response.modifiedAt.substr(0, 10);
         let viewCount = response.viewCount;
