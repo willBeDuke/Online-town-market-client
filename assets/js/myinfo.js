@@ -2,13 +2,13 @@
 
 
 jQuery(document).ready(function ($) {
-    if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
+    if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
     }
     getUserInfo();
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
-    
+
 
     /*---------------------------------------------*
      * Mobile menu
@@ -49,8 +49,8 @@ jQuery(document).ready(function ($) {
     function checkScrolling(tables) {
         tables.each(function () {
             var table = $(this),
-                    totalTableWidth = parseInt(table.children('.cd-pricing-features').width()),
-                    tableViewport = parseInt(table.width());
+                totalTableWidth = parseInt(table.children('.cd-pricing-features').width()),
+                tableViewport = parseInt(table.width());
             if (table.scrollLeft() >= totalTableWidth - tableViewport - 1) {
                 table.parent('li').addClass('is-ended');
             } else {
@@ -66,8 +66,8 @@ jQuery(document).ready(function ($) {
         container.each(function () {
             var pricing_table = $(this);
             var filter_list_container = pricing_table.children('.cd-pricing-switcher'),
-                    filter_radios = filter_list_container.find('input[type="radio"]'),
-                    pricing_table_wrapper = pricing_table.find('.cd-pricing-wrapper');
+                filter_radios = filter_list_container.find('input[type="radio"]'),
+                pricing_table_wrapper = pricing_table.find('.cd-pricing-wrapper');
 
             //store pricing table items
             var table_elements = {};
@@ -127,7 +127,7 @@ jQuery(document).ready(function ($) {
 
 
 
-// scroll Up
+    // scroll Up
 
     $(window).scroll(function () {
         if ($(this).scrollTop() > 600) {
@@ -137,7 +137,7 @@ jQuery(document).ready(function ($) {
         }
     });
     $('.scrollup').click(function () {
-        $("html, body").animate({scrollTop: 0}, 1000);
+        $("html, body").animate({ scrollTop: 0 }, 1000);
         return false;
     });
 
@@ -145,16 +145,16 @@ jQuery(document).ready(function ($) {
     //End
 });
 
-function getProfile(){
+function getProfile() {
     var settings = {
         "url": "http://localhost:8080/users/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+            "Authorization": localStorage.getItem('accessToken')
         },
-      };
-      $.ajax(settings).done(function (response) {
+    };
+    $.ajax(settings).done(function (response) {
         const nickname = response.nickname;
         // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
         document.getElementById('loginbuttons').style.display = 'none';
@@ -176,47 +176,47 @@ function getProfile(){
         </ul>      
     </li>
     <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
-    $('#loginForm').append(temp_html)
+        $('#loginForm').append(temp_html)
         element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
-      }).fail(function(){
+    }).fail(function () {
         reissueToken();
-});
+    });
 }
 
-function logout(){
+function logout() {
     var settings = {
         "url": "http://localhost:8080/users/logout",
         "method": "POST",
         "timeout": 0,
         "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-          "Refresh":localStorage.getItem('refreshToken')
+            "Authorization": localStorage.getItem('accessToken'),
+            "Refresh": localStorage.getItem('refreshToken')
         },
-      }; 
-      
-      $.ajax(settings).done(function (response) {
-        localStorage.setItem('accessToken','');
+    };
+
+    $.ajax(settings).done(function (response) {
+        localStorage.setItem('accessToken', '');
         window.location.reload();
-      });
-    
+    });
+
 }
-function reissueToken(){
+function reissueToken() {
     var settings = {
         "url": "http://localhost:8080/refresh/regeneration",
         "method": "POST",
         "timeout": 0,
         "headers": {
-            "Refresh":localStorage.getItem('refreshToken')
+            "Refresh": localStorage.getItem('refreshToken')
         },
-      };
-      
-      $.ajax(settings).done(function (response,status,xhr) {
-        localStorage.setItem('accessToken',xhr.getResponseHeader('Authorization'))
-      }).fail(function(){
+    };
+
+    $.ajax(settings).done(function (response, status, xhr) {
+        localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
+    }).fail(function () {
         alert("로그인 해 주세요")
-        localStorage.setItem('accessToken','');
-        localStorage.setItem('refreshToken','');
-});
+        localStorage.setItem('accessToken', '');
+        localStorage.setItem('refreshToken', '');
+    });
 }
 
 
@@ -234,68 +234,76 @@ function reissueToken(){
 
 //         }),
 //       };
-      
+
 //       $.ajax(settings).done(function (response) {
 //         console.log(response);
 //       });
 // }
-        const searchParams = new URLSearchParams(window.location.search);
-        const username = searchParams.get('username');
-        const role = searchParams.get('role');
+const searchParams = new URLSearchParams(window.location.search);
+const username = searchParams.get('username');
+const role = searchParams.get('role');
 
-        $(document).ready(function () {
-            username !== " " && imp()
-        })
+$(document).ready(function () {
+    username !== " " && imp()
+})
 
-        function imp() {
-            console.log(username, role);
+function imp() {
+    console.log(username, role);
 
-            const settings = {
-                "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "data": JSON.stringify({}),
-            };
+    const settings = {
+        "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({}),
+    };
 
-            $.ajax(settings).done(function (response, status, xhr) {
-                localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
-                localStorage.setItem('refreshToken', xhr.getResponseHeader('Refresh'))
-                location.href = "index.html";
-            }).fail(function (response) {
-                console.log(response.responseJSON)
-                // if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
-                //     alert("아이디나 비밀번호를 다시 확인해주세요")
-            });
-        }
-function getUserInfo(){
+    $.ajax(settings).done(function (response, status, xhr) {
+        localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
+        localStorage.setItem('refreshToken', xhr.getResponseHeader('Refresh'))
+        location.href = "index.html";
+    }).fail(function (response) {
+        console.log(response.responseJSON)
+        // if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
+        //     alert("아이디나 비밀번호를 다시 확인해주세요")
+    });
+}
+function getUserInfo() {
     var settings = {
         "url": "http://localhost:8080/users/info",
         "method": "GET",
         "timeout": 0,
         "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+            "Authorization": localStorage.getItem('accessToken')
         },
-      };
-      
-      $.ajax(settings).done(function (response) {
-        
+    };
+
+    $.ajax(settings).done(function (response) {
+
         console.log(response);
         let img = response.img
         let email = response.email;
         let username = response.username;
         let nickname = response.nickname;
         let region = response.region;
-        
-       let temp_html =  `<div class="info1" style="justify-content: flex-start; display: flex; flex-direction: column; margin-left: -200px; padding: 10px 0px 10px 0px;">
+
+        let temp_html = `<div class="info1" style="justify-content: flex-start; display: flex; flex-direction: column; margin-left: -200px; padding: 10px 0px 10px 0px;">
        <p>ID : ${username}</p>
        <p>nickname : ${nickname}</p>
        <p>email : ${email}</p>
        <p>region : ${region} </p>
        <p>Image : ${img}</p>
+       <button onClick="updateProfilePopup()">Update Profile</button>
     </div>`
-    $('#info_box').append(temp_html);
-      });
+        $('#info_box').append(temp_html);
+    });
+}
+
+function updateProfilePopup() {
+    var url = 'http://127.0.0.1:5500/updateProfile.html';
+    var name = "프로필 업데이트";
+    var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+    window.open(url, name, option)
 }
