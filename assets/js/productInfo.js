@@ -199,12 +199,13 @@ function getProfile() {
         <ul class="dropdown-menu dropdown-menu-end" >
             <li class="col-sm-6">
             <ul>
-              <li class="dropdown-header">${nickname}님</li>
-              <li><a href="myinfo.html">내정보</a></li>
-              <li><a href="purchaseList.html">구매상품</a></li>
-              <li><a href="#">판매상품</a></li>
-              <li><a href="chatroom.html">채팅</a></li>
-              <li><a href="myinterest.html">관심목록</a></li>
+            <li class="dropdown-header">${nickname}님</li>
+            <li><a href="myinfo.html">내정보</a></li>
+            <li><a href="purchaseList.html">구매상품</a></li>
+            <li><a href="salesPage.html">판매상품</a></li>
+            <li><a href="chatroom.html">구매채팅</a></li>
+            <li><a href="SellChatRoom.html">판매채팅</a></li>
+            <li><a href="myinterest.html">관심목록</a></li>
               </ul>
             </li>               
         </ul>      
