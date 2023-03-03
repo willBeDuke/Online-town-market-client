@@ -159,25 +159,29 @@ function getProfile(){
         const nickname = response.nickname;
         // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
         document.getElementById('loginbuttons').style.display = 'none';
-        let temp_html = `<li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
-        
+        let temp_html = 
+        `<div class="card-body" style="display: flex; justify-content: center; align-items: center;">
+            <a type="text" class="btn btn-dark small-button2" href="http://127.0.0.1:5500/addProduct.html"style="width: 100px; margin-top: -5px;margin-right: 30px;">상품등록하기</a>
+            <a type="text" class="btn btn-dark small-button2" onclick = "userReport()" style="width: 100px; margin-top: -5px; margin-right: 40px; ">유저 신고하기</a>
+        </div>
+        <li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
         <ul class="dropdown-menu dropdown-menu-end" >
             <li class="col-sm-6">
             <ul>
             <li class="dropdown-header">${nickname}님</li>
             <li><a href="myinfo.html">내정보</a></li>
             <li><a href="purchaseList.html">구매상품</a></li>
-            <li><a href="#">판매상품</a></li>
+            <li><a href="salesPage.html">판매상품</a></li>
             <li><a href="chatroom.html">채팅</a></li>
             <li><a href="myinterest.html">관심목록</a></li>
             </ul>
             </li>               
         </ul>      
     </li>
-    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" href="index.html" > 로그아웃 </a></div>`
     $('#loginForm').append(temp_html)
-        element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
+       
       }).fail(function(){
         reissueToken();
 });
@@ -456,4 +460,10 @@ function reissueToken(){
         }
         function getProduct(productId){
             window.location.href = `/product.html?productId=${productId}`   
+        }
+        function userReport(){
+            var url = '/userReport.html';
+            var name = "유저신고";
+            var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+            window.open(url,name,option)
         }

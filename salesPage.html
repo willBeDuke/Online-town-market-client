@@ -1,8 +1,4 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<html class="no-js" lang=""> 
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -60,7 +56,22 @@
               
                         <span class = "nickName"></span>
                         <div class = "loginForm" id = "loginForm">
-                     
+                            <!-- <li class="dropdown dropdown-large" style="margin-top: 12px;">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                                
+                                <ul class="dropdown-menu dropdown-menu-end" >
+                                    <li class="col-sm-6">
+                                        <ul>
+                                            <li class="dropdown-header" >님</li>
+                                            <li><a href="#">내정보</a></li>
+                                            <li><a href="#">판매상품</a></li>
+                                            <li><a href="#">구매상품</a></li>
+                                            <li><a href="#">채팅</a></li>
+                                            <li><a href="#">관심목록</a></li>
+                                        </ul>
+                                    </li>               
+                                </ul>      
+                            </li> -->
                             <div id = "loginbuttons" class = "loginbuttons">
                                 <li class="signup"><a href="/signup.html">회원가입</a></li>
                                 <li class="login"><a href="/login.html">로그인</a></li>
@@ -96,19 +107,21 @@
   </ul>
 </div>
 </div>
-<div style="margin-bottom: 50px;">
-</div>
-<div>
-</div>
-<div class="right" id = "info_box" style="background-color: #fefefe; border-radius: 0 5px 5px 0; border: 1px solid black; width: 500px; justify-content: center; display: flex; margin-left: 760px;">
-        <!-- <div class="info1" style="justify-content: flex-start; display: flex; flex-direction: column; margin-left: -200px; padding: 10px 0px 10px 0px;">
-            <p>ID : ID</p>
-            <p>nickname : ID</p>
-            <p>email : ID</p>
-            <p>region : ID</p>
-        </div> -->
+<div class="products">
+    <div class="container-fluid" style="margin-left: 300px; margin-right: 300px;">
+        <div class="row" id="product-onsale-grid" style="margin-top: 30px;">
+        </div>
+        <div class="page_wrap">
+            <div id="page_nation">
+                <ul id="pagination">
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
+<div style="margin-bottom: 50px;">
+</div>
+
 
         <div class="scrollup">
             <a href="#"><i class="fa fa-chevron-up"></i></a>
@@ -120,7 +133,6 @@
 
         <script src="assets/js/plugins.js"></script>
         <script src="assets/js/modernizr.js"></script>
-        <script src="assets/js/myinfo.js"></script>
-        <li class="updateProfile"><a href="http://127.0.0.1:5500/updateProfile.html">프로필 업데이트</a></li>
+        <script src="assets/js/salesPage.js"></script>
     </body>
 </html>
