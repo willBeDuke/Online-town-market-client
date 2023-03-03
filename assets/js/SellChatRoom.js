@@ -191,7 +191,6 @@ function connect(roomId, nickname, productId) {
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
     setConnected(true);
-    console.log("connected : " + frame);
     $("#apponent_nickname").text(nickname);
     stompClient.subscribe("/sub/" + roomId, function (chat) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
@@ -241,7 +240,7 @@ function sendChat(roomId, productId, nickname, sender, message) {
   }));
 }
 
-function chatView(roomId, nickname, productId,buyerId) {
+function chatView(roomId, nickname, productId, buyerId) {
   // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
   if (currentRoomId !== roomId || currentNickname !== nickname) {
 
@@ -255,7 +254,6 @@ function chatView(roomId, nickname, productId,buyerId) {
       headers: { Authorization: userToken },
       success: function (response) {
         getProduct(productId);
-
         // 현재 방의 정보를 전역 변수에 저장
         currentRoomId = roomId;
         currentNickname = nickname;
@@ -282,16 +280,14 @@ function chatView(roomId, nickname, productId,buyerId) {
                               </div>
                             </li>`;
           $('#messageList').append(temp_html);
-          $("#completed").attr("onclick", `salesCompleted(${buyerId}, ${productId})`);
         }
-        // 클릭 이벤트 설정
-        $(".completed").click(function () {
-          salesCompleted(buyerId, productId);
-        });
+
+        $("#completed").attr("onclick", `salesCompleted(${buyerId}, ${productId})`);
       }
     });
   }
-  connect(roomId, nickname, productId)
+  console.log(buyerId, productId)
+  connect(roomId, nickname, productId);
 }
 
 
@@ -314,9 +310,6 @@ $(function () {
 });
 
 function salesCompleted(buyerId, productId) {
-  console.log(buyerId, productId)
-  console.log(typeof buyerId)
-  console.log(typeof productId)
   $.ajax({
     type: "POST",
     url: "http://localhost:8080/trade/create",
@@ -328,20 +321,21 @@ function salesCompleted(buyerId, productId) {
       "productId": productId
     }),
     success: function (response) {
-      console.log(response)
-      // 삭제 성공 시 처리할 코드
-      alert("판매 완료 처리되었습니다.");
+      $('.deal').text('판매완료');
       // 채팅 창 다시 불러오기
+      alert("판매 완료 처리되었습니다.");
       $('#completed').hide();
-      
-      location.href
     }
   });
 }
 
-function productEnumRefresh(){  
-  $("#deal").load(window.location.href + "#deal");
-}
+
+// function offbutton() {
+
+
+// }
+
+
 
 
 
@@ -392,12 +386,17 @@ function getProduct(productId) {
   };
 
   $.ajax(settings).done(function (response) {
-    console.log(response);
     let productId = response['productId'];
     let roomName = response['productName'];
     let productPrice = response['productPrice'];
     let productEnum = response['productEnum'];
     let productImg = response['productImg'];
+
+    if (productEnum === '판매완료') {
+      $('#completed').hide();
+    } else {
+      $('#completed').show();
+    }
 
     $(".roomName").text(roomName);
     $(".productPrice").text(`${productPrice}원`);
