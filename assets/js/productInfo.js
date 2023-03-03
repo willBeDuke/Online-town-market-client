@@ -321,6 +321,7 @@ function getProductInfo(productId) {
         let productStatus = response.productStatus;
         let productCategory = response.productCategory;
         let productEnum = response.productEnum;
+        let productImg = response.productImg;
         let createdAt = response.createdAt.substr(0, 10);
         let modifiedAt = response.modifiedAt.substr(0, 10);
         let viewCount = response.viewCount;
@@ -345,7 +346,7 @@ function getProductInfo(productId) {
              <h3 class="hide">이미지</h3>
              <div class="image-slider">
                  <div class="slider-wrap">
-                     <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201">
+                     <img src="${productImg}">
                  </div>
              <div>
          </section>
