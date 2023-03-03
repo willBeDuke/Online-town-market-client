@@ -20,8 +20,7 @@ function reportUser() {
     $.ajax(settings).done(function (response) {
         console.log(response);
         alert("신고 완료");
-        window.close();
-        
+        closeWindow();
     }).fail(function (response) {
         if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
             alert("입력하신 정보를 다시 확인해 주세요")
