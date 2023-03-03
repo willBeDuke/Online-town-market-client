@@ -38,6 +38,7 @@ $('#uploadPhoto').click(function() {
     contentType: false,
     success: function(response) {
       console.log(response)
+      document.getElementById("image-url").value = response
     },
     error: function() {
       alert("An error occurred while uploading the file.");
@@ -48,6 +49,7 @@ $('#uploadPhoto').click(function() {
 // 상품 등록하기
 function addProduct() {
   var productRequestDto = {
+    "productImg": $("#image-url").val(),
     "productName": $("#productName").val(),
     "productPrice": $("#productPrice").val(),
     "productEnum": $("#productEnum option:selected").val(),
