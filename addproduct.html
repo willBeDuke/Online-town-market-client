@@ -7,12 +7,14 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+  <div id="image-preview">
+
+  </div>
   <form id="addProduct" action="/">
     <table id="container">
       <tr>
         <td id="result" colspan="2"></td>
       </tr>
-
       <tr>
         <th><label for="productPhoto">상품사진</label></th>
         <td><input type="file" id="fileInput" name="fileInput" /></td>
@@ -34,10 +36,8 @@
         <td><select id="productEnum">
             <option selected>거래 상태를 선택해주세요</option>
             <option value="나눔">나눔</option>
-            <option value="나눔_완료">나눔_완료</option>
             <option value="판매_중">판매_중</option>
             <option value="예약">예약</option>
-            <option value="판매완료">판매완료</option>
           </select></td>
       </tr>
       <tr>
