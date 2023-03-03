@@ -467,7 +467,7 @@ function reissueToken(){
         }
         function userReport(){
             var url = '/userReport.html';
-            var name = "유저신고";
+           
             var option = "width = 800, height = 800, top = 100, left = 200, location = no"
-            window.open(url,name,option)
+            window.open(url,'',option)
         }
