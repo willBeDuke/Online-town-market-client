@@ -332,8 +332,9 @@ function salesCompleted(buyerId, productId) {
       // 삭제 성공 시 처리할 코드
       alert("판매 완료 처리되었습니다.");
       // 채팅 창 다시 불러오기
-      $('#salesCompleted').hide();
-      productEnumRefresh();
+      $('#completed').hide();
+      
+      location.href
     }
   });
 }
