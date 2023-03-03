@@ -158,27 +158,10 @@ function getProfile() {
         const nickname = response.nickname;
         // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
         document.getElementById('loginbuttons').style.display = 'none';
-        let temp_html = `<li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 </a>
-        
-        <ul class="dropdown-menu dropdown-menu-end" >
-            <li class="col-sm-6">
-            <ul>
-            <li class="dropdown-header">${nickname}님</li>
-              <li><a href="myinfo.html">내정보</a></li>
-              <li><a href="purchaseList.html">구매상품</a></li>
-              <li><a href="salesPage.html">판매상품</a></li>
-              <li><a href="chatroom.html">구매채팅</a></li>
-              <li><a href="SellChatRoom.html">판매채팅</a></li>
-              <li><a href="myinterest.html">관심목록</a></li>
-            </ul>
-            </li>               
-        </ul>      
-    </li>
+        let temp_html = `  
     <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
-        $('#loginForm').append(temp_html)
-        element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
-    }).fail(function () {
+        $('#container').append(temp_html)
+    }).fail(function () {       
         reissueToken();
     });
 }
@@ -295,9 +278,28 @@ function getUserInfo() {
        <p>email : ${email}</p>
        <p>region : ${region} </p>
        <p>Image : ${img}</p>
-       <button onClick="updateProfilePopup()">Update Profile</button>
+       <!-- Button trigger modal -->
+       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+         프로필 설정
+       </button>
+       
+       <!-- Modal -->
+       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-sm">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h1 class="modal-title fs-5" id="exampleModalLabel">프로필 수정</h1>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+               <p>Loading...</p>
+             </div>
+           </div>
+         </div>
+       </div>
     </div>`
         $('#info_box').append(temp_html);
+        $("#exampleModal .modal-body").load("/updateProfile.html");
     });
 }
 

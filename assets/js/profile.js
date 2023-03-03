@@ -17,7 +17,8 @@ function uploadImage() {
         contentType: false,
         success: function (response) {
             console.log(response)
-            document.getElementById("image-url").value = response;
+            window.open('', '_self', ''); 
+            window.close();
         },
         error: function () {
             // alert("An error occurred while uploading the file.");
@@ -59,18 +60,24 @@ const profileRequestDto = {
 
 $.ajax({
     url: "http://localhost:8080/users/profile/update",
-    type: 'Patch',
+    type: 'PATCH',
     data: JSON.stringify(profileRequestDto),
     headers: {
         Authorization: userToken
     },
     contentType: 'application/json',
     success: function (response) {
-        console.log(response);
-        location.href = "index.html";
+        console.log(response)
+    //    closeWindow();
     },
     error: function () {
         // alert("An error occurred while uploading the file.");s
     }
 });
 }
+
+function closeWindow() {
+    var returnValue = confirm("창을 닫으시겠습니까?");
+     alert(returnValue)
+     window.close();
+    }
