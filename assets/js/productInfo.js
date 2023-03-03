@@ -199,12 +199,13 @@ function getProfile() {
         <ul class="dropdown-menu dropdown-menu-end" >
             <li class="col-sm-6">
             <ul>
-              <li class="dropdown-header">${nickname}님</li>
-              <li><a href="myinfo.html">내정보</a></li>
-              <li><a href="purchaseList.html">구매상품</a></li>
-              <li><a href="#">판매상품</a></li>
-              <li><a href="chatroom.html">채팅</a></li>
-              <li><a href="myinterest.html">관심목록</a></li>
+            <li class="dropdown-header">${nickname}님</li>
+            <li><a href="myinfo.html">내정보</a></li>
+            <li><a href="purchaseList.html">구매상품</a></li>
+            <li><a href="salesPage.html">판매상품</a></li>
+            <li><a href="chatroom.html">구매채팅</a></li>
+            <li><a href="SellChatRoom.html">판매채팅</a></li>
+            <li><a href="myinterest.html">관심목록</a></li>
               </ul>
             </li>               
         </ul>      
@@ -321,6 +322,7 @@ function getProductInfo(productId) {
         let productStatus = response.productStatus;
         let productCategory = response.productCategory;
         let productEnum = response.productEnum;
+        let productImg = response.productImg;
         let createdAt = response.createdAt.substr(0, 10);
         let modifiedAt = response.modifiedAt.substr(0, 10);
         let viewCount = response.viewCount;
@@ -345,7 +347,7 @@ function getProductInfo(productId) {
              <h3 class="hide">이미지</h3>
              <div class="image-slider">
                  <div class="slider-wrap">
-                     <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201">
+                     <img src="${productImg}">
                  </div>
              <div>
          </section>
