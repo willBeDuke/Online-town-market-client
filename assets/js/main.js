@@ -159,8 +159,12 @@ function getProfile(){
         const nickname = response.nickname;
         // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
         document.getElementById('loginbuttons').style.display = 'none';
-        let temp_html = `<li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
+        let temp_html = 
+        `<div class="card-body" style="display: flex; justify-content: center; align-items: center;">
+            <a type="button" class="btn btn-dark small-button2" href="http://127.0.0.1:5500/addProduct.html">상품등록하기</a>
+        </div>
+        <li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
         
         <ul class="dropdown-menu dropdown-menu-end" >
             <li class="col-sm-6">
@@ -168,7 +172,7 @@ function getProfile(){
                     <li class="dropdown-header">${nickname}님</li>
                     <li><a href="myinfo.html">내정보</a></li>
                     <li><a href="#">구매상품</a></li>
-                    <li><a href="#">판매상품</a></li>
+                    <li><a href="salesPage.html">판매상품</a></li>
                     <li><a href="chatroom.html">구매채팅</a></li>
                     <li><a href="SellChatRoom.html">판매채팅</a></li>
                     <li><a href="myinterest.html">관심목록</a></li>
