@@ -204,7 +204,9 @@
 			flex-direction: row;
 		}
 
-
+		.navbar-nav .dropdown-menu {
+    position: absolute;
+}
 		label {
 			margin-left: -80px;
 			padding-left: 10px;
@@ -323,11 +325,10 @@
 			<div class="form-group">
 				<label class="control-label col-xs-4">지역</label>
 				<div class="col-xs-8">
-					<input type="button" onclick="PostCode()" value="내 지역 등록하기"><br>
 					<input type="text" id="region" placeholder="내 지역">
-
+					<input type="button" onclick="PostCode()" value="내 지역 등록하기"><br>
 				</div>
-			</div>
+			</div>	
 			<div class="form-group">
 				<div class="col-xs-8col-xs-offset-4">
 					<div class="form-group-button">
@@ -337,8 +338,11 @@
 							onclick="signup()">회원가입</button>
 
 					</div>
-					<button type="button" class="btn btn-primary btn-lg" style="margin-left: 120px;"
-						onclick="GoogleSignup()">구글 회원가입</button>
+					<div style="margin-left: 150px; margin-top: 50px;">
+						<button type="button"  style="border:none; background: none;"
+						onclick="GoogleSignup()"><img src="assets/images/signin.PNG" alt="Logo" style="width: 200px;"/></button>
+					</div>
+					
 				</div>
 			</div>
 		</form>

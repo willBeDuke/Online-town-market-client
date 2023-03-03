@@ -168,6 +168,7 @@ function getProfile(){
         
         <ul class="dropdown-menu dropdown-menu-end" >
             <li class="col-sm-6">
+
                 <ul>
                     <li class="dropdown-header">${nickname}님</li>
                     <li><a href="myinfo.html">내정보</a></li>
@@ -460,6 +461,5 @@ function reissueToken(){
             }
         }
         function getProduct(productId){
-            localStorage.setItem('productId',productId)
-            window.location.href = "product.html"
+            window.location.href = `/product.html?productId=${productId}`   
         }

@@ -127,6 +127,7 @@ function getProduct(productId) {
           <p>${productInfo.productEnum}</p>
           <p>${productInfo.productStatus}</p>
           <p>${productInfo.productCategory}</p>
+          <p>${productInfo.viewCount}</p>
         </div>
         <button onclick="createChatRoom(${productId})" type="button" class="btn btn-dark">판매자와 채팅하기</button>
       </div>`
@@ -135,7 +136,6 @@ function getProduct(productId) {
     }
   })
 }
-
 
 // 상품 수정하기
 function updateproduct() {
