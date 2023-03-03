@@ -161,7 +161,8 @@ function getProfile(){
         document.getElementById('loginbuttons').style.display = 'none';
         let temp_html = 
         `<div class="card-body" style="display: flex; justify-content: center; align-items: center;">
-            <a type="button" class="btn btn-dark small-button2" href="http://127.0.0.1:5500/addProduct.html">상품등록하기</a>
+            <a type="text" class="btn btn-dark small-button2" href="http://127.0.0.1:5500/addProduct.html"style="width: 100px; margin-top: -5px;margin-right: 30px;">상품등록하기</a>
+            <a type="text" class="btn btn-dark small-button2" href="http://127.0.0.1:5500/userreport.html" style="width: 100px; margin-top: -5px; margin-right: 40px; ">유저 신고하기</a>
         </div>
         <li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
@@ -181,9 +182,9 @@ function getProfile(){
             </li>               
         </ul>      
     </li>
-    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" href="index.html" > 로그아웃 </a></div>`
     $('#loginForm').append(temp_html)
-        element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
+       
       }).fail(function(){
         reissueToken();
 });
