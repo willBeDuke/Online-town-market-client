@@ -6,7 +6,7 @@ $(document).ready(function () {
         console.error("userId 요소를 찾을 수 없습니다.");
         return;
     }
-    getPurchaseList()
+    getPurchaseList(0)
 });
 
 
@@ -70,33 +70,39 @@ function getProfile() {
     });
 }
 
-function getPurchaseList() {
-    $("#purchase").empty();
+function getPurchaseList(page) {
+    // $("#purchase").empty();
     $.ajax({
         type: 'GET',
         url: 'http://localhost:8080/trade/purchase',
         headers: { Authorization: userToken },
         dataType: 'json',
+        data: {
+            "page": page,
+            "size": 9,
+            "sortBy": "createdAt",
+            "isAsc": false
+        },
         success: function (response) {
-            for (let i = 0; i < response.length; i++) {
-                let productImg = response[i]['productImg'];
-                let productName = response[i]['productName'];
-                let seller = response[i]['username'];
+            console.log(response)
+            let products = response.content;
+            for (let i = 0; i < products.length; i++) {
+                let productName = products[i]['productName'];
+                let userName = products[i]['userName'];
 
                 let temp_html = `<div class="container-fluid" style="margin-left: 300px; margin-right: 300px;">
                                     <div class="row" id="profile-grid" style="margin-top: 30px;">
                                         <div class="col-sm-4 col-xs-12 profile">
                                             <div class="panel panel-default">
-                                                <div style="color: black; text-decoration: none;" onclick="getProduct()" class="panel-thumbnail">
+                                                <div style="color: black; text-decoration: none;" class="panel-thumbnail">
                                                     <a title="image 1" class="thumb">
-                                                        <img src="${productImg}"
+                                                        <img src=""
                                                             class="img-responsive img-rounded" data-toggle="modal"
                                                             data-target=".modal-profile-lg">
                                                     </a>
                                                 </div>
-                                                <div class="panel-body">
+                                                <div class="panel-body"data-username="${userName}">
                                                     <p class="profile-name">${productName}</p>
-                                                    <p>${seller}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,60 +114,60 @@ function getPurchaseList() {
                                         </div>
                                     </div>
                                 </div>`
-                $('#purchaseList').append(temp_html);
+                $('.purchaseList').append(temp_html);
             }
 
-            // var totalPages = response.totalPages;
-            // var pageNumber = response.number;
+            var totalPages = response.totalPages;
+            var pageNumber = response.number;
                             
-            // var ul = $('#pagination');
-            // ul.empty();
+            var ul = $('#pagination');
+            ul.empty();
                             
-            // // Add 'First' button
-            // var firstLi = $('<li>');
-            // var firstA = $('<a>').attr('href', '#').text('처음');
-            // firstLi.append(firstA);
-            // ul.append(firstLi);
+            // Add 'First' button
+            var firstLi = $('<li>');
+            var firstA = $('<a>').attr('href', '#').text('처음');
+            firstLi.append(firstA);
+            ul.append(firstLi);
             
-            // // Add numbered buttons
-            // var startIndex = Math.max(0, pageNumber - 2);
-            // var endIndex = Math.min(startIndex + 4, totalPages - 1);
-            // startIndex = Math.max(0, endIndex - 4);
-            // for (var i = startIndex; i <= endIndex; i++) {
-            //   var li = $('<li>');
-            //   if (i == pageNumber) {
-            //     li.addClass('active');
-            //   }
-            //   var a = $('<a>').attr('href', '#').text(i + 1);
-            //   li.append(a);
-            //   ul.append(li);
-            // }
+            // Add numbered buttons
+            var startIndex = Math.max(0, pageNumber - 2);
+            var endIndex = Math.min(startIndex + 4, totalPages - 1);
+            startIndex = Math.max(0, endIndex - 4);
+            for (var i = startIndex; i <= endIndex; i++) {
+              var li = $('<li>');
+              if (i == pageNumber) {
+                li.addClass('active');
+              }
+              var a = $('<a>').attr('href', '#').text(i + 1);
+              li.append(a);
+              ul.append(li);
+            }
             
-            // // Add 'Last' button
-            // var lastLi = $('<li>');
-            // var lastA = $('<a>').attr('href', '#').text('마지막');
-            // lastLi.append(lastA);
-            // ul.append(lastLi);
+            // Add 'Last' button
+            var lastLi = $('<li>');
+            var lastA = $('<a>').attr('href', '#').text('마지막');
+            lastLi.append(lastA);
+            ul.append(lastLi);
                  
-            // // Add click event for 'First' button
-            // $('#pagination li:first-child a').click(function(event) {
-            //     event.preventDefault();
-            //     getProducts(0);
-            // });
+            // Add click event for 'First' button
+            $('#pagination li:first-child a').click(function(event) {
+                event.preventDefault();
+                getProducts(0);
+            });
             
-            // // Add click event for 'Last' button
-            // $('#pagination li:last-child a').click(function(event) {
-            //     event.preventDefault();
-            //     getProducts(totalPages - 1);
-            // });
+            // Add click event for 'Last' button
+            $('#pagination li:last-child a').click(function(event) {
+                event.preventDefault();
+                getProducts(totalPages - 1);
+            });
             
-            // $('#page_nation').append(ul);
+            $('#page_nation').append(ul);
             
-            // $('#pagination a').click(function(event) {
-            //     event.preventDefault();
-            //     var page = $(this).text() - 1;
-            //     getProducts(page);
-            // });
+            $('#pagination a').click(function(event) {
+                event.preventDefault();
+                var page = $(this).text() - 1;
+                getProducts(page);
+            });
         },
         error: function (xhr, status, error) {
             console.error(xhr);
