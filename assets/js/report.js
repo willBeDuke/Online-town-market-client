@@ -20,7 +20,7 @@ function reportUser() {
     $.ajax(settings).done(function (response) {
         console.log(response);
         alert("신고 완료");
-        location.href = "index.html";
+        closeWindow();
     }).fail(function (response) {
         if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
             alert("입력하신 정보를 다시 확인해 주세요")
@@ -48,11 +48,16 @@ function reportProducts() {
     };
 
     $.ajax(settings).done(function (response) {
-        console.log(response);
         alert("신고 완료");
-        window.close();
+        closeWindow();
     }).fail(function (response) {
         if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
             alert("입력하신 정보를 다시 확인해 주세요")
     });
 }
+
+function closeWindow() {
+    var returnValue = confirm("창을 닫으시겠습니까?");
+     alert(returnValue)
+     window.close();
+    }
