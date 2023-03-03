@@ -292,6 +292,7 @@ function reissueToken(){
                 // tbody.empty();
                 $('#info_box').empty();
                 for (var i = 0; i < products.length; i++) {
+                    let productImg = products[i].productImg ? products[i].productImg : "//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201";
                   let productName =  products[i].productName;
                   let productPrice = products[i].productPrice;
                   let productId = products[i].productId;
@@ -300,7 +301,7 @@ function reissueToken(){
                   <div class="panel panel-default">
                     <div onclick = "getProduct(${productId})" class="panel-thumbnail">
                         <a  title="image 1" class="thumb">
-                        <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
+                        <img src=${productImg} class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
                         </a>
                     </div>
                     <div class="panel-body">
