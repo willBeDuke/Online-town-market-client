@@ -42,19 +42,20 @@
       display: grid;
       grid-template-columns: 1fr 2fr;
       position: relative;
-      margin: 100px;
+      margin: 65px 200px 0 200px;
     }
 
     .chat_list_wrap {
       margin-right: 10px;
       box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.15);
-      width: 415px;
+      width: 400px;
+      height: 700px;
     }
 
     .chat_list_wrap .header {
       font-size: 14px;
       padding: 15px 0;
-      background: #F18C7E;
+      background: #82ca9c;
       color: rgb(255, 255, 255);
       text-align: center;
       font-family: "Josefin Sans", sans-serif;
@@ -124,16 +125,16 @@
       font-size: 12px;
       width: 50px;
       height: 40px;
-      background-color: #F18C7E;
+      background-color: #82ca9c;
       border-radius: 5px;
-      border: #F18C7E solid 1px;
+      border: #82ca9c solid 1px;
       display: inline;
       float: right;
       margin-right: 10px;
     }
 
     .deleteBtn :hover {
-      background-color: #d74835;
+      background-color: #49d87e;
     }
 
 
@@ -148,7 +149,7 @@
     .chat_wrap .header {
       font-size: 14px;
       padding: 15px 0;
-      background: #F18C7E;
+      background: #82ca9c;
       color: white;
       text-align: center;
       box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.15);
@@ -226,7 +227,7 @@
       width: 100%;
       background-color: #FFF;
       text-align: center;
-      border-top: 1px solid #F18C7E;
+      border-top: 1px solid #82ca9c;
 
     }
 
@@ -291,14 +292,14 @@
     #send {
       color: #eee;
       font-size: 12px;
-      background-color: #F18C7E;
+      background-color: #82ca9c;
       border-radius: 5px;
       margin: 15px 0 15px 5px;
-      border: #F18C7E solid 1px;
+      border: #82ca9c solid 1px;
     }
 
     #send :hover {
-      background-color: #d74835;
+      background-color: #49d87e;
     }
 
     .navbar-nav .dropdown-menu {
@@ -306,10 +307,11 @@
     }
 
     .completed {
-      background-color: #F18C7E;
+      background-color: #82ca9c;
+      color: white;
       border-radius: 5px;
-      margin: 15px 0 15px 40px;
-      border: #F18C7E solid 1px;
+      margin: 15px 0 15px 100px;
+      border: #82ca9c solid 1px;
       padding: 10px;
     }
   </style>
@@ -377,7 +379,7 @@
   <div class="chat-form">
     <div class="chat_list_wrap">
       <div class="header">
-        나의 채팅리스트
+        판매 채팅리스트
       </div>
       <div class="list" style="overflow: scroll; width: 100%; height: 728px;">
         <ul id="roomList" class="chatroom">
@@ -388,21 +390,20 @@
     <div id="chatMessage" class="chat_wrap" style="display: none;">
       <div class="creatChat">
         <div class="header">
-          <span id="apponent_nickname">상대방 닉네임</span>
+          <span id="apponent_nickname"></span>
           <button id="disconnect" type="button" class="btn-close" aria-label="Close"
             style="float: right; margin: 0 20px 0 20px;"></button>
         </div>
         <div class="productDesc">
           <div id="productImg" class="productImg">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBX5RzsDg3wb4_-0BewsyQ8T3Qvi43AGv9Dg&usqp=CAU">
+              src="">
           </div>
           <div class="productDetailDesc" id="productDetailDesc">
-            <div class="roomName" style="margin-bottom: 5px;">맥북팔아용ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
-            <div class="productPrice">${가격}원</div>
+            <div class="roomName" style="margin-bottom: 5px;"></div>
+            <div class="productPrice"></div>
           </div>
           <div class="deal" id="deal">
-            ${거래 상태}
           </div>
           <div id="salesCompleted">
             <button class="completed" id="completed" type="submit">판매 완료</button>
