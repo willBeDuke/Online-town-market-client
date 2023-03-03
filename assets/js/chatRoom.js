@@ -29,7 +29,6 @@ function chatList() {
     headers: { Authorization: userToken },
     dataType: 'json',
     success: function (response) {
-      console.log(response)
       // 가져온 데이터로 채팅 리스트를 렌더링합니다.
       let roomList = response;
 
