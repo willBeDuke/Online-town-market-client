@@ -183,7 +183,7 @@ function getProfile(){
             </li>               
         </ul>      
     </li>
-    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" href="index.html" > 로그아웃 </a></div>`
+    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()"> 로그아웃 </a></div>`
     $('#loginForm').append(temp_html)
        
       }).fail(function(){
