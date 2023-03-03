@@ -455,6 +455,5 @@ function reissueToken(){
             }
         }
         function getProduct(productId){
-            localStorage.setItem('productId',productId)
-            window.location.href = "product.html"
+            window.location.href = `/product.html?productId=${productId}`   
         }
