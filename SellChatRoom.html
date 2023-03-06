@@ -155,10 +155,6 @@
       box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.15);
     }
 
-    .chat_wrap .chat {
-      overflow: hidden auto;
-      padding-bottom: 80px;
-    }
 
     .chat_wrap .chat ul {
       position: relative;
@@ -166,7 +162,6 @@
       padding: 0px;
       height: calc(100% - 56px);
       list-style: none;
-      overflow: hidden auto;
     }
 
     .chat_wrap .chat ul li {
@@ -314,6 +309,13 @@
       border: #82ca9c solid 1px;
       padding: 10px;
     }
+
+    .chat {
+      overflow: scroll;
+      width: 100%;
+      height: 500px;
+      padding: 10px;
+    }
   </style>
 </head>
 
@@ -412,8 +414,7 @@
       </div>
 
 
-      <div id="chat" class="chat" style="overflow: scroll; width: 100%; height: 570px; padding: 10px;"
-        onclick="connect()">
+      <div id="chat" class="chat" onclick="connect()">
         <ul id="messageList">
         </ul>
       </div>

@@ -163,6 +163,7 @@ function getProfile(){
         `<div class="card-body" style="display: flex; justify-content: center; align-items: center;">
             <a type="text" class="btn btn-dark small-button2" href="http://127.0.0.1:5500/addProduct.html"style="width: 100px; margin-top: -5px;margin-right: 30px;">상품등록하기</a>
             <a type="text" class="btn btn-dark small-button2" onclick = "userReport()" style="width: 100px; margin-top: -5px; margin-right: 40px; ">유저 신고하기</a>
+            <a type="text" class="btn btn-dark small-button2" onclick = "addressCertified()" style="width: 100px; margin-top: -5px; margin-right: 40px; ">동네 설정하기</a>
         </div>
         <li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
@@ -357,6 +358,7 @@ function reissueToken(){
                 var products = response.content;
                 $('#profile-grid').empty();
                 for (var i = 0; i < products.length; i++) {
+                    let productImg = products[i].productImg ? products[i].productImg : "//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201";
                   let productName = products[i].productName;
                   let productPrice = products[i].productPrice;
                   let productId = products[i].productId;
@@ -365,7 +367,7 @@ function reissueToken(){
                     <div class="panel panel-default">
                       <div onclick="getProduct(${productId})" class="panel-thumbnail">
                         <a title="image 1" class="thumb">
-                          <img src="//dummyimage.com/900x350.png/c0c0c0&amp;text=image0x201" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
+                          <img src=${productImg} style="width: 100%; height: 150px;" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
                         </a>
                       </div>
                       <div class="panel-body">
@@ -467,6 +469,13 @@ function reissueToken(){
         }
         function userReport(){
             var url = '/userReport.html';
+           
+            var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+            window.open(url,'',option)
+        }
+
+        function addressCertified() {
+            var url = '/address.html';
            
             var option = "width = 800, height = 800, top = 100, left = 200, location = no"
             window.open(url,'',option)
