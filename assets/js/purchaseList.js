@@ -326,3 +326,4 @@ function getProductIdFromUrl() {
     // Get the product ID parameter
     return urlParams.get('productId');
 }
+
