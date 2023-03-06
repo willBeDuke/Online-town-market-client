@@ -157,10 +157,11 @@ jQuery(document).ready(function ($) {
 
     //End
 });
-
+const urlSearchParams = new URLSearchParams(window.location.search);
+const productId = urlSearchParams.get('productId');
 function checkInterest() {
     var settings = {
-        "url": "http://localhost:8080/interest/check/" + geProductId,
+        "url": "http://localhost:8080/interest/check/" + productId,
         "method": "GET",
         "timeout": 0,
         "headers": {
