@@ -30,6 +30,39 @@
 
         <script src="assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
+
+    <style>
+        .navbar-nav .dropdown-menu {
+            position: absolute;
+        }
+    
+        .products {
+            text-align: center;
+        }
+    
+        .products h3 {
+            text-align: center;
+            color: white;
+            padding: 10px;
+            margin-top: 50px;
+            background-color: #82ca9c;
+        }
+    
+        .container-fluid {
+            width: auto;
+            box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.15);
+            height: 900px;
+        }
+    
+        .card {
+            margin: 15px auto;
+        }
+    
+        .page_wrap {
+            margin-top: 50px auto;
+        }
+    </style>
+
     <body>
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -113,6 +146,7 @@
 </div>
 <div class="products">
     <div class="container-fluid" style="margin-left: 300px; margin-right: 300px;">
+        <h3>나의 판매 목록</h3>
         <div class="row" id="product-onsale-grid" style="margin-top: 30px;">
         </div>
         <div class="page_wrap">
