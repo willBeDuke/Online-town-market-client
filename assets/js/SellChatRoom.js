@@ -245,7 +245,6 @@ function chatView(roomId, nickname, productId, buyerId) {
       }
     });
   }
-  console.log(buyerId, productId)
   connect(roomId, nickname, productId);
 }
 
@@ -280,6 +279,7 @@ function salesCompleted(buyerId, productId) {
       "productId": productId
     }),
     success: function (response) {
+      console.log(response)
       $('.deal').text('판매완료');
       // 채팅 창 다시 불러오기
       alert("판매 완료 처리되었습니다.");
@@ -287,15 +287,6 @@ function salesCompleted(buyerId, productId) {
     }
   });
 }
-
-
-// function offbutton() {
-
-
-// }
-
-
-
 
 
 

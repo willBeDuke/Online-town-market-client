@@ -94,14 +94,19 @@ function getFullAddress(x, y) {
     data: { x: x, y: y },
     dataType: 'json',
     success: function (response) {
-      console.log(response)
+      console.log("뭘까 " + response)
     }
   })
   .done(function (fragment) {
     console.log(fragment);
     let address = fragment['address'];
+    let address2 = fragment['address2'];
+    let address3 = fragment['address3'];
     console.log(address)
-    $("#fullAddress").text(`${address}`);
+
+    let temp_html = `<span>${address}</span>&nbsp;<span>${address2}</span>&nbsp;<span>${address3}</span>`
+    // $("#fullAddress").text(`${address}`, `${address2}`, `${address3}`);
+    $("#fullAddress").append(temp_html);
   });
 }
 

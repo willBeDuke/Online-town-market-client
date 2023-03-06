@@ -238,12 +238,11 @@ function getPurchaseList(page) {
         url: 'http://localhost:8080/trade/purchase',
         headers: { Authorization: userToken },
         dataType: 'json',
-        data: {
-            "page": page,
-            "size": 9,
-            "sortBy": "createdAt",
-            "isAsc": false
-        },
+        // data: {
+        //     "size": 10,
+        //     "sort": "id",
+        //     "direction": "Sort.Direction.DESC"
+        // },
         success: function (response) {
             console.log(response)
             let products = response.content;
