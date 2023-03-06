@@ -257,7 +257,7 @@ function getPurchaseList(page) {
                                     <p class="card-text">${userName}</p>
                                 </div>
                             </div>`
-                $('#product-onbuy-grid').append(temp_html);
+                $('#product-onsale-grid').append(temp_html);
             }
 
             var totalPages = response.totalPages;
