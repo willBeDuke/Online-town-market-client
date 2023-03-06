@@ -6,6 +6,82 @@
   <title>낙낙상회 중고거래 | 상품등록</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<style>
+    /* 전체 영역 스타일 */
+    body {
+        background-color: #f5f5f5;
+        font-family: "Noto Sans KR", sans-serif;
+    }
+
+    table {
+      width: auto;
+      margin: auto;
+    }
+
+    /* 이미지 업로드 관련 스타일 */
+    .productPhoto {
+      position: relative;
+      /* overflow: hidden; */
+      display: inline-block;
+      margin-right: 10px;
+      border-radius: 5px;
+      background-color: #82ca9c;
+      color: #fff;
+      font-size: 16px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .fileInput input[type="file"] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    #uploadPhoto {
+      border: none;
+      border-radius: 5px;
+      background-color: #82ca9c;
+      color: #fff;
+      font-size: 16px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #uploadPhoto:hover {
+        background-color: #82ca9c;
+    }
+
+    .form-control {
+      width: auto;
+      border: none;
+      border-radius: 5px;
+      background-color: #82ca9c;
+      color: #fff;
+      font-size: 16px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    button:focus,
+    input:focus {
+      outline: none;
+    }
+
+    /* 반응형 스타일 */
+    @media (max-width: 768px) {
+        .form-control {
+          display: block;
+          margin: 10px 0;
+          width: 100%;
+        }
+    }
+</style>
+
 <body>
   <div id="image-preview">
 
@@ -18,7 +94,7 @@
       <tr>
         <th><label for="productPhoto">상품사진</label></th>
         <td><input type="file" id="fileInput" name="fileInput" /></td>
-        <td><button type="button" id="uploadPhoto">사진 업로드</button></td>
+        <td><button class="form-control" id="uploadPhoto">사진 업로드</button></td>
       </tr>
       <div>
         <input type="text" id="image-url" placeholder="이미지url">
@@ -63,11 +139,13 @@
           <option value="D">D</option>
         </select></td>
       </tr>
-      <tr>
-        <th colspan="2">
-          <button onclick="addProduct()" type="button" class="btn btn-light">상품 등록하기</button>
-          <a class="btn btn-light" href="http://127.0.0.1:5500/index.html">처음화면으로</a>
-        </th>
+      <tr style="text-align: center;">
+        <td>
+          <button onclick="addProduct()" type="button" class="form-control">상품 등록하기</button> 
+        </td>
+        <td>
+          <button class="form-control" onclick="window.close()">닫기</button>
+        </td>
       </tr>
     </table>
   </form>
