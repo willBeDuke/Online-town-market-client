@@ -370,7 +370,7 @@ function reissueToken(){
                           <img src=${productImg} style="width: 100%; height: 150px;" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
                         </a>
                       </div>
-                      <div class="panel-body">
+                      <div class="panel-body" onclick="getProduct(${productId})">
                         <p class="profile-name">${productName}</p>
                         <p>${productPrice}</p>
                       </div>

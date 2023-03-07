@@ -9,7 +9,7 @@ $(document).ready(function () {
 });
 
 
-const userToken = localStorage.getItem('accessToken')
+
 
 
 // 지도 초기화
@@ -126,6 +126,6 @@ function setupCompleted(){
   localStorage.setItem('address1',address)
   localStorage.setItem('address2',address2)
   localStorage.setItem('address3',address3)
-  $("#region").text(localStorage.getItem('address1')+" "+localStorage.getItem('address2')+" "+localStorage.getItem('address3'))
+  
   window.close();
 }

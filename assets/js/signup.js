@@ -556,5 +556,5 @@ function setRegion(){
   $("#region").text(localStorage.getItem('address1')+" "+localStorage.getItem('address2')+" "+localStorage.getItem('address3'))
   localStorage.removeItem('address1')
   localStorage.removeItem('address2')
-  localStorage.removeItem('address3')
+  localStorage.removeItem('address3') 
 }
