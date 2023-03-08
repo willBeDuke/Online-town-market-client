@@ -289,7 +289,6 @@ $(document).ready(function () {
 })
 
 function imp() {
-    console.log(username, role);
 
     const settings = {
         "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
@@ -313,8 +312,21 @@ function imp() {
 }
 
 
+let responseVlaue;
+function checkMyProduct(productId) {
+    $.ajax({
+        type: 'GET',
+        url: "http://localhost:8080/products/check/" + productId,
+        headers: { Authorization: userToken },
+    })
+        .done(function (response) {
+            responseVlaue = response;
+        })
+}
+
 
 function getProductInfo(productId) {
+    checkMyProduct(productId)
     var settings = {
         "url": "http://localhost:8080/products/" + productId,
         "method": "GET",
@@ -323,7 +335,6 @@ function getProductInfo(productId) {
 
     $.ajax(settings).done(function (response) {
 
-        console.log(response);
         let productId = response.productId;
         let productName = response.productName;
         let productPrice = response.productPrice;
@@ -347,7 +358,6 @@ function getProductInfo(productId) {
         if (productContents == null) {
             productContents = "내용없음"
         }
-
 
         let temp_html =
             `<div>
@@ -382,7 +392,7 @@ function getProductInfo(productId) {
    </section>
 
        <div class="card-body" "display: flex;flex-direction: row;>
-                 <div style = "font-size: 20px ; margin-top: 5px; ">  ${productName}</div>
+                 <div style = "font-size: 20px ; margin-top: 5px; ">${productName}</div>
                  <div>${productCategory}</div>
                <p style = " display: flex;
                flex-direction: column;
@@ -399,8 +409,8 @@ function getProductInfo(productId) {
            <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심</button>
 
            ${productEnum !== "판매완료" ? '<button type="button" class="btn btn-light small-button2" style="margin-right:10px" onclick="checkMyProductChat(' + productId + ', ' + sellerId + ', \'' + productName + '\', \'' + productEnum + '\')">판매자와 채팅하기</button>' : ''}
-           <button id="deleteProduct" type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="deleteProduct(${productId})">상품 삭제</button>
-           <button id="updateproduct" type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="updateOpen(${productId})">상품 수정</button>
+           ${responseVlaue == true ? '<button id="deleteProduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" onclick="deleteProduct(' + productId + ')">상품 삭제</button>':''}
+           ${responseVlaue == true ? '<button id="updateproduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" onclick="updateOpen(' + productId + ')">상품 수정</button>':''}
         </div>`
         $('#info_box').append(temp_html);
 
