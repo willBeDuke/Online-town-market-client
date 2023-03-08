@@ -270,13 +270,13 @@ function getUserInfo() {
         let email = response.email;
         let username = response.username;
         let nickname = response.nickname;
-        let region = response.region;
+        let address = response.address[0].address;
 
         let temp_html = `<div class="info1" style="justify-content: flex-start; display: flex; flex-direction: column; margin-left: -200px; padding: 10px 0px 10px 0px;">
        <p>ID : ${username}</p>
        <p>nickname : ${nickname}</p>
        <p>email : ${email}</p>
-       <p>region : ${region} </p>
+       <p>address : ${address} </p>
        <p>Image : ${img}</p>
        <!-- Button trigger modal -->
        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
