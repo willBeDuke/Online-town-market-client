@@ -238,11 +238,6 @@ function getPurchaseList(page) {
         url: 'http://localhost:8080/trade/purchase',
         headers: { Authorization: userToken },
         dataType: 'json',
-        // data: {
-        //     "size": 10,
-        //     "sort": "id",
-        //     "direction": "Sort.Direction.DESC"
-        // },
         success: function (response) {
             console.log(response)
             let products = response.content;
@@ -256,7 +251,7 @@ function getPurchaseList(page) {
                                     <p class="card-text">${userName}</p>
                                 </div>
                             </div>`
-                $('#product-onsale-grid').append(temp_html);
+                $('#product-onbuy-grid').append(temp_html);
             }
 
             var totalPages = response.totalPages;

@@ -145,36 +145,36 @@ function getProduct(productId) {
   })
 }
 
-// 상품 수정하기
-function updateproduct() {
-  // checkProductInfo();
+// // 상품 수정하기
+// function updateproduct() {
+//   // checkProductInfo();
 
-  $.ajax({
-    type: "PUT",
-    url: "http://localhost:8080/update/" + productId,
-    datatype: "json",
-    contentType: "application/json; charset=UTF-8",
-    data: { "id_give": productId },
-    data: JSON.stringify(productRequestDto),
-    headers: { Authorization: userToken },
-    success: function (response) {
-      console.log(response)
-    }
-  })
-}
+//   $.ajax({
+//     type: "PUT",
+//     url: "http://localhost:8080/update/" + productId,
+//     datatype: "json",
+//     contentType: "application/json; charset=UTF-8",
+//     data: { "id_give": productId },
+//     data: JSON.stringify(productRequestDto),
+//     headers: { Authorization: userToken },
+//     success: function (response) {
+//       console.log(response)
+//     }
+//   })
+// }
 
-// 상품 삭제하기
-function deleteProduct() {
-  $.ajax({
-    type: "DELETE",
-    url: "http://localhost:8080/" + productId,
-    data: { 'id_give': productId },
-    headers: { Authorization: userToken },
-    success: function (response) {
-      console.log(response)
-    }
-  })
-}
+// // 상품 삭제하기
+// function deleteProduct() {
+//   $.ajax({
+//     type: "DELETE",
+//     url: "http://localhost:8080/" + productId,
+//     data: { 'id_give': productId },
+//     headers: { Authorization: userToken },
+//     success: function (response) {
+//       console.log(response)
+//     }
+//   })
+// }
 
 // 상품 정보 유효성 검사
 // function checkProductInfo() {

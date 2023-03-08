@@ -1,4 +1,7 @@
-"use strict";
+
+const userToken = localStorage.getItem('accessToken');
+const urlSearchParams = new URLSearchParams(window.location.search);
+const productId = urlSearchParams.get('productId');
 
 
 jQuery(document).ready(function ($) {
@@ -20,7 +23,7 @@ jQuery(document).ready(function ($) {
     checkInterest();
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
-    
+
 
 
     /*---------------------------------------------*
@@ -157,8 +160,7 @@ jQuery(document).ready(function ($) {
 
     //End
 });
-const urlSearchParams = new URLSearchParams(window.location.search);
-const productId = urlSearchParams.get('productId');
+
 function checkInterest() {
     var settings = {
         "url": "http://localhost:8080/interest/check/" + productId,
@@ -275,6 +277,8 @@ function reissueToken() {
 //         console.log(response);
 //       });
 // }
+
+
 const searchParams = new URLSearchParams(window.location.search);
 const username = searchParams.get('username');
 const role = searchParams.get('role');
@@ -308,6 +312,7 @@ function imp() {
 }
 
 function getProductInfo(productId) {
+
     var settings = {
         "url": "http://localhost:8080/products/" + productId,
         "method": "GET",
@@ -327,7 +332,7 @@ function getProductInfo(productId) {
         let createdAt = response.createdAt.substr(0, 10);
         let modifiedAt = response.modifiedAt.substr(0, 10);
         let viewCount = response.viewCount;
-        let nickname = response.nickName;
+        let nickName = response.nickName;
         let region = response.region;
         let profileImg = response.img;
         let userGrade = response.userGrade;
@@ -340,7 +345,6 @@ function getProductInfo(productId) {
         if (productContents == null) {
             productContents = "내용없음"
         }
-    
 
         let temp_html =
             `<div>
@@ -361,7 +365,7 @@ function getProductInfo(productId) {
                    <img src="${profileImg}">
                </div>
                <div id="article-profile-left">
-                   <div id="nickname">${nickname}</div>
+                   <div id="nickname">${nickName}</div>
                    <div id="region-name">${region}</div>
                    <div> 평점: ${userGrade}</div>
                </div>
@@ -391,40 +395,73 @@ function getProductInfo(productId) {
            <div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
            <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심</button>
 
-           ${productEnum !== "판매완료" ? '<button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(' + productId + ', ' + sellerId + ', \'' + productName + '\', \'' + productEnum + '\')">판매자와 채팅하기</button>' : ''}
-       </div>`
+           ${productEnum !== "판매완료" ? '<button type="button" class="btn btn-light small-button2" style="margin-right:10px" onclick="checkMyProductChat(' + productId + ', ' + sellerId + ', \'' + productName + '\', \'' + productEnum + '\')">판매자와 채팅하기</button>' : ''}
+           <button id="deleteProduct" type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="deleteProduct(${productId})">상품 삭제</button>
+           <button id="updateproduct" type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="updateOpen(${productId})">상품 수정</button>
+        </div>`
         $('#info_box').append(temp_html);
-        
+
     });
     // 클릭 이벤트 설정
     $(".small-button2").click(function () {
         createChatRoom(productId, sellerId, productName);
     });
+    $("#deleteProduct").click(function () {
+        deleteProduct(productId);
+    })
+    $("#updateproduct").click(function () {
+        updateOpen(productId)
+    })
 }
 
+function updateOpen(productId) {
+    // window.location.href = "/updateproduct.html?productId=" + productId;
+    var url = "/updateproduct.html?productId=" + productId;
+    var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+    window.open(url, "", option);
+    
+}
+
+
+
+// 상품 삭제하기
+function deleteProduct(productId) {
+    $.ajax({
+        type: "DELETE",
+        url: "http://localhost:8080/products/" + productId,
+        data: { 'productId': productId },
+        headers: { Authorization: userToken }
+    })
+        .done(function (data) {
+            console.log(data)
+            console.log(productId)
+            alert("삭제되었습니다.")
+            window.location.href = "index.html";
+        })
+
+        .fail(function (xhr, textStatus, errorThrown) {
+            alert("권한이 없습니다.")
+        })
+}
 
 // 채팅방 만들기
 // 채팅 보여주는 부분 쪽 채팅 버튼에 "onclick=함수명(${'productId'})" 해줘야함
 function createChatRoom(productId, sellerId, productName) {
-    console.log(productEnum, productId, productName, sellerId)
+    console.log(productName, productId, productName, sellerId)
     $.ajax({
         type: 'POST',
         url: "http://localhost:8080/chatroom/" + productId,
         headers: { Authorization: userToken },
-        dataType: "json",
-        contentType: 'application/json',
         data: JSON.stringify({
             "roomName": productName,
             "productId": productId,
             "sellerId": sellerId
         }),
-        success: function (response) {
-            location.href = 'chatroom.html';
+        success: function () {
+            window.location.href = 'chatroom.html';
         }
     })
 };
-
-
 
 function interest(productId) {
     var settings = {
@@ -447,65 +484,51 @@ function interest(productId) {
         reissueToken();
     })
 };
-const userToken = localStorage.getItem('accessToken')
 
 
-function createChatRoom(productId) {
-    $.ajax({
-        type: 'POST',
-        url: "http://localhost:8080/chatroom/" + productId,
-        headers: { Authorization: userToken },
-        success: function () {
-            window.location = '/chatRoom.html';
+function checkMyProductInterest(productId) {
+    var settings = {
+        "url": "http://localhost:8080/products/check/" + productId,
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Authorization": localStorage.getItem("accessToken")
         },
-        error: function (xhr, status, error) {
-            console.error(xhr);
+    };
+    $.ajax(settings).done(function (response) {
+        if (response == true) {
+            alert("내 상품은 관심목록에 등록 할 수 없습니다.")
         }
+        if (response == false) {
+            interest(productId);
+        }
+    }).fail(function () {
+        alert("로그인 해 주세요");
     });
 }
 
-    function checkMyProductInterest(productId){
-        var settings = {
-            "url": "http://localhost:8080/products/check/" + productId,
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-              "Authorization": localStorage.getItem("accessToken")
-            },
-          };
-          $.ajax(settings).done(function (response) {
-            if(response == true){
-               alert("내 상품은 관심목록에 등록 할 수 없습니다.")
-            }
-            if(response == false){
-                interest(productId);
-            }
-          }).fail(function(){
-            alert("로그인 해 주세요");
-          });
-    }
+function checkMyProductChat(productId) {
+    var settings = {
+        "url": "http://localhost:8080/products/check/" + productId,
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Authorization": localStorage.getItem("accessToken")
+        },
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response)
+        if (response == true) {
+            alert("내 상품에는 채팅을 할 수 없습니다..")
+        }
+        if (response == false) {
+            chatCheck(productId);
 
-    function checkMyProductChat(productId){
-        var settings = {
-            "url": "http://localhost:8080/products/check/" + productId,
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-              "Authorization": localStorage.getItem("accessToken")
-            },
-          };
-          $.ajax(settings).done(function (response) {
-            if(response == true){
-               alert("내 상품에는 채팅을 할 수 없습니다..")
-            }
-            if(response == false){
-                chatCheck(productId);
-                
-            }
-          }).fail(function(){
-            alert("로그인 해 주세요");
-          });
-    }
+        }
+    }).fail(function () {
+        alert("로그인 해 주세요");
+    });
+}
 
 function chatCheck(productId) {
     var settings = {
@@ -527,13 +550,13 @@ function chatCheck(productId) {
     });
 }
 
-function productReport(){
+function productReport() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const productId = urlSearchParams.get('productId');
     var url = `/productreport.html?productId=${productId}`;
-            var name = "상품신고";
-            var option = "width = 800, height = 800, top = 100, left = 200, location = no"
-    window.open(url,name,option)
+    var name = "상품신고";
+    var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+    window.open(url, name, option)
 }
 
 // function getProductId(){
@@ -546,7 +569,7 @@ function productReport(){
 
 // if (match) {
 //   const numberValue = match[1]; 
-  
+
 // } else {
 //   console.log("숫자 값을 찾을 수 없습니다.");
 // }
