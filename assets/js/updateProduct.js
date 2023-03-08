@@ -43,13 +43,11 @@ function updateProduct() {
         .done(function (data) {
             alert("수정이 완료되었습니다.");
             window.close();
+            window.opener.location.reload();
         })
 
         .fail(function (xhr, textStatus, errorThrown) {
             alert("권한이 없습니다.");
-            window.close();
         })
 
 }
-
-product_update_delete
