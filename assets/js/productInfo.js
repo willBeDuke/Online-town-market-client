@@ -184,7 +184,6 @@ function checkInterest() {
     });
 }
 
-
 function getProfile() {
     var settings = {
         "url": "http://localhost:8080/users/profile",
@@ -315,36 +314,7 @@ function imp() {
 
 
 
-// JWT 토큰 디코딩 함수
-function decodeJwtToken(userToken) {
-    const base64Url = userToken.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
-        .join('')
-    );
-  
-    return JSON.parse(jsonPayload);
-  }
-  
-  // JWT 토큰에서 user의 id 값을 추출하는 함수
-  function getUserIdFromJwtToken(userToken) {
-    const decodedToken = decodeJwtToken(userToken);
-    return decodedToken.jti;
-  }
-  
-  // 사용자 ID 추출
-  const userId = getUserIdFromJwtToken(userToken);
-  
-  // 사용자 ID 출력
-  console.log('User ID:', userId);
-
-
-
 function getProductInfo(productId) {
-
     var settings = {
         "url": "http://localhost:8080/products/" + productId,
         "method": "GET",
@@ -466,8 +436,6 @@ function deleteProduct(productId) {
         headers: { Authorization: userToken }
     })
         .done(function (data) {
-            console.log(data)
-            console.log(productId)
             alert("삭제되었습니다.")
             window.location.href = "index.html";
         })
