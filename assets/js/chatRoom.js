@@ -317,6 +317,6 @@ function getProduct(productId) {
     $(".roomName").text(roomName);
     $(".productPrice").text(`${productPrice}원`);
     $(".deal").text(`${productEnum}`);
-    $(".productImg").text(`${productImg}`);
+    $(".productImg").attr("src", `${productImg}`);
   });
 }
