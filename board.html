@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Knock Knock!</title>
+    <title>낙낙상회 | 동네생활</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -48,15 +48,6 @@
         margin-left: 10px;
         padding: 10px 50px 10px 50px;
         float: left;
-    }
-
-    #search {
-        color: #eee;
-        background-color: #82ca9c;
-        border: transparent;
-        border-radius: 5px;
-        margin-left: 10px;
-        padding: 10px;
     }
 
     #boardList tr:hover {
@@ -120,13 +111,7 @@
     <div id="boards" class="container my-3">
         <div class="row my-3">
             <div class="col-6">
-                <button id="createBoard" type="submit" onclick="">글쓰기</button>
-            </div>
-            <div class="col-6">
-                <div class="input-group">
-                    <input type="text" id="search_kw" class="form-control" th:value="${kw}">
-                    <button id="search" type="button">검색</button>
-                </div>
+                <button id="createBoard" type="button" onclick="createButton()">글쓰기</button>
             </div>
         </div>
         <table class="table">
