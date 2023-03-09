@@ -237,10 +237,7 @@ function getSalesList(page) {
         Authorization: userToken
         },
       data: {
-        "page": page,
-        "size": 9,
-        "sortBy": "createdAt",
-        "isAsc": false
+        "page": page
       },
       success: function(response) {
         // 제품 정보를 추출하여 테이블에 추가합니다.
@@ -296,13 +293,13 @@ function getSalesList(page) {
         // Add click event for 'First' button
         $('#pagination li:first-child a').click(function(event) {
             event.preventDefault();
-            getProducts(0);
+            getSalesList(0);
         });
         
         // Add click event for 'Last' button
         $('#pagination li:last-child a').click(function(event) {
             event.preventDefault();
-            getProducts(totalPages - 1);
+            getSalesList(totalPages - 1);
         });
         
         $('#page_nation').append(ul);
@@ -310,7 +307,7 @@ function getSalesList(page) {
         $('#pagination a').click(function(event) {
             event.preventDefault();
             var page = $(this).text() - 1;
-            getProducts(page);
+            getSalesList(page);
         });
 
       }
