@@ -1,3 +1,4 @@
+import URL_VARIABLE from './export.js';
 $(document).ready(function () {
 
   'use strict';
@@ -11,7 +12,7 @@ $(document).ready(function () {
 
 function login(){
     var settings = {
-        "url": "http://localhost:8080/users/login",
+        "url": URL_VARIABLE + "users/login",
         "method": "POST",
         "timeout": 0,
         "headers": {

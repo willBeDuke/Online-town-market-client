@@ -1,4 +1,6 @@
 // 토큰 불러오기
+import URL_VARIABLE from './export.js';
+
 $(document).ready(function () {
   const ok = localStorage.getItem('accessToken')
   getProfile();
@@ -19,7 +21,7 @@ function chatList() {
   $("#roomList").empty()
   $.ajax({
     type: 'GET',
-    url: 'http://localhost:8080/chatroom/buy',
+    url: URL_VARIABLE + 'chatroom/buy',
     headers: { Authorization: userToken },
     dataType: 'json',
     success: function (response) {
@@ -74,7 +76,7 @@ function chatList() {
 
 function getProfile() {
   var settings = {
-    "url": "http://localhost:8080/users/profile",
+    "url": URL_VARIABLE + "users/profile",
     "method": "GET",
     "timeout": 0,
     "headers": {
@@ -132,7 +134,7 @@ let socket = null;
 
 function connect(roomId, nickname, productId) {
 
-  socket = new SockJS("http://localhost:8080/ws");
+  socket = new SockJS(URL_VARIABLE + "ws");
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
     setConnected(true);
@@ -204,7 +206,7 @@ function chatView(roomId, nickname, productId) {
     $('#chatMessage').show();
     $.ajax({
       type: 'GET',
-      url: "http://localhost:8080/chatrooms/" + roomId,
+      url: URL_VARIABLE + "chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
         getProduct(productId);
@@ -266,7 +268,7 @@ function deleteChat(roomId) {
   $('#chatMessage').hide();
   $.ajax({
     type: "DELETE",
-    url: "http://localhost:8080/chatroom/" + roomId,
+    url: URL_VARIABLE + "chatroom/" + roomId,
     headers: { Authorization: userToken },
     dataType: "json",
     success: function (response) {
@@ -280,7 +282,7 @@ function deleteChat(roomId) {
 
 function logout() {
   var settings = {
-    "url": "http://localhost:8080/users/logout",
+    "url": URL_VARIABLE + "users/logout",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -298,7 +300,7 @@ function logout() {
 
 function getProduct(productId) {
   var settings = {
-    "url": "http://localhost:8080/products/" + productId,
+    "url": URL_VARIABLE + "products/" + productId,
     "method": "GET",
     "timeout": 0,
     "headers": {

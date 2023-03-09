@@ -1,5 +1,5 @@
 "use strict";
-
+import URL_VARIABLE from './export.js';
 
 jQuery(document).ready(function ($) {
     if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
@@ -148,7 +148,7 @@ jQuery(document).ready(function ($) {
 
 function getProfile(){
     var settings = {
-        "url": "http://localhost:8080/users/profile",
+        "url": URL_VARIABLE + "users/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -186,7 +186,7 @@ function getProfile(){
 
 function logout(){
     var settings = {
-        "url": "http://localhost:8080/users/logout",
+        "url": URL_VARIABLE + "users/logout",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -203,7 +203,7 @@ function logout(){
 }
 function reissueToken(){
     var settings = {
-        "url": "http://localhost:8080/refresh/regeneration",
+        "url": URL_VARIABLE + "refresh/regeneration",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -223,7 +223,7 @@ function reissueToken(){
 
 // function getproducts(){
 //     var settings = {
-//         "url": "http://localhost:8080/products/get",
+//         "url": URL_VARIABLE + "products/get",
 //         "method": "POST",
 //         "timeout": 0,
 //         "headers": {
@@ -252,7 +252,7 @@ function reissueToken(){
             console.log(username, role);
 
             const settings = {
-                "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
+                "url": URL_VARIABLE + `users/login-username?username=${username}&role=${role}`,
                 "method": "POST",
                 "timeout": 0,
                 "headers": {
@@ -278,7 +278,7 @@ function reissueToken(){
                 window.location.href = "index.html"
             }
             $.ajax({
-              url: "http://localhost:8080/products/search",
+              url: URL_VARIABLE + "products/search",
               type: 'GET',
               data: {
                     "page": page,

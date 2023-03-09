@@ -1,3 +1,4 @@
+import URL_VARIABLE from './export.js';
 function geoFindMe() {
     const regionInput = document.querySelector('#region');
  
@@ -8,7 +9,7 @@ function geoFindMe() {
         console.log(latitude, longitude);
 
         var settings = {
-            "url": "http://localhost:8080/users/search/reverse-geo",
+            "url": URL_VARIABLE + "users/search/reverse-geo",
             "method": "GET",
             "timeout": 0,
             "headers": {

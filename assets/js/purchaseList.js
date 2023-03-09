@@ -1,3 +1,5 @@
+import URL_VARIABLE from './export.js';
+
 jQuery(document).ready(function ($) {
     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
@@ -142,7 +144,7 @@ jQuery(document).ready(function ($) {
 });
 function getProfile() {
     var settings = {
-        "url": "http://localhost:8080/users/profile",
+        "url": URL_VARIABLE + "users/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -180,7 +182,7 @@ function getProfile() {
 
 function logout() {
     var settings = {
-        "url": "http://localhost:8080/users/logout",
+        "url": URL_VARIABLE + "users/logout",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -197,7 +199,7 @@ function logout() {
 }
 function reissueToken() {
     var settings = {
-        "url": "http://localhost:8080/refresh/regeneration",
+        "url": URL_VARIABLE + "refresh/regeneration",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -235,7 +237,7 @@ function getPurchaseList(page) {
     $('.panel-body').empty();
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/trade/purchase',
+        url: URL_VARIABLE + 'trade/purchase',
         headers: { Authorization: userToken },
         dataType: 'json',
         data: {"page" : page},

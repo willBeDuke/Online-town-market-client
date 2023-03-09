@@ -1,3 +1,5 @@
+import URL_VARIABLE from './export.js';
+  
   // 현재 URL의 쿼리 문자열을 가져옵니다.
   const queryString = window.location.search;
 
@@ -30,7 +32,7 @@ function updateProduct() {
     };
     $.ajax({
         type: "PUT",
-        url: "http://localhost:8080/products/update/" +productId,
+        url: URL_VARIABLE + "products/update/" +productId,
         headers: {
             Authorization: userToken
         },

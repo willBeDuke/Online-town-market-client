@@ -1,4 +1,4 @@
-
+import URL_VARIABLE from './export.js';
 const userToken = localStorage.getItem('accessToken');
 const urlSearchParams = new URLSearchParams(window.location.search);
 const productId = urlSearchParams.get('productId');
@@ -163,7 +163,7 @@ jQuery(document).ready(function ($) {
 
 function checkInterest() {
     var settings = {
-        "url": "http://localhost:8080/interest/check/" + productId,
+        "url": URL_VARIABLE + "interest/check/" + productId,
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -186,7 +186,7 @@ function checkInterest() {
 
 function getProfile() {
     var settings = {
-        "url": "http://localhost:8080/users/profile",
+        "url": URL_VARIABLE + "users/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -224,7 +224,7 @@ function getProfile() {
 
 function logout() {
     var settings = {
-        "url": "http://localhost:8080/users/logout",
+        "url": URL_VARIABLE + "users/logout",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -241,7 +241,7 @@ function logout() {
 }
 function reissueToken() {
     var settings = {
-        "url": "http://localhost:8080/refresh/regeneration",
+        "url": URL_VARIABLE + "refresh/regeneration",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -261,7 +261,7 @@ function reissueToken() {
 
 // function getproducts(){
 //     var settings = {
-//         "url": "http://localhost:8080/products/get",
+//         "url": URL_VARIABLE + "products/get",
 //         "method": "POST",
 //         "timeout": 0,
 //         "headers": {
@@ -291,7 +291,7 @@ $(document).ready(function () {
 function imp() {
 
     const settings = {
-        "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
+        "url": URL_VARIABLE + `users/login-username?username=${username}&role=${role}`,
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -316,7 +316,7 @@ let responseVlaue;
 function checkMyProduct(productId) {
     $.ajax({
         type: 'GET',
-        url: "http://localhost:8080/products/check/" + productId,
+        url: URL_VARIABLE + "products/check/" + productId,
         headers: { Authorization: userToken },
     })
         .done(function (response) {
@@ -328,7 +328,7 @@ function checkMyProduct(productId) {
 function getProductInfo(productId) {
     checkMyProduct(productId)
     var settings = {
-        "url": "http://localhost:8080/products/" + productId,
+        "url": URL_VARIABLE + "products/" + productId,
         "method": "GET",
         "timeout": 0,
     };
@@ -441,7 +441,7 @@ function updateOpen(productId) {
 function deleteProduct(productId) {
     $.ajax({
         type: "DELETE",
-        url: "http://localhost:8080/products/" + productId,
+        url: URL_VARIABLE + "products/" + productId,
         data: { 'productId': productId },
         headers: { Authorization: userToken }
     })
@@ -461,7 +461,7 @@ function createChatRoom(productId, sellerId, productName) {
     console.log(productName, productId, productName, sellerId)
     $.ajax({
         type: 'POST',
-        url: "http://localhost:8080/chatroom/" + productId,
+        url: URL_VARIABLE + "chatroom/" + productId,
         headers: { Authorization: userToken },
         data: JSON.stringify({
             "roomName": productName,
@@ -476,7 +476,7 @@ function createChatRoom(productId, sellerId, productName) {
 
 function interest(productId) {
     var settings = {
-        "url": "http://localhost:8080/interest/" + productId,
+        "url": URL_VARIABLE + "interest/" + productId,
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -499,7 +499,7 @@ function interest(productId) {
 
 function checkMyProductInterest(productId) {
     var settings = {
-        "url": "http://localhost:8080/products/check/" + productId,
+        "url": URL_VARIABLE + "products/check/" + productId,
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -520,7 +520,7 @@ function checkMyProductInterest(productId) {
 
 function checkMyProductChat(productId) {
     var settings = {
-        "url": "http://localhost:8080/products/check/" + productId,
+        "url": URL_VARIABLE + "products/check/" + productId,
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -543,7 +543,7 @@ function checkMyProductChat(productId) {
 
 function chatCheck(productId) {
     var settings = {
-        "url": "http://localhost:8080/chatroom/check/" + productId,
+        "url": URL_VARIABLE + "chatroom/check/" + productId,
         "method": "GET",
         "timeout": 0,
         "headers": {

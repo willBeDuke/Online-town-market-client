@@ -1,4 +1,6 @@
 // 토큰 불러오기
+import URL_VARIABLE from './export.js';
+
 $(document).ready(function () {
   const ok = localStorage.getItem('accessToken')
   if (ok.length == 0) {
@@ -91,7 +93,7 @@ function getFullAddress(x, y) {
   console.log(x, y)
 
   $.ajax({
-    url: "http://localhost:8080/users/address/signup",
+    url: URL_VARIABLE + "users/address/signup",
     type: "GET",
     headers: { Authorization: userToken },
     data: { x: x, y: y },

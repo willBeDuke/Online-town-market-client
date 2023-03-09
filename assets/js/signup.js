@@ -1,4 +1,4 @@
-
+import URL_VARIABLE from './export.js';
 $(document).ready(function () {
   initMap()
   'use strict';
@@ -183,7 +183,7 @@ function signup() {
   console.log(address1);
 if(emailVerify == true){
   var settings = {
-    "url": "http://localhost:8080/users/signup",
+    "url": URL_VARIABLE + "users/signup",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -215,7 +215,7 @@ if(emailVerify == true){
 }
 
 function GoogleSignup(){
-  location.href ='http://localhost:8080/oauth2/authorization/google';
+  location.href =URL_VARIABLE + 'oauth2/authorization/google';
 
 }
 
@@ -223,7 +223,7 @@ function usernamecheck(clicked_id){
   if($('#username').val() != null & (/^[a-zA-Z0-9_-]{4,12}$/).test($('#username').val())){
     var field = clicked_id.substr(2)
   var settings = {
-    "url": "http://localhost:8080/users/duplicate",
+    "url": URL_VARIABLE + "users/duplicate",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -262,7 +262,7 @@ function nicknamecheck(clicked_id){
   if($('#nickname').val() != null & (/^[a-zA-Z0-9_-]{4,12}$/).test($('#nickname').val())){
     var field = clicked_id.substr(2)
   var settings = {
-    "url": "http://localhost:8080/users/duplicate",
+    "url": URL_VARIABLE + "users/duplicate",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -300,7 +300,7 @@ function emailcheck(clicked_id){
   if($('#email').val() != null & (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/).test($('#email').val())){
     var field = clicked_id.substr(2)
   var settings = {
-    "url": "http://localhost:8080/users/duplicate",
+    "url": URL_VARIABLE + "users/duplicate",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -367,7 +367,7 @@ function verifyEmail(){
     var email = $('#email').val();
     $.ajax({
       type: "POST",
-      url: "http://localhost:8080/mail",
+      url: URL_VARIABLE + "mail",
       data: {email: email},
       success: function(response){
         checkcode = response;
@@ -385,7 +385,7 @@ function setWatingEmail(){
 //     var code = $('#emailVerify').val();
 //      $.ajax({
 //        type: "POST",
-//        url: "http://localhost:8080/verify",
+//        url: URL_VARIABLE + "verify",
 //        data: {code:code},
 //        success: function (response) {
 //         var result = response;
@@ -409,7 +409,7 @@ function checkverify(){
   var email = $('#email').val();
   $.ajax({
     type: "POST",
-    url: "http://localhost:8080/verify",
+    url: URL_VARIABLE + "verify",
     data: {code:code, email:email},
     success: function (response) {
      var result = response;
@@ -514,7 +514,7 @@ function getFullAddress(x, y) {
   console.log(x, y)
 
   $.ajax({
-    url: "http://localhost:8080/users/address/signup",
+    url: URL_VARIABLE + "users/address/signup",
     type: "GET",  
     data: { x: x, y: y },
     dataType: 'json',
