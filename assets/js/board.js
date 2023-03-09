@@ -1,3 +1,6 @@
+const urlSearchParams = new URLSearchParams(window.location.search);
+const boardId = urlSearchParams.get('boardId');
+
 jQuery(document).ready(function ($) {
     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
@@ -241,6 +244,7 @@ const userToken = localStorage.getItem('accessToken')
 
 
 function getBoards(page) {
+    console.log(boardId);
     $("#boardList").empty()
     $.ajax({
         type: 'GET',
@@ -255,7 +259,7 @@ function getBoards(page) {
                 let title = boards[i]['title']
 
                 let temp_html = `<tr class="text-center">
-                <a style="color: black; text-decoration: none;" onclick="???()">
+                <a style="color: black; text-decoration: none;" onclick="getBoard(${boardId})">
                                 <td>${subject}</td>
                                 <td class="text-center">
                                     <p>${title}</p>
@@ -322,5 +326,44 @@ function getBoards(page) {
         error: function (xhr, status, error) {
             console.error(xhr);
         }
+    });
+}
+
+function getBoard(boardId) {
+    var settings = {
+        "url": "http://localhost:8080/boards/" + boardId,
+        "method": "GET",
+        "timeout": 0,
+    };
+
+    $.ajax(settings).done(function (response) {
+
+        let boardTitle = response.title;
+        let boardContent = response.content;
+        let boardSubject = response.subject;
+        let comments = response.comments;
+        let createdAt = response.createdAt;
+        let modifiedAt = response.modifiedAt;
+
+        let temp_html =
+        `<div class="board_view_wrap">
+            <div class="title_wrap">
+                <div class="title">${boardTitle}</dvi>
+            </div>
+            <div class="info_wrap">
+                <span class="writer"></span>
+                <span class="dateTime">작성 날짜 : ${createdAt} 최종 수정 날짜 : ${modifiedAt}</span>
+            </div>
+            <div class="content_wrap>
+                <div class="boardSubject">${boardSubject}</div>
+                <div class="boardContent>${boardContent}</div>
+            </dvi>
+            <div class="comments_wrap>
+                <div class="comments>${comments}</div>
+            </div>
+        </div>`
+
+        $('#info_box').append(temp_html);
+
     });
 }
