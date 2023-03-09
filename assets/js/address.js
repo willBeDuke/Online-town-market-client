@@ -109,6 +109,8 @@ function getFullAddress(x, y) {
     let temp_html = `<span>${address}</span>&nbsp;<span>${address2}</span>&nbsp;<span>${address3}</span>`
     // $("#fullAddress").text(`${address}`, `${address2}`, `${address3}`);
     $("#fullAddress").append(temp_html);
+
+
   });
 }
 
@@ -126,3 +128,5 @@ function setupCompleted(){
   window.close();
   window.opener.location.reload();
 }
+//click
+$("#setupCompleted").click(setupCompleted);

@@ -176,9 +176,12 @@ function getProfile(){
             </li>               
         </ul>      
     </li>
-    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a id= "logout" > 로그아웃 </a></div>`
     $('#loginForm').append(temp_html)
-      
+    $("#logout").click(function() {
+        // logout 함수를 실행합니다.
+        logout();
+      });
       }).fail(function(){
         reissueToken();
 });
@@ -308,12 +311,12 @@ function reissueToken(){
           
                   let temp_html = `<div class="col-sm-4 col-xs-12 profile">
                     <div class="panel panel-default">
-                      <div onclick="getProduct(${productId})" class="panel-thumbnail">
+                      <div id="creategetProduct" productId="${productId}" class="panel-thumbnail">
                         <a title="image 1" class="thumb">
                           <img src=${productImg} style="width: 100%; height: 150px;" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
                         </a>
                       </div>
-                      <div class="panel-body" onclick="getProduct(${productId})">
+                      <div class="panel-body" id="creategetProduct2" productId="${productId}">
                         <p class="profile-name">${productName}</p>
                         <p>${productPrice}</p>
                       </div>
@@ -322,6 +325,15 @@ function reissueToken(){
             
                   $('#profile-grid').append(temp_html);
                 }
+                $("div#creategetProduct").click(function() {
+                    var productId = $(this).attr("productId");
+                    getProduct(productId);
+                  });
+                
+                  $("div#creategetProduct2").click(function() {
+                    var productId = $(this).attr("productId");
+                    getProduct(productId);
+                  });
                 // 페이징 정보를 추출하여 페이지네이션을 생성합니다.
                 var totalPages = response.totalPages;
                 var pageNumber = response.number;
@@ -381,3 +393,5 @@ function reissueToken(){
           function getProduct(productId){
             window.location.href = `/product.html?productId=${productId}`   
         } 
+
+       

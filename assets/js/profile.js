@@ -81,3 +81,7 @@ function closeWindow() {
      alert(returnValue)
      window.close();
     }
+
+    $("#upload-button").click(uploadImage);
+    $("#updateProfile").click(updateProfile);
+

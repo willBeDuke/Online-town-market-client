@@ -53,3 +53,7 @@ function updateProduct() {
         })
 
 }
+
+$("button#updateProduct").click(function() {
+    updateProduct(); // updateProduct 함수를 호출합니다.
+  });

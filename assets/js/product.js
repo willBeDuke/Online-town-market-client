@@ -81,8 +81,6 @@ function addProduct() {
 
     }
   })
-
-
 }
 
 // function getProduct(productId) {
@@ -139,9 +137,14 @@ function getProduct(productId) {
           <p>${productInfo.productCategory}</p>
           <p>${productInfo.viewCount}</p>
         </div>
-        <button onclick="createChatRoom(${productId})" type="button" class="btn btn-dark">판매자와 채팅하기</button>
+        <button  type="button" class="btn btn-dark" data-product-id="${productId}" id="createChatRoom">판매자와 채팅하기</button>
       </div>`
       $('#product-detail').append(temp_html)
+      $("#createChatRoom").click(function() {
+        // 클릭 시 실행할 함수 정의
+        var productId = $(this).data("product-id"); // 현재 버튼의 data-product-id 값을 가져옵니다.
+        createChatRoom(productId); // createChatRoom 함수에 파라미터로 전달합니다.
+      });
       console.log(response);
     }
   })
@@ -204,3 +207,9 @@ function getProductIdFromUrl() {
   // Get the product ID parameter
   return urlParams.get('productId');
 }
+
+//click
+$("#addProduct").click(addProduct);
+
+
+

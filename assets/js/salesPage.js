@@ -172,9 +172,12 @@ function getProfile(){
           </li>               
       </ul>      
   </li>
-  <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+  <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a id="logout" > 로그아웃 </a></div>`
   $('#loginForm').append(temp_html)
-      element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
+  $("#logout").click(function() {
+    // logout 함수를 실행합니다.
+    logout();
+  });
     }).fail(function(){
       reissueToken();
 });

@@ -176,11 +176,18 @@ function checkInterest() {
             const div = document.getElementById('interested');
             div.remove();
             let temp_html = `<div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
-    <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심취소</button>
-    <button type="button" class="btn btn-light small-button2" onclick="checkMyProductChat(${productId})">판매자와 채팅하기</button>
+    <button type="button" class="btn btn-light small-button" style="margin-right:10px" id="checkMyProductInterest" data-product-id="${productId}">관심취소</button>
+    <button type="button" class="btn btn-light small-button2" id="checkMyProductChat" data-product-id="${productId}">판매자와 채팅하기</button>
    </div>`
             $('#info_box').append(temp_html);
         }
+        $("#checkMyProductInterest").click(function() {
+            checkMyProductInterest($(this).data("product-id"));
+          });
+        
+          $("#checkMyProductChat").click(function() {
+            checkMyProductChat($(this).data("product-id"));
+          });
     });
 }
 
@@ -214,14 +221,14 @@ function getProfile() {
             </li>               
         </ul>      
     </li>
-    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a id = "logout" > 로그아웃 </a></div>`
         $('#loginForm').append(temp_html)
 
     }).fail(function () {
         reissueToken();
     });
 }
-
+$("#logout").click(logout);
 function logout() {
     var settings = {
         "url": URL_VARIABLE + "users/logout",
@@ -400,17 +407,18 @@ function getProductInfo(productId) {
                justify-content: flex-end;
                margin-left: 540px;
                margin-top: -40px;
-               margin-bottom: 20px; font-size: 15px "> <button onclick = "productReport()">상품신고</button> <br>가격 : ${productPrice} 원<br>상태 : ${productStatus} 급<br>종류 : ${productEnum} </p>
+               margin-bottom: 20px; font-size: 15px "> <button id = "createproductReport">상품신고</button> <br>가격 : ${productPrice} 원<br>상태 : ${productStatus} 급<br>종류 : ${productEnum} </p>
               
               <div>
                <p>${productContents}</p>
            </div>
            <div class="card-body" id = "interested" style="display: flex; justify-content: center; margin-top:50px;align-items: center;">
-           <button type="button" class="btn btn-light small-button" style="margin-right:10px" onclick="checkMyProductInterest(${productId})">관심</button>
+           <button type="button" class="btn btn-light small-button" style="margin-right:10px" id= "checkMyProductInterest" data-product-id="${productId}" >관심</button>
 
-           ${productEnum !== "판매완료" ? '<button type="button" class="btn btn-light small-button2" style="margin-right:10px" onclick="checkMyProductChat(' + productId + ', ' + sellerId + ', \'' + productName + '\', \'' + productEnum + '\')">판매자와 채팅하기</button>' : ''}
-           ${responseVlaue == true ? '<button id="deleteProduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" onclick="deleteProduct(' + productId + ')">상품 삭제</button>':''}
-           ${responseVlaue == true ? '<button id="updateproduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" onclick="updateOpen(' + productId + ')">상품 수정</button>':''}
+       
+           ${productEnum !== "판매완료" ? `<button type="button" class="btn btn-light small-button2" style="margin-right:10px" id = "checkMyProductChat" data-product-id="${productId}" data-seller-id="${sellerId}" data-product-name="${productName}" data-product-enum="${productEnum}"  >판매자와 채팅하기</button>` : ''}
+           ${responseVlaue == true ? `<button id="deleteProduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" data-product-id="${productId}" id = "deleteProduct">상품 삭제</button>`:''}
+           ${responseVlaue == true ? `<button id="updateproduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" data-product-id="${productId}" id = "updateOpen">상품 수정</button>`:''}
         </div>`
         $('#info_box').append(temp_html);
 
@@ -425,8 +433,36 @@ function getProductInfo(productId) {
     $("#updateproduct").click(function () {
         updateOpen(productId)
     })
+    $("#createproductReport").click(function() {
+        productReport();
+      });
+    
+      $("#checkMyProductInterest").click(function() {
+        checkMyProductInterest($(this).data("product-id"));
+      });
+    
+      $("#checkMyProductChat").click(function() {
+        var productId = $(this).data("product-id");
+        var sellerId = $(this).data("seller-id");
+        var productName = $(this).data("product-name");
+        var productEnum = $(this).data("product-enum");
+        checkMyProductChat(productId, sellerId, productName, productEnum);
+      });
+    
+      $("#deleteProduct").click(function() {
+        var productId = $(this).data("product-id");
+        deleteProduct(productId);
+      });
+    
+    $("#updateOpen").click(function() {
+        var productId = $(this).data("product-id");
+        updateOpen(productId);
+      });
+    
 }
 
+
+//   onclick="checkMyProductChat(' + productId + ', ' + sellerId + ', \'' + productName + '\', \'' + productEnum + '\')"
 function updateOpen(productId) {
     // window.location.href = "/updateproduct.html?productId=" + productId;
     var url = "/updateproduct.html?productId=" + productId;

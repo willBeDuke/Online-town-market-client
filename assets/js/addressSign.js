@@ -131,3 +131,5 @@ function setupCompleted(){
   
   window.close();
 }
+
+$("#setupCompleted").click(setupCompleted);
