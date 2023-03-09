@@ -1,3 +1,5 @@
+import URL_VARIABLE from './export.js';
+
 $(document).ready(function () {
   var ok = localStorage.getItem('accessToken');
 
@@ -28,7 +30,7 @@ $('#uploadPhoto').click(function() {
   formData.append("product", file);
   
   $.ajax({
-    url: "http://localhost:8080/api/images/upload/products",
+    url: URL_VARIABLE + "api/images/upload/products",
     type: 'POST',
     data: formData,
     headers: {
@@ -63,7 +65,7 @@ function addProduct() {
 
   $.ajax({
     type: "POST",
-    url: 'http://localhost:8080/products',
+    url: URL_VARIABLE + 'products',
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     headers: {
@@ -86,7 +88,7 @@ function addProduct() {
 // function getProduct(productId) {
 //   $.ajax({
 //     type: "GET", // Post? CORS에 맞춰 고치기
-//     url: "http://localhost:8080/products/" + productId,
+//     url: URL_VARIABLE + "products/" + productId,
 //     datatype: "json",
 //     data: {'id_give': productId},
 //     // headers: {
@@ -114,7 +116,7 @@ function addProduct() {
 function getProduct(productId) {
   $.ajax({
     type: "GET", // Post? CORS에 맞춰 고치기
-    url: "http://localhost:8080/products/" + productId,
+    url: URL_VARIABLE + "products/" + productId,
     datatype: "json",
     data: { 'id_give': productId },
     // headers: {
@@ -151,7 +153,7 @@ function getProduct(productId) {
 
 //   $.ajax({
 //     type: "PUT",
-//     url: "http://localhost:8080/update/" + productId,
+//     url: URL_VARIABLE + "update/" + productId,
 //     datatype: "json",
 //     contentType: "application/json; charset=UTF-8",
 //     data: { "id_give": productId },
@@ -167,7 +169,7 @@ function getProduct(productId) {
 // function deleteProduct() {
 //   $.ajax({
 //     type: "DELETE",
-//     url: "http://localhost:8080/" + productId,
+//     url: URL_VARIABLE + "" + productId,
 //     data: { 'id_give': productId },
 //     headers: { Authorization: userToken },
 //     success: function (response) {

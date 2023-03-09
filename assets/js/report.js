@@ -1,8 +1,10 @@
+import URL_VARIABLE from './export.js';
+
 const userToken = localStorage.getItem('accessToken');
 
 function reportUser() {
     var settings = {
-        "url": "http://localhost:8080/report/user",
+        "url": URL_VARIABLE + "report/user",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -32,7 +34,7 @@ function reportProducts() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const productId = urlSearchParams.get('productId');
     var settings = {
-        "url": "http://localhost:8080/report/product",
+        "url": URL_VARIABLE + "report/product",
         "method": "POST",
         "timeout": 0,
         "headers": {

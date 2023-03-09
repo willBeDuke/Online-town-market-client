@@ -1,16 +1,18 @@
 "use strict";
 
-
+import URL_VARIABLE from './export.js';
 jQuery(document).ready(function ($) {
+   
     if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
         getProfile();
     }
     // getproducts();
+    
     getProducts(0);
     $("#longinForm").empty();
     $("#longinForm").append('loginform')
     
-
+    
     /*---------------------------------------------*
      * Mobile menu
      ---------------------------------------------*/
@@ -145,10 +147,10 @@ jQuery(document).ready(function ($) {
 
     //End
 });
-
+var setUrl = "";
 function getProfile(){
     var settings = {
-        "url": "http://localhost:8080/users/profile",
+        "url": URL_VARIABLE + "users/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -194,7 +196,7 @@ function getProfile(){
 
 function logout(){
     var settings = {
-        "url": "http://localhost:8080/users/logout",
+        "url": URL_VARIABLE + "users/logout",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -211,7 +213,7 @@ function logout(){
 }
 function reissueToken(){
     var settings = {
-        "url": "http://localhost:8080/refresh/regeneration",
+        "url": URL_VARIABLE + "refresh/regeneration",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -228,10 +230,9 @@ function reissueToken(){
 });
 }
 
-
 // function getproducts(){
 //     var settings = {
-//         "url": "http://localhost:8080/products/get",
+//         "url": URL_VARIABLE + "products/get",
 //         "method": "POST",
 //         "timeout": 0,
 //         "headers": {
@@ -260,7 +261,7 @@ function reissueToken(){
         //     console.log(username, role);
 
         //     const settings = {
-        //         "url": `http://localhost:8080/users/login-username?username=${username}&role=${role}`,
+        //         "url": `https://api.knock-knock.shop/users/login-username?username=${username}&role=${role}`,
         //         "method": "POST",
         //         "timeout": 0,
         //         "headers": {
@@ -282,7 +283,7 @@ function reissueToken(){
 
         // function getProducts(page) {
         //     $.ajax({
-        //       url: "http://localhost:8080/products",
+        //       url: URL_VARIABLE + "products",
         //       type: 'GET',
         //       data: {
         //             "page": page,
@@ -344,8 +345,9 @@ function reissueToken(){
         //   }
 
           function getProducts(page) {
+       
             $.ajax({
-              url: "http://localhost:8080/products",
+              url: URL_VARIABLE + "products",
               type: 'GET',
               data: {
                 "page": page,
@@ -439,7 +441,7 @@ function reissueToken(){
 
         //   function getproducts(){
         //     var settings = {
-        //         "url": "http://localhost:8080/products",
+        //         "url": URL_VARIABLE + "products",
         //         "method": "GET",
         //         "timeout": 0,
         //         "headers": {
