@@ -159,8 +159,9 @@ function getProfile() {
         // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
         document.getElementById('loginbuttons').style.display = 'none';
         let temp_html = `  
-    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a id= "logout"> 로그아웃 </a></div>`
         $('#container').append(temp_html)
+        $("#logout").click(logout);
     }).fail(function () {       
         reissueToken();
     });
@@ -309,3 +310,6 @@ function updateProfilePopup() {
     var option = "width = 800, height = 800, top = 100, left = 200, location = no"
     window.open(url, name, option)
 }
+
+
+

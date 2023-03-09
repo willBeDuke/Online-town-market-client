@@ -1,4 +1,3 @@
-// 토큰 불러오기
 import URL_VARIABLE from './export.js';
 
 $(document).ready(function () {
@@ -38,7 +37,7 @@ function chatList() {
         let productId = roomList[i]['productId']
 
         let temp_html = `<li id="roomId" class="chatDesc" data-roomid="${roomId}" data-nickname="${nickname}">
-                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId});">
+                            <a style="color: black; text-decoration: none;" data-room-id="${roomId}" data-nickname="${nickname}" data-product-id="${productId}" id ="makechatView">
                               <table cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td class="profile_td">
@@ -56,7 +55,7 @@ function chatList() {
                                     </div>
                                   </td>
                                   <td id="deleteBtn">
-                                    <button class="deleteBtn" type="submit" onclick="deleteChat(${roomId})">삭제</button>
+                                    <button class="deleteBtn" type="submit" id="makedeleteChat">삭제</button>
                                   </td>
                                 </tr>
                               </table>
@@ -66,6 +65,18 @@ function chatList() {
         // 새로 생성한 HTML 코드를 DOM에 추가합니다.
         $('#roomList').append(temp_html);
       }
+     
+      $("#makechatView").click(function() {
+        var roomId = $(this).data("room-id");
+        var nickname = $(this).data("nickname");
+        var productId = $(this).data("product-id");
+        chatView(roomId, nickname, productId);
+      });
+    
+      $("#makedeleteChat").click(function(){
+        deleteChat(roomId);
+      });
+
     },
     error: function (xhr, status, error) {
       console.error(xhr);
@@ -104,8 +115,11 @@ function getProfile() {
           </li>               
       </ul>      
   </li>
-  <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+  <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a id = "makelogout" > 로그아웃 </a></div>`
     $('#loginForm').append(temp_html);
+
+    $("#makelogout").click(logout);
+
 
   }).fail(function () {
     reissueToken();
@@ -167,7 +181,11 @@ function connect(roomId, nickname, productId) {
       messageList.scrollTop(messageList.prop("scrollHeight"));
     });
 
-    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+    // $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+
+    $("#send").click(function() {
+      sendChat(roomId, productId, nickname, sender); // 클릭 시 실행할 코드
+    });
 
     $("#message").keypress(function (event) {
       if (event.which == 13 && !event.shiftKey) {
@@ -322,3 +340,13 @@ function getProduct(productId) {
     $(".productImg").attr("src", `${productImg}`);
   });
 }
+
+//click
+$("#chatView").click(chatView);
+$("#connect2").click(connect);
+
+
+
+
+
+

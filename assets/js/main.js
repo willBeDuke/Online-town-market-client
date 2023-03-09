@@ -1,6 +1,7 @@
 "use strict";
 
 import URL_VARIABLE from './export.js';
+
 jQuery(document).ready(function ($) {
    
     if(localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null){
@@ -163,9 +164,9 @@ function getProfile(){
         document.getElementById('loginbuttons').style.display = 'none';
         let temp_html = 
         `<div class="card-body" style="display: flex; justify-content: center; align-items: center;">
-            <a type="text" class="btn btn-dark small-button2" onclick = "addProduct()" style="width: 100px; margin-top: -5px;margin-right: 30px;">상품등록하기</a>
-            <a type="text" class="btn btn-dark small-button2" onclick = "userReport()" style="width: 100px; margin-top: -5px; margin-right: 40px; ">유저 신고하기</a>
-            <a type="text" class="btn btn-dark small-button2" onclick = "addressCertified()" style="width: 100px; margin-top: -5px; margin-right: 40px; ">동네 수정하기</a>
+            <a type="text" id="createaddProduct" class="btn btn-dark small-button2" style="width: 100px; margin-top: -5px;margin-right: 30px;">상품등록하기</a>
+            <a type="text" id="createuserReport" class="btn btn-dark small-button2" style="width: 100px; margin-top: -5px; margin-right: 40px; ">유저 신고하기</a>
+            <a type="text" id="createaddressCertified" class="btn btn-dark small-button2"  style="width: 100px; margin-top: -5px; margin-right: 40px; ">동네 수정하기</a>
         </div>
         <li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
@@ -186,9 +187,25 @@ function getProfile(){
             </li>               
         </ul>      
     </li>
-    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()"> 로그아웃 </a></div>`
+    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a id="logout"> 로그아웃 </a></div>`
     $('#loginForm').append(temp_html)
-       
+
+    $("#createaddProduct").click(function() {
+        addProduct();
+      });
+    
+      $("#createuserReport").click(function() {
+        userReport();
+      });
+    
+      $("#createaddressCertified").click(function() {
+        addressCertified();
+      });
+
+    $("#logout").click(function() {
+
+        logout();
+      });
       }).fail(function(){
         reissueToken();
 });
@@ -367,12 +384,12 @@ function reissueToken(){
           
                   let temp_html = `<div class="col-sm-4 col-xs-12 profile">
                     <div class="panel panel-default">
-                      <div onclick="getProduct(${productId})" class="panel-thumbnail">
+                      <div id="creategetProduct" productId="${productId}" class="panel-thumbnail">
                         <a title="image 1" class="thumb">
                           <img src=${productImg} style="width: 100%; height: 150px;" class="img-responsive img-rounded" data-toggle="modal" data-target=".modal-profile-lg">
                         </a>
                       </div>
-                      <div class="panel-body" onclick="getProduct(${productId})">
+                      <div class="panel-body" id="creategetProduct2" productId="${productId}">
                         <p class="profile-name">${productName}</p>
                         <p>${productPrice}</p>
                       </div>
@@ -381,6 +398,20 @@ function reissueToken(){
           
                   $('#profile-grid').append(temp_html);
                 }
+                $("div#creategetProduct").click(function() {
+                    // 클릭한 div 요소의 productId 값을 가져옵니다.
+                    var productId = $(this).attr("productId");
+                    // getProduct 함수에 productId 값을 전달합니다.
+                    getProduct(productId);
+                  });
+                
+                  $("div#creategetProduct2").click(function() {
+                    // 클릭한 div 요소의 productId 값을 가져옵니다.
+                    var productId = $(this).attr("productId");
+                    // getProduct 함수에 productId 값을 전달합니다.
+                    getProduct(productId);
+                  });
+
                 var totalPages = response.totalPages;
                 var pageNumber = response.number;
                                 
@@ -489,3 +520,12 @@ function reissueToken(){
             var option = "width = 800, height = 800, top = 100, left = 200, location = no"
             window.open(url,'',option)
         }
+
+//click
+$("#updatesearch").attr("onclick", "").click(function() {
+    search(); // 클릭 시 실행할 코드
+  });
+
+ 
+
+ 

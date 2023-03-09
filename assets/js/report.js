@@ -63,3 +63,11 @@ function closeWindow() {
      alert(returnValue)
      window.close();
     }
+
+    $("#updatereportProducts").click(function() {
+        // reportProducts 함수를 실행합니다.
+        reportProducts();
+      });
+
+      $("#reportUser").click(reportUser);
+

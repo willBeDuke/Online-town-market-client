@@ -1,4 +1,5 @@
 import URL_VARIABLE from './export.js';
+
 $(document).ready(function () {
 
   'use strict';
@@ -34,3 +35,5 @@ function login(){
         alert("아이디나 비밀번호를 다시 확인해주세요")
       }); 
 }
+$("#login").click(login);
+

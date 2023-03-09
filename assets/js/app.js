@@ -59,4 +59,3 @@ document.querySelector('#googleLoginButton').addEventListener('click', () => {
       // API 에러 처리
       console.error(error);
     });
-  
