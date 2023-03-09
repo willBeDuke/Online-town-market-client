@@ -164,6 +164,7 @@ function getProfile(){
             <a type="text" class="btn btn-dark small-button2" onclick = "addProduct()" style="width: 100px; margin-top: -5px;margin-right: 30px;">상품등록하기</a>
             <a type="text" class="btn btn-dark small-button2" onclick = "userReport()" style="width: 100px; margin-top: -5px; margin-right: 40px; ">유저 신고하기</a>
             <a type="text" class="btn btn-dark small-button2" onclick = "addressCertified()" style="width: 100px; margin-top: -5px; margin-right: 40px; ">동네 수정하기</a>
+            <a type="text" class="btn btn-dark small-button2" onclick = "townBoards()" style="width: 100px; margin-top: -5px; margin-right: 40px; ">동네 생활</a>
         </div>
         <li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
@@ -486,4 +487,8 @@ function reissueToken(){
            
             var option = "width = 800, height = 800, top = 100, left = 200, location = no"
             window.open(url,'',option)
+        }
+
+        function townBoards(){
+            window.location.href = '/board.html'
         }
