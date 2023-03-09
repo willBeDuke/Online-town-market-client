@@ -243,6 +243,7 @@ function getPurchaseList(page) {
         url: URL_VARIABLE + 'trade/purchase',
         headers: { Authorization: userToken },
         dataType: 'json',
+        data: {"page" : page},
         success: function (response) {
             console.log(response)
             let products = response.content;
@@ -294,13 +295,13 @@ function getPurchaseList(page) {
             // Add click event for 'First' button
             $('#pagination li:first-child a').click(function (event) {
                 event.preventDefault();
-                getProducts(0);
+                getPurchaseList(0);
             });
 
             // Add click event for 'Last' button
             $('#pagination li:last-child a').click(function (event) {
                 event.preventDefault();
-                getProducts(totalPages - 1);
+                getPurchaseList(totalPages - 1);
             });
 
             $('#page_nation').append(ul);
@@ -308,7 +309,7 @@ function getPurchaseList(page) {
             $('#pagination a').click(function (event) {
                 event.preventDefault();
                 var page = $(this).text() - 1;
-                getProducts(page);
+                getPurchaseList(page);
             });
         },
         error: function (xhr, status, error) {
