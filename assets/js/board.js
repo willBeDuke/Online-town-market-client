@@ -230,14 +230,55 @@ const userToken = localStorage.getItem('accessToken')
 // let 변경 가능, const 변경불가능; -> 개발자
 
 
-// function crerateBoards() {
-//     $.ajax({
-//         type: "POST",
-//         url: "http://localhost:8080/boards",
-//         headers: {Authorization: userToken},
-//         dataType
-//     })
-// }
+
+function decodeJwtToken(userToken) {
+    const base64Url = userToken.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+        atob(base64)
+            .split('')
+            .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
+            .join('')
+    );
+
+    return JSON.parse(jsonPayload);
+}
+
+function getUserIdFromJwtToken(userToken) {
+    const decodedToken = decodeJwtToken(userToken);
+    return decodedToken.sub;
+}
+
+const loginUsername = getUserIdFromJwtToken(userToken);
+
+function createButton() {
+    var url = "/addBoard.html"
+    var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+
+    window.open(url, "", option);
+}
+
+function crerateBoards() {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/boards",
+        headers: {
+            Authorization: userToken,
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify({
+            "title": $("#title").val(),
+            "content": $("#content").val(),
+            "subject": $("#subject").val()
+        }),
+        success: function (response) {
+            console.log(response)
+            alert("게시글 등록이 완료 되었습니다.")
+            window.close();
+            window.opener.location.reload();
+        }
+    })
+}
 
 
 function getBoards(page) {
@@ -247,7 +288,7 @@ function getBoards(page) {
         url: 'http://localhost:8080/boards',
         headers: { Authorization: userToken },
         dataType: 'json',
-        data: {"page" : page},
+        data: { "page": page },
         success: function (response) {
             let boards = response.content;
             for (let i = 0; i < boards.length; i++) {
@@ -255,14 +296,14 @@ function getBoards(page) {
                 let title = boards[i]['title']
 
                 let temp_html = `<tr class="text-center">
-                <a style="color: black; text-decoration: none;" onclick="???()">
-                                <td>${subject}</td>
-                                <td class="text-center">
-                                    <p>${title}</p>
-                                </td>
-                                <td></td>
-                            </a>
-                        </tr>`;
+                                    <a style="color: black; text-decoration: none;" onclick="???()">
+                                        <td>${subject}</td>
+                                        <td class="text-center">
+                                            <p>${title}</p>
+                                        </td>
+                                        <td></td>
+                                    </a>
+                                </tr>`;
 
                 // 새로 생성한 HTML 코드를 DOM에 추가합니다.
                 $('#boardList').append(temp_html);
