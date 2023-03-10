@@ -66,17 +66,20 @@ function chatList() {
         $('#roomList').append(temp_html);
 
       }
-     
-      $(document).on("click", "#makechatView", function() {
+
+      $(document).on("click", "#makechatView", function () {
         var roomId = $(this).data("room-id");
         var nickname = $(this).data("nickname");
         var productId = $(this).data("product-id");
         chatView(roomId, nickname, productId);
       });
-    
-      $("#makedeleteChat").click(function(){
+
+
+      $(document).on("click", "#makedeleteChat", function (event) {
+        event.stopPropagation();
+        var roomId = $(this).data("room-id");
         deleteChat(roomId);
-      });
+      })
 
 
     },
@@ -177,10 +180,10 @@ function connect(roomId, nickname, productId) {
                             ${message}
                           </div>
                       </li>`;
-      $('#messageList').append(temp_html);
-      
-      const messageList = $('#connect2');
-      messageList.scrollTop(messageList.prop("scrollHeight"));
+        $('#messageList').append(temp_html);
+
+        const messageList = $('#connect2');
+        messageList.scrollTop(messageList.prop("scrollHeight"));
     });
 
     $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
@@ -247,7 +250,6 @@ function chatView(roomId, nickname, productId) {
           let min = sendTime.getMinutes();
 
           let sendDay = sendTime.toLocaleDateString().replace(/\./g, '').replace(/\s/g, '/') + " " + hour + ":" + min;
-
           let temp_html = `<li class= ${sender == nickname ? "left" : "right"}>
                               <div class= ${sender == nickname ? "receiver" : "sender"}>
                                 <span id="userNickname">${sender == receiver ? receiver : sender}</span><br>
