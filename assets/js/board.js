@@ -323,10 +323,10 @@ function getBoards(page) {
                 $('#boardList').append(temp_html);
             }
 
-            $(document).on("click", "#getBoard", function() {
+            $(document).on("click", "#getBoard", function () {
                 var boardId = $(this).data("board-id");
                 getBoard(boardId);
-              });
+            });
 
             // $('#getBoard').click(function () {
             //     var boardId = $(this).data('board-id')
@@ -458,24 +458,22 @@ function getBoard(boardId) {
             boardId = boardId;
 
             let temp_html =
-                `<div class="board_view_wrap">
-                <div class="title_wrap">
-                    <div class="title">${title}</div>
+                `<div class="card border-success mb-3" style="width= 100% max-width: 800px height=100% max-height= 500px">
+                    <h1 class="card-title">${title}</h5>
+                    <div class="card-header bg-transparent border-success">${username}</div>
+                    <div class="info_wrap">
+                        <span>${subject}</span>
+                        <span class="dateTime">작성 날짜 : ${createdAt} 최종 수정 날짜 : ${modifiedAt}</span>
+                    </div>
                 </div>
-                <div class="info_wrap">
-                    <span class="writer"></span>
-                    <span class="dateTime">작성 날짜 : ${createdAt} 최종 수정 날짜 : ${modifiedAt}</span>
+                <div class="card-body text-success">
+                  <p class="card-text">${content}</p>
                 </div>
-                <div class="content_wrap">
-                    <div class="boardSubject">${subject}</div>
-                <div class="boardContent">${content}</div>
-            </div>
-            <div class="comments_wrap">
-                     <div class="comments">${comments}</div>
-             </div>
-             ${loginUsername == username ? `<button id="deleteBoard" type="button" data-board-id="${boardId}">삭제</button>` : ''}
-            ${loginUsername == username ? `<button id="updateBoard" type="button" data-board-id="${boardId}">수정</button>` : ''}
-        </div>`
+                <div class="card-footer bg-transparent border-success">${comments}</div>
+                ${loginUsername == username ? `<button id="deleteBoard" type="button" data-board-id="${boardId}">삭제</button>` : ''}
+                ${loginUsername == username ? `<button id="updateBoard" type="button" data-board-id="${boardId}">수정</button>` : ''}
+                <button type="button" class="btn btn-success" id="backtolist">뒤로가기</button>
+                </div>`
 
             $('#boards').append(temp_html);
 
@@ -485,6 +483,10 @@ function getBoard(boardId) {
 
             $("#updateBoard").click(function () {
                 updateBtn(boardId);
+            });
+
+            $("#backtolist").click(function () {
+                window.location.href = `board.html`
             });
         }
     });
