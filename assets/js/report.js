@@ -70,4 +70,3 @@ function closeWindow() {
       });
 
       $("#reportUser").click(reportUser);
-
