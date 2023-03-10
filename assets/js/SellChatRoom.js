@@ -68,7 +68,7 @@ function chatList() {
         // 새로 생성한 HTML 코드를 DOM에 추가합니다.
         $('#roomList').append(temp_html);
       }
-      $("#chatView").click(function() {
+      $(document).on("click", "#chatView", function() {
         // Get the room id, nickname, product id and buyer id from data attributes
         var roomId = $(this).data("room-id");
         var nickname = $(this).data("nickname");
@@ -77,6 +77,7 @@ function chatList() {
         // Call the function with these parameters
         chatView(roomId, nickname, productId, buyerId);
       });
+
       $("#deleteChat").click(function() {
         var roomId = $(this).data("room-id");
         deleteChat(roomId);

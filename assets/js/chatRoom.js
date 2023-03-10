@@ -64,31 +64,19 @@ function chatList() {
 
         // 새로 생성한 HTML 코드를 DOM에 추가합니다.
         $('#roomList').append(temp_html);
-        $(document).on("click", "#makechatView", function() {
-          var roomId = $(this).data("room-id");
-          var nickname = $(this).data("nickname");
-          var productId = $(this).data("product-id");
-          chatView(roomId, nickname, productId);
-        });    
-      }
 
-      $("#makedeleteChat").click(function(){
+      }
+     
+      $(document).on("click", "#makechatView", function() {
         var roomId = $(this).data("room-id");
+        var nickname = $(this).data("nickname");
+        var productId = $(this).data("product-id");
+        chatView(roomId, nickname, productId);
+      });
+    
+      $("#makedeleteChat").click(function(){
         deleteChat(roomId);
       });
-
-
-      // $(document).on("click", "#makedeleteChat", function() {
-      //   var roomId = $(this).data("room-id");
-      //   deleteChat(roomId);
-      // });
-
-      // $("#makechatView").click(function() {
-      //   var roomId = $(this).data("room-id");
-      //   var nickname = $(this).data("nickname");
-      //   var productId = $(this).data("product-id");
-      //   chatView(roomId, nickname, productId);
-      // });
 
 
     },
