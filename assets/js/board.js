@@ -1,3 +1,4 @@
+
 import URL_VARIABLE from './export.js';
 
 
@@ -221,7 +222,6 @@ function reissueToken() {
     });
 }
 
-
 // 토큰 불러오기
 $(document).ready(function () {
     const ok = localStorage.getItem('accessToken')
@@ -295,7 +295,6 @@ function createBoards() {
         }
     })
 }
-
 
 function getBoards(page) {
     $("#boardList").empty()
@@ -405,6 +404,7 @@ function updateBoard() {
     $.ajax({
         type: "PUT",
         url: URL_VARIABLE + 'boards/' + boardId,
+
         headers: {
             Authorization: userToken,
         },
@@ -434,6 +434,48 @@ function deleteBoard(boardId) {
             alert("삭제되었습니다.");
             history.back();
             // location.herf = '/board.html'
+        }
+    });
+}
+
+function getBoard(boardId) {
+    $("#boards").empty();
+    $.ajax({
+        type: 'GET',
+        url: URL_VARIABLE + "boards" + boardId,
+        headers: { Authorization: userToken },
+        success: function (response) {
+            let title = response.title;
+            let content = response.content;
+            let subject = response.subject;
+            let comments = response.comments;
+            let username = response.username;
+            let createdAt = response.createdAt;
+            let modifiedAt = response.modifiedAt;
+
+            boardId = boardId;
+
+            let temp_html =
+                `<div class="board_view_wrap">
+                <div class="title_wrap">
+                    <div class="title">${title}</div>
+                </div>
+                <div class="info_wrap">
+                    <span class="writer"></span>
+                    <span class="dateTime">작성 날짜 : ${createdAt} 최종 수정 날짜 : ${modifiedAt}</span>
+                </div>
+                <div class="content_wrap">
+                    <div class="boardSubject">${subject}</div>
+                <div class="boardContent">${content}</div>
+            </div>
+            <div class="comments_wrap">
+                     <div class="comments">${comments}</div>
+             </div>
+             ${loginUsername == username ? `<button id="deleteBoard" type="button" data-board-id="${boardId}">삭제</button>` : ''}
+            ${loginUsername == username ? `<button id="updateBoard" type="button" data-board-id="${boardId}">수정</button>` : ''}
+        </div>`
+
+            $('#boards').append(temp_html);
         }
     });
 }
