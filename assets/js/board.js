@@ -1,3 +1,4 @@
+import URL_VARIABLE from "./export.js";
 const queryString = window.location.search;
 const params = new URLSearchParams(queryString);
 const boardId = parseInt(params.get("boardId"));
@@ -418,7 +419,7 @@ function getBoard(boardId) {
     $("#boards").empty();
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/boards/' + boardId,
+        url: URL_VARIABLE + "boards" + boardId,
         headers: { Authorization: userToken },
         success: function (response) {
             let title = response.title;
@@ -429,7 +430,8 @@ function getBoard(boardId) {
             let createdAt = response.createdAt;
             let modifiedAt = response.modifiedAt;
 
-            console.log(response)
+            boardId = boardId;
+
             let temp_html =
                 `<div class="board_view_wrap">
                 <div class="title_wrap">
@@ -445,7 +447,9 @@ function getBoard(boardId) {
             </div>
             <div class="comments_wrap">
                      <div class="comments">${comments}</div>
-            </div>
+             </div>
+             ${loginUsername == username ? `<button id="deleteBoard" type="button" data-board-id="${boardId}">삭제</button>` : ''}
+            ${loginUsername == username ? `<button id="updateBoard" type="button" data-board-id="${boardId}">수정</button>` : ''}
         </div>`
 
             $('#boards').append(temp_html);
