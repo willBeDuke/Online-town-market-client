@@ -521,14 +521,14 @@ function getProduct(productId) {
     window.location.href = `/product.html?productId=${productId}`
 }
 function addProduct() {
-    let url = '/addProduct.html';
+    let url = '/addproduct.html';
 
     let option = "width = 800, height = 800, top = 100, left = 200, location = no"
     window.open(url, '', option)
 }
 
 function userReport() {
-    var url = '/userReport.html';
+    var url = '/userreport.html';
 
     var option = "width = 800, height = 800, top = 100, left = 200, location = no"
     window.open(url, '', option)

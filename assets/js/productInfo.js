@@ -589,7 +589,7 @@ function chatCheck(productId) {
 
     $.ajax(settings).done(function (response) {
         if (response == true) {
-            window.location.href = window.location = '/chatRoom.html';
+            window.location.href = window.location = '/chatroom.html';
         }
         if (response == false) {
             createChatRoom(productId);

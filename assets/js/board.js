@@ -442,7 +442,7 @@ function getBoard(boardId) {
     $("#boards").empty();
     $.ajax({
         type: 'GET',
-        url: URL_VARIABLE + "boards" + boardId,
+        url: URL_VARIABLE + "boards" + boardId+"/",
         headers: { Authorization: userToken },
         success: function (response) {
             let title = response.title;
