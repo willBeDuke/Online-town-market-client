@@ -66,7 +66,7 @@ function chatList() {
         $('#roomList').append(temp_html);
       }
      
-      $("#makechatView").click(function() {
+      $(document).on("click", "#makechatView", function() {
         var roomId = $(this).data("room-id");
         var nickname = $(this).data("nickname");
         var productId = $(this).data("product-id");
