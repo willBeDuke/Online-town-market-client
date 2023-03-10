@@ -267,7 +267,7 @@ $("#addBoard").click(function () {
     createBoards();
 });
 
-$("#updateBoard").click(function () {
+$("#updateBoards").click(function () {
     updateBoard();
 });
 
@@ -478,6 +478,14 @@ function getBoard(boardId) {
         </div>`
 
             $('#boards').append(temp_html);
+
+            $("#deleteBoard").click(function () {
+                deleteBoard(boardId);
+            });
+
+            $("#updateBoard").click(function () {
+                updateBtn(boardId);
+            });
         }
     });
 }
