@@ -181,13 +181,13 @@ function checkInterest() {
    </div>`
             $('#info_box').append(temp_html);
         }
-        $("#checkMyProductInterest").click(function() {
+        $("#checkMyProductInterest").click(function () {
             checkMyProductInterest($(this).data("product-id"));
-          });
-        
-          $("#checkMyProductChat").click(function() {
+        });
+
+        $("#checkMyProductChat").click(function () {
             checkMyProductChat($(this).data("product-id"));
-          });
+        });
     });
 }
 
@@ -417,17 +417,22 @@ function getProductInfo(productId) {
 
        
            ${productEnum !== "판매완료" ? `<button type="button" class="btn btn-light small-button2" style="margin-right:10px" id = "checkMyProductChat" data-product-id="${productId}" data-seller-id="${sellerId}" data-product-name="${productName}" data-product-enum="${productEnum}"  >판매자와 채팅하기</button>` : ''}
-           ${responseVlaue == true ? `<button id="deleteProduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" data-product-id="${productId}">상품 삭제</button>`:''}
-           ${responseVlaue == true ? `<button id="updateproduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" data-product-id="${productId}">상품 수정</button>`:''}
+           ${responseVlaue == true ? `<button id="deleteProduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" data-product-id="${productId}">상품 삭제</button>` : ''}
+           ${responseVlaue == true ? `<button id="updateproduct" type="button" class="btn btn-light small-button" style="margin-right:10px;" data-product-id="${productId}">상품 수정</button>` : ''}
         </div>`
         $('#info_box').append(temp_html);
-        $("#deleteProduct").click(function() {
+        $("#deleteProduct").click(function () {
             deleteProduct(productId);
-          });
-        
-        $("#updateproduct").click(function() {
+        });
+
+        $("#updateproduct").click(function () {
             updateOpen(productId);
-          });
+        });
+
+
+        $("#createproductReport").click(function () {
+            productReport();
+        });
 
     });
     // 클릭 이벤트 설정
@@ -440,22 +445,19 @@ function getProductInfo(productId) {
     $("#updateproduct").click(function () {
         updateOpen(productId)
     })
-    $("#createproductReport").click(function() {
-        productReport();
-      });
-    
-      $("#checkMyProductInterest").click(function() {
+
+    $("#checkMyProductInterest").click(function () {
         checkMyProductInterest($(this).data("product-id"));
-      });
-    
-      $("#checkMyProductChat").click(function() {
+    });
+
+    $("#checkMyProductChat").click(function () {
         var productId = $(this).data("product-id");
         var sellerId = $(this).data("seller-id");
         var productName = $(this).data("product-name");
         var productEnum = $(this).data("product-enum");
         checkMyProductChat(productId, sellerId, productName, productEnum);
-      });
-    
+    });
+
 }
 
 
