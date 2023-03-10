@@ -1,4 +1,3 @@
-
 import URL_VARIABLE from './export.js';
 
 
@@ -264,15 +263,13 @@ function createButton() {
     window.open(url, "", option);
 }
 
-$(document).ready(function() {
-    $("#addBoard").click(function() {
-        createBoards();
-    });
+$("#addBoard").click(function () {
+    createBoards();
+});
 
-    $("#updateBoard").click(function() {
-        updateBoard();
-    });
-  });
+$("#updateBoard").click(function () {
+    updateBoard();
+});
 
 function createBoards() {
     $.ajax({
