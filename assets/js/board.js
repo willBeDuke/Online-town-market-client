@@ -323,10 +323,15 @@ function getBoards(page) {
                 $('#boardList').append(temp_html);
             }
 
-            $('#getBoard').click(function () {
-                var boardId = $(this).data('board-id')
+            $(document).on("click", "#getBoard", function() {
+                var boardId = $(this).data("board-id");
                 getBoard(boardId);
-            })
+              });
+
+            // $('#getBoard').click(function () {
+            //     var boardId = $(this).data('board-id')
+            //     getBoard(boardId);
+            // })
 
             $('#createBoard').click(function () {
                 createButton();

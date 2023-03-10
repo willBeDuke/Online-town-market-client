@@ -55,7 +55,7 @@ function chatList() {
                                     </div>
                                   </td>
                                   <td id="deleteBtn">
-                                    <button class="deleteBtn" type="submit" id="makedeleteChat">삭제</button>
+                                    <button class="deleteBtn" type="submit" data-room-id="${roomId}" id="makedeleteChat">삭제</button>
                                   </td>
                                 </tr>
                               </table>
@@ -63,19 +63,32 @@ function chatList() {
                           </li>`;
 
         // 새로 생성한 HTML 코드를 DOM에 추가합니다.
-        $('#roomList').append(temp_html);      
-        $("#makechatView").click(function() {
+        $('#roomList').append(temp_html);
+        $(document).on("click", "#makechatView", function() {
           var roomId = $(this).data("room-id");
           var nickname = $(this).data("nickname");
           var productId = $(this).data("product-id");
           chatView(roomId, nickname, productId);
-        });
-      
-        $("#makedeleteChat").click(function(){
-          deleteChat(roomId);
-        });
+        });    
       }
-     
+
+      $("#makedeleteChat").click(function(){
+        var roomId = $(this).data("room-id");
+        deleteChat(roomId);
+      });
+
+
+      // $(document).on("click", "#makedeleteChat", function() {
+      //   var roomId = $(this).data("room-id");
+      //   deleteChat(roomId);
+      // });
+
+      // $("#makechatView").click(function() {
+      //   var roomId = $(this).data("room-id");
+      //   var nickname = $(this).data("nickname");
+      //   var productId = $(this).data("product-id");
+      //   chatView(roomId, nickname, productId);
+      // });
 
 
     },
