@@ -55,7 +55,7 @@ function chatList() {
                                     </div>
                                   </td>
                                   <td id="deleteBtn">
-                                    <button class="deleteBtn" type="submit" id="makedeleteChat">삭제</button>
+                                    <button class="deleteBtn" type="submit" data-room-id="${roomId}" id="makedeleteChat">삭제</button>
                                   </td>
                                 </tr>
                               </table>
@@ -64,6 +64,7 @@ function chatList() {
 
         // 새로 생성한 HTML 코드를 DOM에 추가합니다.
         $('#roomList').append(temp_html);
+
       }
      
       $(document).on("click", "#makechatView", function() {
@@ -76,6 +77,7 @@ function chatList() {
       $("#makedeleteChat").click(function(){
         deleteChat(roomId);
       });
+
 
     },
     error: function (xhr, status, error) {
