@@ -153,6 +153,11 @@ let socket = null;
 
 function connect(roomId, nickname, productId) {
 
+  if (stompClient != null) {
+    stompClient.disconnect();
+    socket.close();  // socket도 함께 close
+  }
+
   socket = new SockJS(URL_VARIABLE + "ws");
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
@@ -176,34 +181,29 @@ function connect(roomId, nickname, productId) {
                             <span id="userNickname">${sender == receiver ? receiver : sender}</span><br>
                             <small id="sendDate" class="time">${sendDay}</small>
                           </div>
-                          <div id="messageNow" class="message">
+                          <div id="connect" class="message">
                             ${message}
                           </div>
                       </li>`;
-        $('#messageList').append(temp_html);
+      $('#messageList').append(temp_html);
+      const messageList = $('#connect2');
+      messageList.scrollTop(messageList.prop("scrollHeight"));
 
-        const messageList = $('#connect2');
-        messageList.scrollTop(messageList.prop("scrollHeight"));
     });
-
-    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
-
-    // $("#send").click(function() {
-    //   sendChat(roomId, productId, nickname, sender); // 클릭 시 실행할 코드
-    // });
+    $("#send").attr("onclick", `sendChat('${roomId}', ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
 
     $("#message").keypress(function (event) {
       if (event.which == 13 && !event.shiftKey) {
         event.preventDefault();
-        sendChat(roomId, productId, nickname, sender, $("#message").val());
+        sendChat(roomId, productId, nickname, sender);
       }
     }); // 줄바꿈은 Shift + Enter
   });
 };
 
 
-function sendChat(roomId, productId, nickname, sender, message) {
-  var message = $("#message").val();
+function sendChat(roomId, productId, nickname, sender) {
+    var message = $("#message").val();
 
   if (message == "" || message == null) {
     return;
@@ -220,7 +220,9 @@ function sendChat(roomId, productId, nickname, sender, message) {
 }
 
 function chatView(roomId, nickname, productId) {
-  // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
+
+
+  connect(roomId, nickname, productId);
   if (currentRoomId !== roomId || currentNickname !== nickname) {
 
     $('#creatChat').empty();
@@ -265,7 +267,6 @@ function chatView(roomId, nickname, productId) {
       }
     });
   }
-  connect(roomId, nickname, productId)
 }
 
 
@@ -345,9 +346,9 @@ function getProduct(productId) {
   });
 }
 
-//click
-$("#chatView").click(chatView);
-$("#connect2").click(connect);
+// //click
+// $("#chatView").click(chatView);
+// $("#connect2").click(connect);
 
 
 
