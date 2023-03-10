@@ -187,10 +187,10 @@ function connect(roomId, nickname, productId) {
       messageList.scrollTop(messageList.prop("scrollHeight"));
     });
 
-    // $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
-    $("#send").click(function() {
-      sendChat(roomId, productId, nickname, sender);
-    });
+    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+    // $("#send").click(function() {
+    //   sendChat(roomId, productId, nickname, sender);
+    // });
     $("#message").keypress(function (event) {
       if (event.which == 13 && !event.shiftKey) {
         event.preventDefault();
@@ -242,7 +242,8 @@ function chatView(roomId, nickname, productId, buyerId) {
           let receiver = messageList[i]['receiver'];
           let message = messageList[i]['message'];
           let sender = messageList[i]['sender'];
-          let sendTime = new Date();
+          let time = messageList[i]['sendDate'];
+          let sendTime = new Date(time);
           let hour = sendTime.getHours();
           let min = sendTime.getMinutes();
 

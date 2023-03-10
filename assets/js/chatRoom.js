@@ -155,10 +155,10 @@ function connect(roomId, nickname, productId) {
   stompClient.connect({}, function (frame) {
     setConnected(true);
     $("#apponent_nickname").text(nickname);
-    stompClient.subscribe("/sub/" + roomId, function (chat) {
+    stompClient.subscribe("/sub/" + roomId, function (connect2) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
 
-      let msg = JSON.parse(chat.body);
+      let msg = JSON.parse(connect2.body);
       let sender = msg.sender;
       let receiver = msg.receiver;
       let message = msg.message;
@@ -183,11 +183,11 @@ function connect(roomId, nickname, productId) {
       messageList.scrollTop(messageList.prop("scrollHeight"));
     });
 
-    // $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
 
-    $("#send").click(function() {
-      sendChat(roomId, productId, nickname, sender); // 클릭 시 실행할 코드
-    });
+    // $("#send").click(function() {
+    //   sendChat(roomId, productId, nickname, sender); // 클릭 시 실행할 코드
+    // });
 
     $("#message").keypress(function (event) {
       if (event.which == 13 && !event.shiftKey) {
@@ -241,7 +241,8 @@ function chatView(roomId, nickname, productId) {
           let receiver = messageList[i]['receiver'];
           let message = messageList[i]['message'];
           let sender = messageList[i]['sender'];
-          let sendTime = new Date();
+          let time = messageList[i]['sendDate'];
+          let sendTime = new Date(time);
           let hour = sendTime.getHours();
           let min = sendTime.getMinutes();
 
@@ -276,7 +277,7 @@ function disconnect() {
 
 
 $(function () {
-  $("#chat").on('submit', function (e) {
+  $("#connect2").on('submit', function (e) {
     e.preventDefault();
   });
   $("#disconnect").click(function () { disconnect(); });
@@ -329,7 +330,6 @@ function getProduct(productId) {
   };
 
   $.ajax(settings).done(function (response) {
-    console.log(response);
     let productId = response['productId'];
     let roomName = response['productName'];
     let productPrice = response['productPrice'];
