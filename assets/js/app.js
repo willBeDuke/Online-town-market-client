@@ -1,10 +1,12 @@
 // app.js
 // 구글 로그인 버튼 클릭 시 이벤트 핸들러
+import URL_VARIABLE from './export.js';
+
 document.querySelector('#googleLoginButton').addEventListener('click', () => {
     // 구글 OAuth2 로그인 요청
     const provider = 'google';
-    const redirectUri = encodeURIComponent('http://localhost:8080/oauth2/callback/google');
-    window.location.href = `http://localhost:8080/oauth2/authorization/google?redirect_uri=${redirectUri}`;
+    const redirectUri = encodeURIComponent(URL_VARIABLE + 'oauth2/callback/google');
+    window.location.href = URL_VARIABLE + `oauth2/authorization/google?redirect_uri=${redirectUri}`;
   });
   
   // 로그아웃 버튼 클릭 시 이벤트 핸들러
@@ -57,4 +59,3 @@ document.querySelector('#googleLoginButton').addEventListener('click', () => {
       // API 에러 처리
       console.error(error);
     });
-  

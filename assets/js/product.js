@@ -1,3 +1,5 @@
+import URL_VARIABLE from './export.js';
+
 $(document).ready(function () {
   var ok = localStorage.getItem('accessToken');
 
@@ -28,7 +30,7 @@ $('#uploadPhoto').click(function() {
   formData.append("product", file);
   
   $.ajax({
-    url: "http://localhost:8080/api/images/upload/products",
+    url: URL_VARIABLE + "api/images/upload/products",
     type: 'POST',
     data: formData,
     headers: {
@@ -63,7 +65,7 @@ function addProduct() {
 
   $.ajax({
     type: "POST",
-    url: 'http://localhost:8080/products',
+    url: URL_VARIABLE + 'products',
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     headers: {
@@ -79,14 +81,12 @@ function addProduct() {
 
     }
   })
-
-
 }
 
 // function getProduct(productId) {
 //   $.ajax({
 //     type: "GET", // Post? CORS에 맞춰 고치기
-//     url: "http://localhost:8080/products/" + productId,
+//     url: URL_VARIABLE + "products/" + productId,
 //     datatype: "json",
 //     data: {'id_give': productId},
 //     // headers: {
@@ -114,7 +114,7 @@ function addProduct() {
 function getProduct(productId) {
   $.ajax({
     type: "GET", // Post? CORS에 맞춰 고치기
-    url: "http://localhost:8080/products/" + productId,
+    url: URL_VARIABLE + "products/" + productId,
     datatype: "json",
     data: { 'id_give': productId },
     // headers: {
@@ -137,9 +137,14 @@ function getProduct(productId) {
           <p>${productInfo.productCategory}</p>
           <p>${productInfo.viewCount}</p>
         </div>
-        <button onclick="createChatRoom(${productId})" type="button" class="btn btn-dark">판매자와 채팅하기</button>
+        <button  type="button" class="btn btn-dark" data-product-id="${productId}" id="createChatRoom">판매자와 채팅하기</button>
       </div>`
       $('#product-detail').append(temp_html)
+      $("#createChatRoom").click(function() {
+        // 클릭 시 실행할 함수 정의
+        var productId = $(this).data("product-id"); // 현재 버튼의 data-product-id 값을 가져옵니다.
+        createChatRoom(productId); // createChatRoom 함수에 파라미터로 전달합니다.
+      });
       console.log(response);
     }
   })
@@ -151,7 +156,7 @@ function getProduct(productId) {
 
 //   $.ajax({
 //     type: "PUT",
-//     url: "http://localhost:8080/update/" + productId,
+//     url: URL_VARIABLE + "update/" + productId,
 //     datatype: "json",
 //     contentType: "application/json; charset=UTF-8",
 //     data: { "id_give": productId },
@@ -167,7 +172,7 @@ function getProduct(productId) {
 // function deleteProduct() {
 //   $.ajax({
 //     type: "DELETE",
-//     url: "http://localhost:8080/" + productId,
+//     url: URL_VARIABLE + "" + productId,
 //     data: { 'id_give': productId },
 //     headers: { Authorization: userToken },
 //     success: function (response) {
@@ -202,3 +207,9 @@ function getProductIdFromUrl() {
   // Get the product ID parameter
   return urlParams.get('productId');
 }
+
+//click
+$("#addProduct").click(addProduct);
+
+
+

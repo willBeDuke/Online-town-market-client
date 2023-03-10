@@ -1,4 +1,4 @@
-
+import URL_VARIABLE from './export.js';
 const userToken = localStorage.getItem('accessToken');
 
 function uploadImage() {
@@ -7,7 +7,7 @@ function uploadImage() {
     var formData = new FormData();
     formData.append("profile", file);
     $.ajax({
-        url: "http://localhost:8080/api/images/upload/profiles",
+        url: URL_VARIABLE + "api/images/upload/profiles",
         type: 'POST',
         data: formData,
         headers: {
@@ -32,7 +32,7 @@ function uploadImage() {
     // var formData = new FormData();
     // formData.append("profile", file);
     // $.ajax({
-    //     url: "http://localhost:8080/api/images/upload/profiles",
+    //     url: URL_VARIABLE + "api/images/upload/profiles",
     //     type: 'POST',
     //     data: formData,
     //     headers: {
@@ -59,7 +59,7 @@ const profileRequestDto = {
 };
 
 $.ajax({
-    url: "http://localhost:8080/users/profile/update",
+    url: URL_VARIABLE + "users/profile/update",
     type: 'PATCH',
     data: JSON.stringify(profileRequestDto),
     headers: {
@@ -81,3 +81,7 @@ function closeWindow() {
      alert(returnValue)
      window.close();
     }
+
+    $("#upload-button").click(uploadImage);
+    $("#updateProfile").click(updateProfile);
+

@@ -1,3 +1,5 @@
+import URL_VARIABLE from './export.js';
+
 jQuery(document).ready(function ($) {
     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
@@ -142,7 +144,7 @@ jQuery(document).ready(function ($) {
 });
 function getProfile() {
     var settings = {
-        "url": "http://localhost:8080/users/profile",
+        "url": URL_VARIABLE + "users/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -170,9 +172,12 @@ function getProfile() {
             </li>               
         </ul>      
     </li>
-    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+    <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a id="logout" > 로그아웃 </a></div>`
         $('#loginForm').append(temp_html)
-        element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
+        $("#logout").click(function() {
+            // logout 함수를 실행합니다.
+            logout();
+          });
     }).fail(function () {
         reissueToken();
     });
@@ -180,7 +185,7 @@ function getProfile() {
 
 function logout() {
     var settings = {
-        "url": "http://localhost:8080/users/logout",
+        "url": URL_VARIABLE + "users/logout",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -197,7 +202,7 @@ function logout() {
 }
 function reissueToken() {
     var settings = {
-        "url": "http://localhost:8080/refresh/regeneration",
+        "url": URL_VARIABLE + "refresh/regeneration",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -235,7 +240,7 @@ function getPurchaseList(page) {
     $('.panel-body').empty();
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/trade/purchase',
+        url: URL_VARIABLE + 'trade/purchase',
         headers: { Authorization: userToken },
         dataType: 'json',
         data: {"page" : page},

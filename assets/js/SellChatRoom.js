@@ -1,4 +1,6 @@
 // 토큰 불러오기
+import URL_VARIABLE from './export.js';
+
 $(document).ready(function () {
   const ok = localStorage.getItem('accessToken')
   getProfile();
@@ -19,7 +21,7 @@ function chatList() {
   $("#roomList").empty()
   $.ajax({
     type: 'GET',
-    url: 'http://localhost:8080/chatroom/sell',
+    url: URL_VARIABLE + 'chatroom/sell',
     headers: { Authorization: userToken },
     dataType: 'json',
     success: function (response) {
@@ -37,7 +39,8 @@ function chatList() {
         let buyerId = roomList[i]['buyerId']
 
         let temp_html = `<li id="roomId" class="chatDesc" data-roomid="${roomId}" data-nickname="${nickname}">
-                            <a style="color: black; text-decoration: none;" onclick="chatView(${roomId}, '${nickname}', ${productId}, ${buyerId});">
+                            <a style="color: black; text-decoration: none;" id="chatView" data-room-id="${roomId}" data-nickname="${nickname}" data-product-id="${productId}" data-buyer-id="${buyerId}"
+                            >
                               <table cellpadding="0" cellspacing="0">
                                 <tr>
                                   <td class="profile_td">
@@ -55,7 +58,7 @@ function chatList() {
                                     </div>
                                   </td>
                                   <td id="deleteBtn">
-                                    <button class="deleteBtn" type="submit" onclick="deleteChat(${roomId})">삭제</button>
+                                    <button class="deleteBtn" type="submit" data-room-id="${roomId}" id="deleteChat">삭제</button>
                                   </td>
                                 </tr>
                               </table>
@@ -65,6 +68,19 @@ function chatList() {
         // 새로 생성한 HTML 코드를 DOM에 추가합니다.
         $('#roomList').append(temp_html);
       }
+      $("#chatView").click(function() {
+        // Get the room id, nickname, product id and buyer id from data attributes
+        var roomId = $(this).data("room-id");
+        var nickname = $(this).data("nickname");
+        var productId = $(this).data("product-id");
+        var buyerId = $(this).data("buyer-id");
+        // Call the function with these parameters
+        chatView(roomId, nickname, productId, buyerId);
+      });
+      $("#deleteChat").click(function() {
+        var roomId = $(this).data("room-id");
+        deleteChat(roomId);
+      });
     },
     error: function (xhr, status, error) {
       console.error(xhr);
@@ -75,9 +91,10 @@ function chatList() {
 
 
 
+
 function getProfile() {
   var settings = {
-    "url": "http://localhost:8080/users/profile",
+    "url": URL_VARIABLE + "users/profile",
     "method": "GET",
     "timeout": 0,
     "headers": {
@@ -106,9 +123,9 @@ function getProfile() {
           </li>               
       </ul>      
   </li>
-  <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
+  <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a id = "logout" > 로그아웃 </a></div>`
     $('#loginForm').append(temp_html);
-
+$("#logout").click(logout);
   }).fail(function () {
     reissueToken();
   });
@@ -136,7 +153,7 @@ let socket = null;
 
 function connect(roomId, nickname, productId) {
 
-  socket = new SockJS("http://localhost:8080/ws");
+  socket = new SockJS(URL_VARIABLE + "ws");
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
     setConnected(true);
@@ -169,8 +186,10 @@ function connect(roomId, nickname, productId) {
       messageList.scrollTop(messageList.prop("scrollHeight"));
     });
 
-    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
-
+    // $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+    $("#send").click(function() {
+      sendChat(roomId, productId, nickname, sender);
+    });
     $("#message").keypress(function (event) {
       if (event.which == 13 && !event.shiftKey) {
         event.preventDefault();
@@ -208,7 +227,7 @@ function chatView(roomId, nickname, productId, buyerId) {
     $('#chatMessage').show();
     $.ajax({
       type: 'GET',
-      url: "http://localhost:8080/chatrooms/" + roomId,
+      url: URL_VARIABLE + "chatrooms/" + roomId,
       headers: { Authorization: userToken },
       success: function (response) {
         getProduct(productId);
@@ -241,7 +260,10 @@ function chatView(roomId, nickname, productId, buyerId) {
           $('#chat').scrollTop($('#chat')[0].scrollHeight);
         }
 
-        $("#completed").attr("onclick", `salesCompleted(${buyerId}, ${productId})`);
+        // $("#completed").attr("onclick", `salesCompleted(${buyerId}, ${productId})`);
+        $("#completed").click(function() {
+          salesCompleted(buyerId, productId);
+        });
       }
     });
   }
@@ -270,7 +292,7 @@ $(function () {
 function salesCompleted(buyerId, productId) {
   $.ajax({
     type: "POST",
-    url: "http://localhost:8080/trade/create",
+    url: URL_VARIABLE + "trade/create",
     headers: { Authorization: userToken },
     dataType: "json",
     contentType: 'application/json',
@@ -295,7 +317,7 @@ function deleteChat(roomId) {
   $('#chatMessage').hide();
   $.ajax({
     type: "DELETE",
-    url: "http://localhost:8080/chatroom/" + roomId,
+    url: URL_VARIABLE + "chatroom/" + roomId,
     headers: { Authorization: userToken },
     dataType: "json",
     success: function (response) {
@@ -309,7 +331,7 @@ function deleteChat(roomId) {
 
 function logout() {
   var settings = {
-    "url": "http://localhost:8080/users/logout",
+    "url": URL_VARIABLE + "users/logout",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -327,7 +349,7 @@ function logout() {
 
 function getProduct(productId) {
   var settings = {
-    "url": "http://localhost:8080/products/" + productId,
+    "url": URL_VARIABLE + "products/" + productId,
     "method": "GET",
     "timeout": 0,
     "headers": {
@@ -354,3 +376,9 @@ function getProduct(productId) {
     $(".productImg").attr("src", `${productImg}`);
   });
 }
+
+$("#chat").click(function() {
+  // connect 함수를 실행합니다.
+  connect();
+});
+

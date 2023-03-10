@@ -1,6 +1,5 @@
-
+import URL_VARIABLE from './export.js';
 $(document).ready(function () {
-  initMap()
   'use strict';
 
   var usernameHasError = false,
@@ -15,12 +14,9 @@ $(document).ready(function () {
       passwordError = true,
       passConfirm   = true,
       nicknameError = true,
-      regionError = true,
+      regionError = true;
 
-      usernameCkError = false,
-      usernameck = false,
-      emailck = false,
-      nicknameck = false;
+      
 
 
   // Detect browser for css purpose
@@ -174,7 +170,11 @@ $(document).ready(function () {
 });
 
 var  waitingEmail = true,
-     emailVerify = false;
+     emailVerify = false,
+     usernameCkError = false,
+      usernameck = false,
+      emailck = false,
+      nicknameck = false;
     
 function signup() {
   var region = document.getElementById('region');
@@ -183,7 +183,7 @@ function signup() {
   console.log(address1);
 if(emailVerify == true){
   var settings = {
-    "url": "http://localhost:8080/users/signup",
+    "url": URL_VARIABLE+ "users/signup",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -223,7 +223,7 @@ function usernamecheck(clicked_id){
   if($('#username').val() != null & (/^[a-zA-Z0-9_-]{4,12}$/).test($('#username').val())){
     var field = clicked_id.substr(2)
   var settings = {
-    "url": "http://localhost:8080/users/duplicate",
+    "url": URL_VARIABLE+ "users/duplicate",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -262,7 +262,7 @@ function nicknamecheck(clicked_id){
   if($('#nickname').val() != null & (/^[a-zA-Z0-9_-]{4,12}$/).test($('#nickname').val())){
     var field = clicked_id.substr(2)
   var settings = {
-    "url": "http://localhost:8080/users/duplicate",
+    "url": URL_VARIABLE+ "users/duplicate",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -300,7 +300,7 @@ function emailcheck(clicked_id){
   if($('#email').val() != null & (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/).test($('#email').val())){
     var field = clicked_id.substr(2)
   var settings = {
-    "url": "http://localhost:8080/users/duplicate",
+    "url": URL_VARIABLE+ "users/duplicate",
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -367,7 +367,7 @@ function verifyEmail(){
     var email = $('#email').val();
     $.ajax({
       type: "POST",
-      url: "http://localhost:8080/mail",
+      url: URL_VARIABLE+ "mail",
       data: {email: email},
       success: function(response){
         checkcode = response;
@@ -385,7 +385,7 @@ function setWatingEmail(){
 //     var code = $('#emailVerify').val();
 //      $.ajax({
 //        type: "POST",
-//        url: "http://localhost:8080/verify",
+//        url: URL_VARIABLE+ "verify",
 //        data: {code:code},
 //        success: function (response) {
 //         var result = response;
@@ -409,7 +409,7 @@ function checkverify(){
   var email = $('#email').val();
   $.ajax({
     type: "POST",
-    url: "http://localhost:8080/verify",
+    url: URL_VARIABLE+ "verify",
     data: {code:code, email:email},
     success: function (response) {
      var result = response;
@@ -430,7 +430,7 @@ function checkverify(){
 }
 
 function postCode(){
-  let url = '/addressSign.html';
+  let url = '/addressSignup.html';
   let option = "width = 800, height = 800, top = 100, left = 200, location = no"
 
   window.open(url,'',option)
@@ -508,29 +508,28 @@ function createKaKaoMap(y, x) {
   // 지도에 마커를 표시합니다
   marker.setMap(map);
 };
-
+var address;
+var address2;
+var address3;
 
 function getFullAddress(x, y) {
   console.log(x, y)
 
   $.ajax({
-    url: "http://localhost:8080/users/address/signup",
+    url: URL_VARIABLE+ "users/address/signup",
     type: "GET",  
     data: { x: x, y: y },
     dataType: 'json',
     success: function (response) {
       console.log("뭘까 " + response)
+      
+   
     }
   })
   .done(function (fragment) {
-    console.log(fragment);
-     address = fragment['address'];
-    address2 = fragment['address2'];
-    address3 = fragment['address3'];
-    console.log(address)
- 
-
-
+    address = fragment.address;
+    address2 = fragment.address2;
+    address3 = fragment.address3;
   });
 }
 
@@ -548,13 +547,60 @@ function setupCompleted(){
   localStorage.setItem('address1',address)
   localStorage.setItem('address2',address2)
   localStorage.setItem('address3',address3)
-  window.opener.setRegion();
+  $('#region', window.opener.document).click()
+  // window.opener.setRegion();
   window.close();
 }
+
+$('#region').click(function(){
+  $(this).text(localStorage.getItem('address1')+" "+localStorage.getItem('address2')+" "+localStorage.getItem('address3'))
+  localStorage.removeItem('address1')
+  localStorage.removeItem('address2')
+  localStorage.removeItem('address3')
+});
 
 function setRegion(){
   $("#region").text(localStorage.getItem('address1')+" "+localStorage.getItem('address2')+" "+localStorage.getItem('address3'))
   localStorage.removeItem('address1')
   localStorage.removeItem('address2')
-  localStorage.removeItem('address3') 
+  localStorage.removeItem('address3')
 }
+
+$("#done").click(setupCompleted);
+
+$("#updatepostCode").click(postCode);
+
+
+$("button#ckusername").click(function() {
+  // 클릭한 button 요소의 id 값을 가져옵니다.
+  var buttonId = $(this).attr("id");
+  // usernamecheck 함수에 buttonId 값을 전달합니다.
+  usernamecheck(buttonId);
+});
+
+
+$("button#ckemail").click(function() {
+  var buttonId = $(this).attr("id"); // 클릭된 버튼의 id 값을 가져옵니다.
+  emailcheck(buttonId); // emailcheck 함수에 id 값을 전달합니다.
+});
+
+$("button#vfemail").click(function() {
+  checkverify(); // checkverify 함수를 호출합니다.
+});
+
+$("button#cknickname").click(function() {
+  var buttonId = $(this).attr("id"); // 클릭된 버튼의 id 값을 가져옵니다.
+  nicknamecheck(buttonId); // nicknamecheck 함수에 id 값을 전달합니다.
+});
+
+$("button#updatepostCode").click(function() {
+  postCode(); // postCode 함수를 호출합니다.
+});
+
+$("button#updatesignup").click(function() {
+  signup(); // signup 함수를 호출합니다.
+});
+
+$("button#googlesignup").click(function() {
+  GoogleSignup(); // GoogleSignup 함수를 호출합니다.
+});

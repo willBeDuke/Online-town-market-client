@@ -28,7 +28,7 @@
     integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
     crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="assets/js/chatRoom.js"></script>
+  <script type="module" src="assets/js/chatRoom.js"></script>
   <link rel="stylesheet" href="assets/css/style.css">
 
   <style>
@@ -372,7 +372,9 @@
           <li id="roomId" class="chatDesc">
             <table cellpadding="0" cellspacing="0" id="connect">
               <tr>
-                <a style="color: black; text-decoration: none;">
+
+                <a style="color: black; text-decoration: none;" id="chatView" >
+
                   <td class="profile_td">
                     <img src="" alt="프로필" />
                   </td>
@@ -417,7 +419,7 @@
       </div>
 
 
-      <div id="chat" class="chat" onclick="connect()">
+      <div class="chat" id="connect2">
         <ul id="messageList">
         </ul>
       </div>

@@ -1,4 +1,6 @@
 // 토큰 불러오기
+import URL_VARIABLE from './export.js';
+
 $(document).ready(function () {
   const ok = localStorage.getItem('accessToken')
   if (ok.length == 0) {
@@ -88,7 +90,7 @@ function getFullAddress(x, y) {
   console.log(x, y)
 
   $.ajax({
-    url: "http://localhost:8080/users/address",
+    url: URL_VARIABLE + "users/address",
     type: "GET",
     headers: { Authorization: userToken },
     data: { x: x, y: y },
@@ -107,6 +109,8 @@ function getFullAddress(x, y) {
     let temp_html = `<span>${address}</span>&nbsp;<span>${address2}</span>&nbsp;<span>${address3}</span>`
     // $("#fullAddress").text(`${address}`, `${address2}`, `${address3}`);
     $("#fullAddress").append(temp_html);
+
+
   });
 }
 
@@ -124,3 +128,5 @@ function setupCompleted(){
   window.close();
   window.opener.location.reload();
 }
+//click
+$("#setupCompleted").click(setupCompleted);
