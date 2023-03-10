@@ -1,3 +1,9 @@
+import URL_VARIABLE from './export.js';
+
+
+const queryString = window.location.search;
+const params = new URLSearchParams(queryString);
+const boardId = parseInt(params.get("boardId"));
 jQuery(document).ready(function ($) {
     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
@@ -144,7 +150,7 @@ jQuery(document).ready(function ($) {
 
 function getProfile() {
     var settings = {
-        "url": "http://localhost:8080/users/profile",
+        "url": URL_VARIABLE + 'users/profile',
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -181,7 +187,7 @@ function getProfile() {
 }
 function logout() {
     var settings = {
-        "url": "http://localhost:8080/users/logout",
+        "url": URL_VARIABLE + 'users/logout',
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -198,7 +204,7 @@ function logout() {
 }
 function reissueToken() {
     var settings = {
-        "url": "http://localhost:8080/refresh/regeneration",
+        "url": URL_VARIABLE + 'refresh/regeneration',
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -258,10 +264,20 @@ function createButton() {
     window.open(url, "", option);
 }
 
-function crerateBoards() {
+$(document).ready(function() {
+    $("#addBoard").click(function() {
+        createBoards();
+    });
+
+    $("#updateBoard").click(function() {
+        updateBoard();
+    });
+  });
+
+function createBoards() {
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/boards",
+        url: URL_VARIABLE + 'boards',
         headers: {
             Authorization: userToken,
             "Content-Type": "application/json"
@@ -283,31 +299,43 @@ function crerateBoards() {
 
 function getBoards(page) {
     $("#boardList").empty()
+    $("#create").empty()
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/boards',
+        url: URL_VARIABLE + 'boards',
         headers: { Authorization: userToken },
         dataType: 'json',
         data: { "page": page },
         success: function (response) {
             let boards = response.content;
+            let temp_careatBtn = `<button id="createBoard" type="button">글쓰기</button>`
+            $('#create').append(temp_careatBtn);
             for (let i = 0; i < boards.length; i++) {
+                let boardId = boards[i]['boardId']
                 let subject = boards[i]['subject']
                 let title = boards[i]['title']
 
-                let temp_html = `<tr class="text-center">
-                                    <a style="color: black; text-decoration: none;" onclick="???()">
+                let temp_html = `<tr id="getBoard" class="text-center" data-board-id="${boardId}")">
                                         <td>${subject}</td>
                                         <td class="text-center">
                                             <p>${title}</p>
                                         </td>
                                         <td></td>
-                                    </a>
                                 </tr>`;
 
                 // 새로 생성한 HTML 코드를 DOM에 추가합니다.
                 $('#boardList').append(temp_html);
             }
+
+            $('#getBoard').click(function () {
+                var boardId = $(this).data('board-id')
+                getBoard(boardId);
+            })
+
+            $('#createBoard').click(function () {
+                createButton();
+            })
+
             var totalPages = response.totalPages;
             var pageNumber = response.number;
 
@@ -362,6 +390,50 @@ function getBoards(page) {
         },
         error: function (xhr, status, error) {
             console.error(xhr);
+        }
+    });
+}
+
+function updateBtn(boardId) {
+    var url = "/updateBoard.html?boardId=" + boardId
+    var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+    window.open(url, "", option);
+
+}
+
+function updateBoard() {
+    $.ajax({
+        type: "PUT",
+        url: URL_VARIABLE + 'boards/' + boardId,
+        headers: {
+            Authorization: userToken,
+        },
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+            "title": $("#title").val(),
+            "content": $("#content").val(),
+            "subject": $("#subject").val()
+        }),
+        success: function (response) {
+            console.log(response)
+            alert("게시글 등록이 완료 되었습니다.")
+            window.close();
+            window.opener.location.reload();
+        }
+    })
+}
+
+
+function deleteBoard(boardId) {
+    $.ajax({
+        type: "DELETE",
+        url: URL_VARIABLE + 'boards/' + boardId,
+        headers: { Authorization: userToken },
+        success: function (response) {
+            alert("삭제되었습니다.");
+            history.back();
+            // location.herf = '/board.html'
         }
     });
 }
