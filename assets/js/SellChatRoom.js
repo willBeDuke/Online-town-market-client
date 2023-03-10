@@ -155,6 +155,11 @@ let socket = null;
 
 function connect(roomId, nickname, productId) {
 
+  if (stompClient != null) {
+    stompClient.disconnect();
+    socket.close();  // socket도 함께 close
+  }
+
   socket = new SockJS(URL_VARIABLE + "ws");
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
@@ -183,26 +188,24 @@ function connect(roomId, nickname, productId) {
                           </div>
                       </li>`;
       $('#messageList').append(temp_html);
-
+    
       const messageList = $('#chat');
       messageList.scrollTop(messageList.prop("scrollHeight"));
-    });
 
-    $("#send").attr("onclick", `sendChat(${roomId}, ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
-    // $("#send").click(function() {
-    //   sendChat(roomId, productId, nickname, sender);
-    // });
+    });
+    $("#send").attr("onclick", `sendChat('${roomId}', ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+
     $("#message").keypress(function (event) {
       if (event.which == 13 && !event.shiftKey) {
         event.preventDefault();
-        sendChat(roomId, productId, nickname, sender, $("#message").val());
+        sendChat(roomId, productId, nickname, sender,);
       }
-    }); // 줄바꿈은 Shift + Enter
+    });
   });
 };
 
 
-function sendChat(roomId, productId, nickname, sender, message) {
+function sendChat(roomId, productId, nickname, sender, message) {  
   var message = $("#message").val();
 
   if (message == "" || message == null) {
@@ -220,7 +223,9 @@ function sendChat(roomId, productId, nickname, sender, message) {
 }
 
 function chatView(roomId, nickname, productId, buyerId) {
-  // 현재 방과 이전 방이 다른 경우에만 ajax 요청 보냄
+  
+
+  connect(roomId, nickname, productId);
   if (currentRoomId !== roomId || currentNickname !== nickname) {
 
     $('#creatChat').empty();
@@ -270,7 +275,6 @@ function chatView(roomId, nickname, productId, buyerId) {
       }
     });
   }
-  connect(roomId, nickname, productId);
 }
 
 
@@ -380,8 +384,8 @@ function getProduct(productId) {
   });
 }
 
-$("#chat").click(function() {
-  // connect 함수를 실행합니다.
-  connect();
-});
+// $("#chat").click(function() {
+//   // connect 함수를 실행합니다.
+//   connect();
+// });
 
