@@ -179,7 +179,7 @@ function connect(roomId, nickname, productId) {
                       </li>`;
       $('#messageList').append(temp_html);
       
-      const messageList = $('#chat');
+      const messageList = $('#connect2');
       messageList.scrollTop(messageList.prop("scrollHeight"));
     });
 
@@ -257,7 +257,7 @@ function chatView(roomId, nickname, productId) {
                               </div>
                             </li>`;
           $('#messageList').append(temp_html);
-          $('#chat').scrollTop($('#chat')[0].scrollHeight);
+          $('#connect2').scrollTop($('#connect2')[0].scrollHeight);
         }
       }
     });
