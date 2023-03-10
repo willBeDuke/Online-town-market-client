@@ -78,10 +78,11 @@ function chatList() {
         chatView(roomId, nickname, productId, buyerId);
       });
 
-      $("#deleteChat").click(function() {
+      $(document).on("click", "#deleteChat", function (event) {
+        event.stopPropagation();
         var roomId = $(this).data("room-id");
         deleteChat(roomId);
-      });
+      })
     },
     error: function (xhr, status, error) {
       console.error(xhr);
