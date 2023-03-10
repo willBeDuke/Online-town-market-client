@@ -1,8 +1,10 @@
-import URL_VARIABLE from "./export.js";
+
+import URL_VARIABLE from './export.js';
+
+
 const queryString = window.location.search;
 const params = new URLSearchParams(queryString);
 const boardId = parseInt(params.get("boardId"));
-
 jQuery(document).ready(function ($) {
     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
@@ -149,7 +151,7 @@ jQuery(document).ready(function ($) {
 
 function getProfile() {
     var settings = {
-        "url": "http://localhost:8080/users/profile",
+        "url": URL_VARIABLE + 'users/profile',
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -186,7 +188,7 @@ function getProfile() {
 }
 function logout() {
     var settings = {
-        "url": "http://localhost:8080/users/logout",
+        "url": URL_VARIABLE + 'users/logout',
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -203,7 +205,7 @@ function logout() {
 }
 function reissueToken() {
     var settings = {
-        "url": "http://localhost:8080/refresh/regeneration",
+        "url": URL_VARIABLE + 'refresh/regeneration',
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -262,10 +264,20 @@ function createButton() {
     window.open(url, "", option);
 }
 
-function crerateBoards() {
+$(document).ready(function() {
+    $("#addBoard").click(function() {
+        createBoards();
+    });
+
+    $("#updateBoard").click(function() {
+        updateBoard();
+    });
+  });
+
+function createBoards() {
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/boards",
+        url: URL_VARIABLE + 'boards',
         headers: {
             Authorization: userToken,
             "Content-Type": "application/json"
@@ -286,20 +298,23 @@ function crerateBoards() {
 
 function getBoards(page) {
     $("#boardList").empty()
+    $("#create").empty()
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/boards',
+        url: URL_VARIABLE + 'boards',
         headers: { Authorization: userToken },
         dataType: 'json',
         data: { "page": page },
         success: function (response) {
             let boards = response.content;
+            let temp_careatBtn = `<button id="createBoard" type="button">글쓰기</button>`
+            $('#create').append(temp_careatBtn);
             for (let i = 0; i < boards.length; i++) {
                 let boardId = boards[i]['boardId']
                 let subject = boards[i]['subject']
                 let title = boards[i]['title']
 
-                let temp_html = `<tr class="text-center" onclick="getBoard(${boardId})">
+                let temp_html = `<tr id="getBoard" class="text-center" data-board-id="${boardId}")">
                                         <td>${subject}</td>
                                         <td class="text-center">
                                             <p>${title}</p>
@@ -310,6 +325,16 @@ function getBoards(page) {
                 // 새로 생성한 HTML 코드를 DOM에 추가합니다.
                 $('#boardList').append(temp_html);
             }
+
+            $('#getBoard').click(function () {
+                var boardId = $(this).data('board-id')
+                getBoard(boardId);
+            })
+
+            $('#createBoard').click(function () {
+                createButton();
+            })
+
             var totalPages = response.totalPages;
             var pageNumber = response.number;
 
@@ -378,7 +403,8 @@ function updateBtn(boardId) {
 function updateBoard() {
     $.ajax({
         type: "PUT",
-        url: "http://localhost:8080/boards/" + boardId,
+        url: URL_VARIABLE + 'boards/' + boardId,
+
         headers: {
             Authorization: userToken,
         },
@@ -402,15 +428,12 @@ function updateBoard() {
 function deleteBoard(boardId) {
     $.ajax({
         type: "DELETE",
-        url: "http://localhost:8080/boards/" + boardId,
+        url: URL_VARIABLE + 'boards/' + boardId,
         headers: { Authorization: userToken },
         success: function (response) {
             alert("삭제되었습니다.");
-            // history.back();
-            location.herf = '/board.html'
-        },
-        error: function (xhr, status, error) {
-            alert("권한이 없습니다.")
+            history.back();
+            // location.herf = '/board.html'
         }
     });
 }
