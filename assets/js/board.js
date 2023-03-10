@@ -1,5 +1,6 @@
-const urlSearchParams = new URLSearchParams(window.location.search);
-const boardId = urlSearchParams.get('boardId');
+const queryString = window.location.search;
+const params = new URLSearchParams(queryString);
+const boardId = parseInt(params.get("boardId"));
 
 jQuery(document).ready(function ($) {
     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
@@ -218,7 +219,6 @@ function reissueToken() {
     });
 }
 
-
 // 토큰 불러오기
 $(document).ready(function () {
     const ok = localStorage.getItem('accessToken')
@@ -283,9 +283,7 @@ function crerateBoards() {
     })
 }
 
-
 function getBoards(page) {
-    console.log(boardId);
     $("#boardList").empty()
     $.ajax({
         type: 'GET',
@@ -296,18 +294,18 @@ function getBoards(page) {
         success: function (response) {
             let boards = response.content;
             for (let i = 0; i < boards.length; i++) {
+                let boardId = boards[i]['boardId']
                 let subject = boards[i]['subject']
                 let title = boards[i]['title']
 
-                let temp_html = `<tr class="text-center">
-                <a style="color: black; text-decoration: none;" onclick="getBoard(${boardId})">
-                                <td>${subject}</td>
-                                <td class="text-center">
-                                    <p>${title}</p>
-                                </td>
-                                <td></td>
-                            </a>
-                        </tr>`
+                let temp_html = `<tr class="text-center" onclick="getBoard(${boardId})">
+                                        <td>${subject}</td>
+                                        <td class="text-center">
+                                            <p>${title}</p>
+                                        </td>
+                                        <td></td>
+                                </tr>`;
+
                 // 새로 생성한 HTML 코드를 DOM에 추가합니다.
                 $('#boardList').append(temp_html);
             }
@@ -369,41 +367,88 @@ function getBoards(page) {
     });
 }
 
+function updateBtn(boardId) {
+    var url = "/updateBoard.html?boardId=" + boardId
+    var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+    window.open(url, "", option);
+
+}
+
+function updateBoard() {
+    $.ajax({
+        type: "PUT",
+        url: "http://localhost:8080/boards/" + boardId,
+        headers: {
+            Authorization: userToken,
+        },
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+            "title": $("#title").val(),
+            "content": $("#content").val(),
+            "subject": $("#subject").val()
+        }),
+        success: function (response) {
+            console.log(response)
+            alert("게시글 등록이 완료 되었습니다.")
+            window.close();
+            window.opener.location.reload();
+        }
+    })
+}
+
+
+function deleteBoard(boardId) {
+    $.ajax({
+        type: "DELETE",
+        url: "http://localhost:8080/boards/" + boardId,
+        headers: { Authorization: userToken },
+        success: function (response) {
+            alert("삭제되었습니다.");
+            // history.back();
+            location.herf = '/board.html'
+        },
+        error: function (xhr, status, error) {
+            alert("권한이 없습니다.")
+        }
+    });
+}
+
 function getBoard(boardId) {
-    var settings = {
-        "url": "http://localhost:8080/boards/" + boardId,
-        "method": "GET",
-        "timeout": 0,
-    };
+    $("#boards").empty();
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:8080/boards/' + boardId,
+        headers: { Authorization: userToken },
+        success: function (response) {
+            let title = response.title;
+            let content = response.content;
+            let subject = response.subject;
+            let comments = response.comments;
+            let username = response.username;
+            let createdAt = response.createdAt;
+            let modifiedAt = response.modifiedAt;
 
-    $.ajax(settings).done(function (response) {
-
-        let boardTitle = response.title;
-        let boardContent = response.content;
-        let boardSubject = response.subject;
-        let comments = response.comments;
-        let createdAt = response.createdAt;
-        let modifiedAt = response.modifiedAt;
-
-        let temp_html =
-        `<div class="board_view_wrap">
-            <div class="title_wrap">
-                <div class="title">${boardTitle}</dvi>
+            console.log(response)
+            let temp_html =
+                `<div class="board_view_wrap">
+                <div class="title_wrap">
+                    <div class="title">${title}</div>
+                </div>
+                <div class="info_wrap">
+                    <span class="writer"></span>
+                    <span class="dateTime">작성 날짜 : ${createdAt} 최종 수정 날짜 : ${modifiedAt}</span>
+                </div>
+                <div class="content_wrap">
+                    <div class="boardSubject">${subject}</div>
+                <div class="boardContent">${content}</div>
             </div>
-            <div class="info_wrap">
-                <span class="writer"></span>
-                <span class="dateTime">작성 날짜 : ${createdAt} 최종 수정 날짜 : ${modifiedAt}</span>
-            </div>
-            <div class="content_wrap>
-                <div class="boardSubject">${boardSubject}</div>
-                <div class="boardContent>${boardContent}</div>
-            </dvi>
-            <div class="comments_wrap>
-                <div class="comments>${comments}</div>
+            <div class="comments_wrap">
+                     <div class="comments">${comments}</div>
             </div>
         </div>`
 
-        $('#info_box').append(temp_html);
-
+            $('#boards').append(temp_html);
+        }
     });
 }

@@ -1,29 +1,9 @@
-// const userToken = localStorage.getItem('accessToken');
-// const urlSearchParams = new URLSearchParams(window.location.search);
-// const boaId = urlSearchParams.get('boardId');
-
-
 // jQuery(document).ready(function ($) {
 //     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
 //         getProfile();
 //     }
-//     // const productId = localStorage.getItem('productId')
-//     // window.localStorage.removeItem('productId');
-
-
-//     // const geProductId = "";
-//     // getProductId()
-//     // window.history.pushState("데이터", "제목", `/product.html?productId=${productId}`);
-
-
-//     const urlSearchParams = new URLSearchParams(window.location.search);
-//     const productId = urlSearchParams.get('productId');
-//     getProductInfo(productId);
-//     checkInterest();
 //     $("#longinForm").empty();
 //     $("#longinForm").append('loginform')
-
-
 
 //     /*---------------------------------------------*
 //      * Mobile menu
@@ -160,6 +140,7 @@
 //     //End
 // });
 
+
 // function getProfile() {
 //     var settings = {
 //         "url": "http://localhost:8080/users/profile",
@@ -174,30 +155,29 @@
 //         // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
 //         document.getElementById('loginbuttons').style.display = 'none';
 //         let temp_html = `<li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
-//         <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 <b class="caret"></b></a>
+//         <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = "color:black">${nickname}님 </a>
         
 //         <ul class="dropdown-menu dropdown-menu-end" >
 //             <li class="col-sm-6">
-//             <ul>
-//             <li class="dropdown-header">${nickname}님</li>
-//             <li><a href="myinfo.html">내정보</a></li>
-//             <li><a href="purchaseList.html">구매상품</a></li>
-//             <li><a href="salesPage.html">판매상품</a></li>
-//             <li><a href="chatroom.html">구매채팅</a></li>
-//             <li><a href="SellChatRoom.html">판매채팅</a></li>
-//             <li><a href="myinterest.html">관심목록</a></li>
-//               </ul>
+//                 <ul>
+//                 <li class="dropdown-header">${nickname}님</li>
+//                 <li><a href="myinfo.html">내정보</a></li>
+//                 <li><a href="purchaseList.html">구매상품</a></li>
+//                 <li><a href="salesPage.html">판매상품</a></li>
+//                 <li><a href="chatroom.html">구매채팅</a></li>
+//                 <li><a href="SellChatRoom.html">판매채팅</a></li>
+//                 <li><a href="myinterest.html">관심목록</a></li>
+//                 </ul>
 //             </li>               
 //         </ul>      
 //     </li>
 //     <div style = "color:#82ca9c; margin-left 10px; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>`
 //         $('#loginForm').append(temp_html)
-
+//         element.innerHTML = '<div style = "color:#82ca9c; margin-top: 14px" ><a onclick = "logout()" > 로그아웃 </a></div>';
 //     }).fail(function () {
 //         reissueToken();
 //     });
 // }
-
 // function logout() {
 //     var settings = {
 //         "url": "http://localhost:8080/users/logout",
@@ -234,41 +214,82 @@
 //     });
 // }
 
+
+// // 토큰 불러오기
+// $(document).ready(function () {
+//     const ok = localStorage.getItem('accessToken')
+//     if (ok.length == 0) {
+//         console.error("userId 요소를 찾을 수 없습니다.");
+//         return;
+//     }
+
+// });
+
+// const userToken = localStorage.getItem('accessToken')
+// // let 변경 가능, const 변경불가능; -> 개발자
+
+
+
+// function decodeJwtToken(userToken) {
+//     const base64Url = userToken.split('.')[1];
+//     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//     const jsonPayload = decodeURIComponent(
+//         atob(base64)
+//             .split('')
+//             .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
+//             .join('')
+//     );
+
+//     return JSON.parse(jsonPayload);
+// }
+
+// function getUserIdFromJwtToken(userToken) {
+//     const decodedToken = decodeJwtToken(userToken);
+//     return decodedToken.sub;
+// }
+
+// const loginUsername = getUserIdFromJwtToken(userToken);
+
 // function getBoard(boardId) {
-//     var settings = {
-//         "url": "http://localhost:8080/boards/" + boardId,
-//         "method": "GET",
-//         "timeout": 0,
-//     };
+//     console.log(boardId)
 
-//     $.ajax(settings).done(function (response) {
+//     $("#info_box").empty();
+//     console.log("아아아아아아")
+//     console.log(boardId)
+//     $.ajax({
+//         type: 'GET',
+//         url: 'http://localhost:8080/boards/' + boardId,
+//         headers: { Authorization: userToken },
+//         success: function (response) {
+//             let boardId = response.boardId;
+//             let boardTitle = response.title;
+//             let boardContent = response.content;
+//             let boardSubject = response.subject;
+//             let comments = response.comments;
+//             let username = response.username;
+//             let createdAt = response.createdAt;
+//             let modifiedAt = response.modifiedAt;
 
-//         let boardTitle = response.title;
-//         let boardContent = response.content;
-//         let boardSubject = response.subject;
-//         let comments = response.comments;
-//         let createdAt = response.createdAt;
-//         let modifiedAt = response.modifiedAt;
-
-//         let temp_html =
-//         `<div class="board_view_wrap">
-//             <div class="title_wrap">
-//                 <div class="title">${boardTitle}</dvi>
+//             console.log(response)
+//             let temp_html =
+//                 `<div class="board_view_wrap">
+//                 <div class="title_wrap">
+//                     <div class="title">${boardTitle}</div>
+//                 </div>
+//                 <div class="info_wrap">
+//                     <span class="writer"></span>
+//                     <span class="dateTime">작성 날짜 : ${createdAt} 최종 수정 날짜 : ${modifiedAt}</span>
+//                 </div>
+//                 <div class="content_wrap">
+//                     <div class="boardSubject">${boardSubject}</div>
+//                 <div class="boardContent">${boardContent}</div>
 //             </div>
-//             <div class="info_wrap">
-//                 <span class="writer"></span>
-//                 <span class="dateTime">작성 날짜 : ${createdAt} 최종 수정 날짜 : ${modifiedAt}</span>
-//             </div>
-//             <div class="content_wrap>
-//                 <div class="boardSubject">${boardSubject}</div>
-//                 <div class="boardContent>${boardContent}</div>
-//             </dvi>
-//             <div class="comments_wrap>
-//                 <div class="comments>${comments}</div>
+//             <div class="comments_wrap">
+//                      <div class="comments">${comments}</div>
 //             </div>
 //         </div>`
 
-//         $('#info_box').append(temp_html);
-
+//             $('#info_box').append(temp_html);
+//         }
 //     });
 // }
