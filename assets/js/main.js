@@ -4,6 +4,7 @@ import URL_VARIABLE from './export.js';
 
 jQuery(document).ready(function ($) {
 
+    setLocalStorageToken()
     if (localStorage.getItem('accessToken') != '' && localStorage.getItem('accessToken') != null) {
         getProfile();
     }
@@ -539,6 +540,32 @@ function addressCertified() {
 
     var option = "width = 800, height = 800, top = 100, left = 200, location = no"
     window.open(url, '', option)
+}
+
+function getCookieValue(cookieName) {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+            return cookie.substring(`${cookieName}=`.length, cookie.length);
+        }
+    }
+    return null;
+}
+
+function setLocalStorageToken() {
+    let accessToken = getCookieValue("accessToken");
+    let refreshToken = getCookieValue("refreshToken");
+    // 쿠키 값을 가져왔다면 localStorage에 값을 저장합니다.
+    // localStorage.setItem("accessToken", "Bearer " + accessToken);
+    // localStorage.setItem("refreshToken", "Bearer " + refreshToken);
+    if (accessToken) {
+        console.log(accessToken)
+        localStorage.setItem("accessToken", "Bearer " + accessToken);
+        localStorage.setItem("refreshToken", "Bearer " + refreshToken);
+    }
+    document.cookie = "accessToken" + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "refreshToken" + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 
 
