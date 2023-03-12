@@ -256,11 +256,47 @@ function getUserIdFromJwtToken(userToken) {
 
 const loginUsername = getUserIdFromJwtToken(userToken);
 
+function getUserauthFromJwtToken(userToken) {
+    const decodedToken = decodeJwtToken(userToken);
+    return decodedToken.auth;
+}
+
+const loginUserRole = getUserauthFromJwtToken(userToken);
+console.log(loginUserRole)
+
+// $(document).ready(function () {
+
+//     // 마크다운 옵션을 감싸는 요소의 ID를 사용하여 요소를 찾습니다.
+//     var subject = $("#notice");
+
+//     if (auth === "MEMBER") {
+//         // auth가 MEMBER인 경우, 마크다운 옵션을 숨깁니다.
+//         subject.css("display", "none");
+//     } else {
+//         // auth가 MEMBER가 아닌 경우, 마크다운 옵션을 보입니다.
+//         subject.css("display", "block");
+//     }
+// });
+
+
 function createButton() {
     var url = "/addBoard.html"
-    var option = "width = 800, height = 800, top = 100, left = 200, location = no"
+    var windowOption = "width = 800, height = 800, top = 100, left = 200, location = no"
 
-    window.open(url, "", option);
+    var popupWindow = window.open(url, "", windowOption);
+
+    popupWindow.onload = function() {
+        // 팝업창이 로드되면 호출되는 함수
+        var subject = popupWindow.document.getElementById("notice");
+    
+        if (loginUserRole !== "MEMBER") {
+            // auth가 MEMBER인 경우, 마크다운 옵션을 숨깁니다.
+            subject.style.display = "none";
+        } else {
+            // auth가 MEMBER가 아닌 경우, 마크다운 옵션을 보입니다.
+            subject.style.display = "block";
+        }
+    };
 }
 
 $("#addBoard").click(function () {
