@@ -53,36 +53,62 @@ $('#uploadPhoto').click(function() {
 });
 
 // 상품 등록하기
+// function addProduct() {
+//   var productRequestDto = {
+//     "productImg": $("#image-url").val(),
+//     "productName": $("#productName").val(),
+//     "productPrice": $("#productPrice").val(),
+//     "productEnum": $("#productEnum option:selected").val(),
+//     "productStatus": $("#productStatus option:selected").val(),
+//     "productCategory": $("#productCategory option:selected").val()
+//   };
+
+//   $.ajax({
+//     type: "POST",
+//     url: URL_VARIABLE + 'products',
+//     contentType: "application/json; charset=utf-8",
+//     dataType: "json",
+//     headers: {
+//       Authorization: userToken
+//     },
+//     // xhrFields: { 
+//     // 	withCredentials: true // 클라이언트와 서버가 통신할때 쿠키와 같은 인증 정보 값을 공유하겠다는 설정
+//     // },
+//     data: JSON.stringify(productRequestDto),
+//     success: function (response) {
+//       console.log(response)
+//       alert("상품 생성이 완료되었습니다");
+
+//     }
+//   })
+// }
 function addProduct() {
-  var productRequestDto = {
+  var settings = {
+    "url": URL_VARIABLE + "products",
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
+      "Authorization": userToken,
+      "Content-Type": "application/json"
+    },
+    "data": JSON.stringify({
     "productImg": $("#image-url").val(),
     "productName": $("#productName").val(),
     "productPrice": $("#productPrice").val(),
     "productEnum": $("#productEnum option:selected").val(),
     "productStatus": $("#productStatus option:selected").val(),
     "productCategory": $("#productCategory option:selected").val()
+    }),
   };
-
-  $.ajax({
-    type: "POST",
-    url: URL_VARIABLE + 'products',
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    headers: {
-      Authorization: userToken
-    },
-    // xhrFields: { 
-    // 	withCredentials: true // 클라이언트와 서버가 통신할때 쿠키와 같은 인증 정보 값을 공유하겠다는 설정
-    // },
-    data: JSON.stringify(productRequestDto),
-    success: function (response) {
-      console.log(response)
-      alert("상품 생성이 완료되었습니다");
-
-    }
-  })
+  
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    alert("등록 완료");
+    window.location.href = "index.html"
+  }).fail(function(response){
+    alert("상품을 등록하는데 실패하였습니다. 입력하신 내용을 다시 확인해 주세요");
+  });
 }
-
 // function getProduct(productId) {
 //   $.ajax({
 //     type: "GET", // Post? CORS에 맞춰 고치기
@@ -209,7 +235,7 @@ function getProductIdFromUrl() {
 }
 
 //click
-$("#addProduct").click(addProduct);
+$("#addProductButton").click(addProduct);
 
 
 

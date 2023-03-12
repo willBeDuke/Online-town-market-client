@@ -185,7 +185,7 @@ function getProfile() {
                     <li><a href="salesPage.html">판매상품</a></li>
                     <li><a href="chatroom.html">구매채팅</a></li>
                     <li><a href="SellChatRoom.html">판매채팅</a></li>
-                    <li><a href="myinterest.html">관심목록</a></li>
+                    <li><a href="myInterest.html">관심목록</a></li>
                 </ul>
 
             </li>               
@@ -524,9 +524,9 @@ function getProduct(productId) {
 }
 function addProduct() {
     let url = '/addproduct.html';
-
-    let option = "width = 800, height = 800, top = 100, left = 200, location = no"
-    window.open(url, '', option)
+    window.location.href = url
+    // let option = "width = 800, height = 800, top = 100, left = 200, location = no"
+    // window.open(url, '', option)
 }
 
 function userReport() {

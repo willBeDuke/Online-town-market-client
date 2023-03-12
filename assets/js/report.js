@@ -54,7 +54,7 @@ function reportProducts() {
         closeWindow();
     }).fail(function (response) {
         if (response.responseJSON.statusCode === 400 || response.responseJSON.statusCode === 401)
-            alert("입력하신 정보를 다시 확인해 주세요")
+            alert("중복된 신고거나 신고에 실패했습니다")
     });
 }
 
