@@ -265,13 +265,13 @@ const loginUserRole = getUserauthFromJwtToken(userToken);
 function createButton() {
     var url = "/addBoard.html"
     var windowOption = "width = 800, height = 800, top = 100, left = 200, location = no"
-    
+
     var popupWindow = window.open(url, "", windowOption);
 
-    popupWindow.onload = function() {
+    popupWindow.onload = function () {
         // 팝업창이 로드되면 호출되는 함수
         var subject = popupWindow.document.getElementById("notice");
-    
+
         if (loginUserRole === "MEMBER") {
             // auth가 MEMBER인 경우, 마크다운 옵션을 숨깁니다.
             subject.style.display = "none";
@@ -291,6 +291,14 @@ $("#updateBoards").click(function () {
 });
 
 function createBoards() {
+    var title = $("#title").val();
+    var content = $("#content").val();
+    var subject = $("#subject").val();
+
+    if (!title || !content || !subject) {
+        alert("제목, 내용, 주제는 필수 입력 항목입니다.");
+        return;
+    }
     $.ajax({
         type: "POST",
         url: URL_VARIABLE + 'boards',
@@ -299,9 +307,9 @@ function createBoards() {
             "Content-Type": "application/json"
         },
         data: JSON.stringify({
-            "title": $("#title").val(),
-            "content": $("#content").val(),
-            "subject": $("#subject").val()
+            "title": title,
+            "content": content,
+            "subject": subject
         }),
         success: function (response) {
             console.log(response)
@@ -320,7 +328,9 @@ function getBoards(page) {
         url: URL_VARIABLE + 'boards',
         headers: { Authorization: userToken },
         dataType: 'json',
-        data: { "page": page },
+        data: {
+            "page": page
+        },
         success: function (response) {
             let boards = response.content;
             let temp_careatBtn = `<button id="createBoard" type="button">글쓰기</button>`
@@ -347,14 +357,10 @@ function getBoards(page) {
                 getBoard(boardId);
             });
 
-            // $('#getBoard').click(function () {
-            //     var boardId = $(this).data('board-id')
-            //     getBoard(boardId);
-            // })
-
             $('#createBoard').click(function () {
                 createButton();
             })
+
 
             var totalPages = response.totalPages;
             var pageNumber = response.number;
@@ -405,11 +411,10 @@ function getBoards(page) {
             $('#pagination a').click(function (event) {
                 event.preventDefault();
                 var page = $(this).text() - 1;
-                getBoards(page);
+                if (page >= 0 && page < totalPages) {
+                    getBoards(page);
+                }
             });
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr);
         }
     });
 }
@@ -422,6 +427,16 @@ function updateBtn(boardId) {
 }
 
 function updateBoard() {
+
+    var title = $("#title").val();
+    var content = $("#content").val();
+    var subject = $("#subject").val();
+
+    if (!title || !content || !subject) {
+        alert("제목, 내용, 주제는 필수 입력 항목입니다.");
+        return;
+    }
+
     $.ajax({
         type: "PUT",
         url: URL_VARIABLE + 'boards/' + boardId,
@@ -432,9 +447,9 @@ function updateBoard() {
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({
-            "title": $("#title").val(),
-            "content": $("#content").val(),
-            "subject": $("#subject").val()
+            "title": title,
+            "content": content,
+            "subject": subject
         }),
         success: function (response) {
             console.log(response)
@@ -453,8 +468,7 @@ function deleteBoard(boardId) {
         headers: { Authorization: userToken },
         success: function (response) {
             alert("삭제되었습니다.");
-            history.back();
-            // location.herf = '/board.html'
+            window.location.href = `board.html`
         }
     });
 }
