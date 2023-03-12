@@ -157,7 +157,6 @@ function connect(roomId, nickname, productId) {
 
   if (stompClient != null) {
     stompClient.disconnect();
-    socket.close();  // socket도 함께 close
   }
 
   socket = new SockJS(URL_VARIABLE + "ws");
@@ -165,6 +164,7 @@ function connect(roomId, nickname, productId) {
   stompClient.connect({}, function (frame) {
     setConnected(true);
     $("#apponent_nickname").text(nickname);
+
     stompClient.subscribe("/sub/" + roomId, function (chat) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
 
@@ -193,37 +193,41 @@ function connect(roomId, nickname, productId) {
       messageList.scrollTop(messageList.prop("scrollHeight"));
 
     });
-    $("#send").attr("onclick", `sendChat('${roomId}', ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+    // $("#send").attr("onclick", `sendChat('${roomId}', ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+
+
+    $("#send").click(function () {
+      sendChat(currentRoomId, productId, nickname,sender);
+    });
 
     $("#message").keypress(function (event) {
       if (event.which == 13 && !event.shiftKey) {
         event.preventDefault();
-        sendChat(roomId, productId, nickname, sender,);
+        sendChat(currentRoomId, productId, nickname,sender);
       }
     });
   });
 };
 
 
-function sendChat(roomId, productId, nickname, sender, message) {  
+function sendChat(currentRoomId, productId, nickname,sender) {  
   var message = $("#message").val();
 
   if (message == "" || message == null) {
     return;
   }
 
-  stompClient.send("/pub/" + roomId, {}, JSON.stringify({
+  stompClient.send("/pub/" + currentRoomId, {}, JSON.stringify({
     "message": message,
     "sender": sender,
     "receiver": nickname,
-    "roomId": roomId,
+    "roomId": currentRoomId,
     "productId": productId
   }));
   $("#message").val("");
 }
 
 function chatView(roomId, nickname, productId, buyerId) {
-  
 
   connect(roomId, nickname, productId);
   if (currentRoomId !== roomId || currentNickname !== nickname) {

@@ -102,6 +102,7 @@ function getProfile() {
   $.ajax(settings).done(function (response) {
     const nickname = response.nickname;
     sender = nickname;
+    console.log(sender)
     // $('#loginForm').siblings('span.nickName').text(response.nickname + "님").parent('.loginForm').addClass('hasNickname');
     document.getElementById('loginbuttons').style.display = 'none';
     let temp_html = `<li class="dropdown dropdown-large" style="margin-top: 13px; margin-right: 10px">
@@ -152,10 +153,10 @@ let stompClient = null;
 let socket = null;
 
 function connect(roomId, nickname, productId) {
+  // console.log("시작이다 " , roomId)
 
   if (stompClient != null) {
     stompClient.disconnect();
-    socket.close();  // socket도 함께 close
   }
 
   socket = new SockJS(URL_VARIABLE + "ws");
@@ -163,10 +164,10 @@ function connect(roomId, nickname, productId) {
   stompClient.connect({}, function (frame) {
     setConnected(true);
     $("#apponent_nickname").text(nickname);
-    stompClient.subscribe("/sub/" + roomId, function (connect2) {
+    stompClient.subscribe("/sub/" + roomId, function (chat) {
       // 메시지가 도착하면, 이곳에서 처리합니다.
 
-      let msg = JSON.parse(connect2.body);
+      let msg = JSON.parse(chat.body);
       let sender = msg.sender;
       let receiver = msg.receiver;
       let message = msg.message;
@@ -181,47 +182,55 @@ function connect(roomId, nickname, productId) {
                             <span id="userNickname">${sender == receiver ? receiver : sender}</span><br>
                             <small id="sendDate" class="time">${sendDay}</small>
                           </div>
-                          <div id="connect" class="message">
+                          <div id="messageNow" class="message">
                             ${message}
                           </div>
                       </li>`;
       $('#messageList').append(temp_html);
-      const messageList = $('#connect2');
+    
+      const messageList = $('#chat');
       messageList.scrollTop(messageList.prop("scrollHeight"));
 
     });
-    $("#send").attr("onclick", `sendChat('${roomId}', ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+    // $("#send").attr("onclick", `sendChat('${roomId}', ${productId}, '${nickname}', '${sender}')`)// , ${productId} 넣기
+
+
+    $("#send").click(function () {
+      sendChat(currentRoomId, productId, nickname,sender,roomId);
+    });
 
     $("#message").keypress(function (event) {
       if (event.which == 13 && !event.shiftKey) {
         event.preventDefault();
-        sendChat(roomId, productId, nickname, sender);
+        sendChat(currentRoomId, productId, nickname,sender);
       }
-    }); // 줄바꿈은 Shift + Enter
+    });
   });
 };
 
 
-function sendChat(roomId, productId, nickname, sender) {
-    var message = $("#message").val();
+function sendChat(currentRoomId, productId, nickname,sender) {  
+  var message = $("#message").val();
 
   if (message == "" || message == null) {
     return;
   }
 
-  stompClient.send("/pub/" + roomId, {}, JSON.stringify({
+  // console.log("보낸다 ", roomId)
+  // console.log("보낸다 ", currentRoomId)
+  
+  stompClient.send("/pub/" + currentRoomId, {}, JSON.stringify({
     "message": message,
     "sender": sender,
     "receiver": nickname,
-    "roomId": roomId,
+    "roomId": currentRoomId,
     "productId": productId
-  }))
+  }));
   $("#message").val("");
 }
 
-function chatView(roomId, nickname, productId) {
-
-
+function chatView(roomId, nickname, productId, buyerId) {
+  
   connect(roomId, nickname, productId);
   if (currentRoomId !== roomId || currentNickname !== nickname) {
 
@@ -235,7 +244,6 @@ function chatView(roomId, nickname, productId) {
       headers: { Authorization: userToken },
       success: function (response) {
         getProduct(productId);
-
         // 현재 방의 정보를 전역 변수에 저장
         currentRoomId = roomId;
         currentNickname = nickname;
@@ -252,6 +260,7 @@ function chatView(roomId, nickname, productId) {
           let min = sendTime.getMinutes();
 
           let sendDay = sendTime.toLocaleDateString().replace(/\./g, '').replace(/\s/g, '/') + " " + hour + ":" + min;
+
           let temp_html = `<li class= ${sender == nickname ? "left" : "right"}>
                               <div class= ${sender == nickname ? "receiver" : "sender"}>
                                 <span id="userNickname">${sender == receiver ? receiver : sender}</span><br>
@@ -262,8 +271,13 @@ function chatView(roomId, nickname, productId) {
                               </div>
                             </li>`;
           $('#messageList').append(temp_html);
-          $('#connect2').scrollTop($('#connect2')[0].scrollHeight);
+          $('#chat').scrollTop($('#chat')[0].scrollHeight);
         }
+
+        // $("#completed").attr("onclick", `salesCompleted(${buyerId}, ${productId})`);
+        $("#completed").click(function() {
+          salesCompleted(buyerId, productId);
+        });
       }
     });
   }
@@ -280,7 +294,7 @@ function disconnect() {
 
 
 $(function () {
-  $("#connect2").on('submit', function (e) {
+  $("#chat").on('submit', function (e) {
     e.preventDefault();
   });
   $("#disconnect").click(function () { disconnect(); });
@@ -349,9 +363,4 @@ function getProduct(productId) {
 // //click
 // $("#chatView").click(chatView);
 // $("#connect2").click(connect);
-
-
-
-
-
 
