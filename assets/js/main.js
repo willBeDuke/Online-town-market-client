@@ -413,7 +413,7 @@ function getProducts(page) {
                       </div>
                       <div class="panel-body" id="creategetProduct2" productId="${productId}">
                         <p class="profile-name">${productName}</p>
-                        <p>${productPrice}</p>
+                        <p> 가격 ${productPrice}</p>
                       </div>
                     </div>
                   </div>`;
@@ -513,10 +513,11 @@ function getProducts(page) {
 // }
 function search() {
     var keyword = $('#search').val();
-    if (keyword.length != 0) {
-        localStorage.setItem('keyword', keyword)
-        window.location.href = "search.html"
-    }
+    window.location.href = `/search.html?keyword=${keyword}`
+    // if (keyword.length != 0) {
+    //     localStorage.setItem('keyword', keyword)
+    //     window.location.href = "search.html"
+    // }
 }
 function getProduct(productId) {
     window.location.href = `/product.html?productId=${productId}`
