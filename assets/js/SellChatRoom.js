@@ -366,6 +366,9 @@ function getProduct(productId) {
     "headers": {
       "Authorization": localStorage.getItem('accessToken')
     },
+    "data": {
+      "productId": productId
+    }
   };
 
   $.ajax(settings).done(function (response) {
