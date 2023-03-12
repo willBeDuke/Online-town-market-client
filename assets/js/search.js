@@ -277,9 +277,11 @@ function reissueToken(){
 
 
         function search(page) {
-            if(localStorage.getItem('keyword') == ''){
-                window.location.href = "index.html"
-            }
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const keyword = urlSearchParams.get('keyword');
+            // if(localStorage.getItem('keyword') == ''){
+            //     window.location.href = "index.html"
+            // }
             $.ajax({
               url: URL_VARIABLE + "products/search",
               type: 'GET',
@@ -288,11 +290,11 @@ function reissueToken(){
                     "size": 9,
                     "sortBy":"createdAt",
                     "isAsc":false,
-                    "keyword": localStorage.getItem('keyword')
+                    "keyword": keyword
               },
               success: function(response) {
-                localStorage.setItem('keyword','')
-                console.log(response)
+                // localStorage.setItem('keyword','')
+                // console.log(response)
                 if(response.totalElements == 0){
                     alert("찾으시는 물건이 없습니다")
                     window.location.href = "index.html"
@@ -384,7 +386,7 @@ function reissueToken(){
                 $('#pagination a').click(function(event) {
                     event.preventDefault();
                     var page = $(this).text() - 1;
-                    getProducts(page);
+                    search(page);
                 });
 
               }

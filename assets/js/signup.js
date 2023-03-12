@@ -209,9 +209,6 @@ if(emailVerify == true){
     alert("입력하신 정보를 다시 확인해 주세요")
   }); 
 }
- else{
-  alert("입력하신 정보를 다시 확인해 주세요")
- }
 }
 
 function GoogleSignup(){
@@ -248,13 +245,9 @@ function usernamecheck(clicked_id){
         }
     
   }).fail(function(){
-    console.log(response)
     alert("중복체크에 실패하였습니다.")
   })
   ;
-}
-else{
-  alert("입력하신 정보를 다시 확인해 주세요")
 }
 }
 
@@ -286,13 +279,9 @@ function nicknamecheck(clicked_id){
           nicknameck = true;
       }
   }).fail(function(){
-    console.log(response)
     alert("중복체크에 실패하였습니다.")
   })
   ;
-}
-else{
-  alert("입력하신 정보를 다시 확인해 주세요")
 }
 }
 
@@ -340,9 +329,7 @@ function emailcheck(clicked_id){
   })
   ;
 }
-else{
-  alert("입력하신 정보를 다시 확인해 주세요")
-}
+
 }
 
 function setTime(){
