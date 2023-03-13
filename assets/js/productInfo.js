@@ -333,6 +333,8 @@ function checkMyProduct(productId) {
 
 
 function getProductInfo(productId) {
+
+
     checkMyProduct(productId)
     var settings = {
         "url": URL_VARIABLE + "products/" + productId,
@@ -366,6 +368,8 @@ function getProductInfo(productId) {
             productContents = "내용없음"
         }
 
+
+        console.log(responseVlaue)
         let temp_html =
             `<div>
        <section id="article-images">

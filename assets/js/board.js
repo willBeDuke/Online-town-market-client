@@ -421,9 +421,22 @@ function getBoards(page) {
 
 function updateBtn(boardId) {
     var url = "/updateBoard.html?boardId=" + boardId
-    var option = "width = 800, height = 800, top = 100, left = 200, location = no"
-    window.open(url, "", option);
+    var windowOption = "width = 800, height = 800, top = 100, left = 200, location = no"
 
+    var popupWindow = window.open(url, "", windowOption);
+
+    popupWindow.onload = function () {
+        // 팝업창이 로드되면 호출되는 함수
+        var subject = popupWindow.document.getElementById("notice");
+
+        if (loginUserRole === "MEMBER") {
+            // auth가 MEMBER인 경우, 마크다운 옵션을 숨깁니다.
+            subject.style.display = "none";
+        } else {
+            // auth가 MEMBER가 아닌 경우, 마크다운 옵션을 보입니다.
+            subject.style.display = "block";
+        }
+    };
 }
 
 function updateBoard() {
