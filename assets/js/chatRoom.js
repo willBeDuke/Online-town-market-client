@@ -348,7 +348,6 @@ function getProduct(productId) {
       "productId": productId
     }
   };
-
   $.ajax(settings).done(function (response) {
     let productId = response['productId'];
     let roomName = response['productName'];
